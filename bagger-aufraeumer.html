@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Bagger räumt auf</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #87ceeb; font-family: system-ui, sans-serif; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: none; overscroll-behavior: none; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #again { position: absolute; left: 50%; top: 65%; transform: translate(-50%, -50%); padding: 24px 48px; font-size: 8vmin; font-weight: 900; color: #fff; background: #e94e1b; border: 6px solid #fff; border-radius: 24px; box-shadow: 0 8px 0 #8a2a0c; cursor: pointer; display: none; z-index: 2; }
+  #again:active { transform: translate(-50%, -50%) translateY(4px); box-shadow: 0 4px 0 #8a2a0c; }
+</style>
+</head>
+<body>
+<!--
+  BAGGER RÄUMT AUF - ein kleines Aufräum-Spiel für Kleinkinder
+
+  STEUERUNG:
+    - Irgendwo auf den Boden tippen/klicken -> Bagger fährt dorthin.
+    - Berührt der Bagger einen Stein, verschwindet er mit Plop-Sound.
+    - Sind alle 5 Steine weg: JUCHU! Auf "Nochmal!" tippen startet neu.
+
+  BILDER EINFÜGEN (später):
+    Oben im Script steht das Objekt ASSETS. Einfach die leeren Strings
+    ersetzen durch einen Pfad ("bilder/bagger.png") oder einen Base64-
+    DataURL ("data:image/png;base64,..."). Sobald der String nicht mehr
+    leer ist, wird automatisch das Bild statt des Platzhalter-Rechtecks
+    gezeichnet. Siehe Funktionen drawBagger, drawStein, drawHintergrund.
+
+  Doppelklick auf diese HTML-Datei reicht - kein Server nötig.
+-->
+
+<canvas id="game"></canvas>
+<button id="again">Nochmal!</button>
+
+<script>
+"use strict";
+
+// ---------------------------------------------------------------------------
+// ASSETS: leave strings empty to use canvas placeholders.
+// Fill with an image path or base64 data URL to use images instead.
+// ---------------------------------------------------------------------------
+const ASSETS = {
+  bagger: '',       // replaces the yellow excavator shape
+  stein: '',        // replaces the gray rubble pile shape
+  hintergrund: ''   // replaces the sky+ground drawing (full scene image)
+};
+
+// Loaded HTMLImageElements are cached here once ASSETS strings are set.
+const IMG = { bagger: null, stein: null, hintergrund: null };
+function loadAssets() {
+  for (const key of Object.keys(ASSETS)) {
+    if (ASSETS[key]) {
+      const img = new Image();
+      img.src = ASSETS[key];
+      IMG[key] = img;
+    }
+  }
+}
+loadAssets();
+
+// ---------------------------------------------------------------------------
+// Canvas + resize
+// ---------------------------------------------------------------------------
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+let W = 0, H = 0, GROUND_Y = 0;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = Math.floor(W * dpr);
+  canvas.height = Math.floor(H * dpr);
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // Ground starts at ~45% from top -> lots of play area, sky visible.
+  GROUND_Y = Math.floor(H * 0.45);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ---------------------------------------------------------------------------
+// Audio (Web Audio API, synthesized on first user interaction)
+// ---------------------------------------------------------------------------
+let audioCtx = null;
+let engineNodes = null;  // { osc, gain } while driving
+
+function ensureAudio() {
+  if (audioCtx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  audioCtx = new AC();
+}
+
+function startEngine() {
+  if (!audioCtx || engineNodes) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const lfo = audioCtx.createOscillator();
+  const lfoGain = audioCtx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.value = 70;          // deep rumble
+  lfo.frequency.value = 8;           // putter-putter vibrato
+  lfoGain.gain.value = 6;
+  lfo.connect(lfoGain).connect(osc.frequency);
+  gain.gain.value = 0;
+  gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.1);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start();
+  lfo.start();
+  engineNodes = { osc, gain, lfo };
+}
+
+function stopEngine() {
+  if (!engineNodes) return;
+  const { osc, gain, lfo } = engineNodes;
+  const t = audioCtx.currentTime;
+  gain.gain.cancelScheduledValues(t);
+  gain.gain.setValueAtTime(gain.gain.value, t);
+  gain.gain.linearRampToValueAtTime(0, t + 0.15);
+  osc.stop(t + 0.2);
+  lfo.stop(t + 0.2);
+  engineNodes = null;
+}
+
+function playPlop() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(900, t);
+  osc.frequency.exponentialRampToValueAtTime(300, t + 0.18);
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(0.4, t + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(t);
+  osc.stop(t + 0.25);
+}
+
+function playWin() {
+  if (!audioCtx) return;
+  const notes = [523.25, 659.25, 783.99, 1046.5]; // C5 E5 G5 C6
+  const t0 = audioCtx.currentTime;
+  notes.forEach((f, i) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = f;
+    const start = t0 + i * 0.18;
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.3, start + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.35);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(start);
+    osc.stop(start + 0.4);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Game state
+// ---------------------------------------------------------------------------
+const BAGGER_SPEED = 260; // px per second
+let bagger, steine, puffs, confetti, won;
+
+function rand(a, b) { return a + Math.random() * (b - a); }
+
+function resetGame() {
+  bagger = {
+    x: Math.max(80, W * 0.1),
+    y: GROUND_Y + (H - GROUND_Y) * 0.55,
+    w: Math.min(180, W * 0.18),
+    h: Math.min(110, W * 0.11),
+    targetX: null,
+    targetY: null,
+    facing: 1,            // 1 = right, -1 = left
+    wheelPhase: 0
+  };
+  // place 5 rubble piles, avoiding starting position of bagger
+  steine = [];
+  const minX = W * 0.22;
+  const maxX = W * 0.92;
+  const minY = GROUND_Y + (H - GROUND_Y) * 0.25;
+  const maxY = H - 60;
+  for (let i = 0; i < 5; i++) {
+    steine.push({
+      x: rand(minX, maxX),
+      y: rand(minY, maxY),
+      r: Math.min(46, W * 0.045),
+      seed: Math.random() * 1000
+    });
+  }
+  puffs = [];
+  confetti = [];
+  won = false;
+  againBtn.style.display = 'none';
+}
+
+// ---------------------------------------------------------------------------
+// Input
+// ---------------------------------------------------------------------------
+const againBtn = document.getElementById('again');
+againBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  ensureAudio();
+  resetGame();
+});
+
+function handlePoint(x, y) {
+  ensureAudio();
+  if (won) return;
+  // Ignore taps far above ground (sky area) - clamp to ground range so
+  // small kids can tap anywhere and bagger still moves.
+  const minY = GROUND_Y + (H - GROUND_Y) * 0.15;
+  const maxY = H - 30;
+  bagger.targetX = Math.max(bagger.w * 0.5, Math.min(W - bagger.w * 0.5, x));
+  bagger.targetY = Math.max(minY, Math.min(maxY, y));
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  handlePoint(e.clientX, e.clientY);
+});
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  handlePoint(t.clientX, t.clientY);
+}, { passive: false });
+canvas.addEventListener('touchmove', (e) => { e.preventDefault(); }, { passive: false });
+
+// ---------------------------------------------------------------------------
+// Drawing helpers
+// ---------------------------------------------------------------------------
+function drawHintergrund() {
+  // If a full-scene image is provided, draw it stretched.
+  if (IMG.hintergrund && IMG.hintergrund.complete && IMG.hintergrund.naturalWidth) {
+    ctx.drawImage(IMG.hintergrund, 0, 0, W, H);
+    return;
+  }
+  // Sky
+  const sky = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
+  sky.addColorStop(0, '#87ceeb');
+  sky.addColorStop(1, '#cfefff');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, W, GROUND_Y);
+  // Sun
+  ctx.fillStyle = '#fff4a3';
+  ctx.beginPath(); ctx.arc(W * 0.85, H * 0.12, Math.min(60, W * 0.06), 0, Math.PI * 2); ctx.fill();
+  // Clouds
+  ctx.fillStyle = '#ffffff';
+  drawCloud(W * 0.15, H * 0.12, 40);
+  drawCloud(W * 0.5, H * 0.08, 30);
+  // Ground
+  const ground = ctx.createLinearGradient(0, GROUND_Y, 0, H);
+  ground.addColorStop(0, '#a0673a');
+  ground.addColorStop(1, '#6b4423');
+  ctx.fillStyle = ground;
+  ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+  // Little dirt dots
+  ctx.fillStyle = 'rgba(60,35,15,0.35)';
+  for (let i = 0; i < 40; i++) {
+    const dx = (i * 127 + 13) % W;
+    const dy = GROUND_Y + ((i * 53 + 7) % (H - GROUND_Y));
+    ctx.fillRect(dx, dy, 3, 3);
+  }
+  // Scenery: container + fence on the edges
+  drawContainer(W - Math.min(170, W * 0.18), GROUND_Y - Math.min(80, W * 0.08));
+  drawFence(0, GROUND_Y - 30, W);
+}
+
+function drawCloud(x, y, r) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.arc(x + r, y + 4, r * 0.8, 0, Math.PI * 2);
+  ctx.arc(x - r, y + 6, r * 0.7, 0, Math.PI * 2);
+  ctx.arc(x + r * 0.3, y - r * 0.6, r * 0.7, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawContainer(x, y) {
+  const w = Math.min(160, W * 0.16);
+  const h = Math.min(80, W * 0.08);
+  ctx.fillStyle = '#2b6cb0';
+  ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = '#1a4d7a';
+  ctx.fillRect(x, y + h - 10, w, 10);
+  // vertical ribs
+  ctx.strokeStyle = '#1a4d7a';
+  ctx.lineWidth = 2;
+  for (let i = 1; i < 6; i++) {
+    ctx.beginPath();
+    ctx.moveTo(x + (w / 6) * i, y);
+    ctx.lineTo(x + (w / 6) * i, y + h);
+    ctx.stroke();
+  }
+}
+
+function drawFence(x, y, width) {
+  ctx.strokeStyle = '#d4b24c';
+  ctx.lineWidth = 4;
+  const panel = 60;
+  for (let i = 0; i < width; i += panel) {
+    // posts
+    ctx.strokeRect(i + 4, y, 4, 28);
+    // diagonals
+    ctx.beginPath();
+    ctx.moveTo(i, y + 4);
+    ctx.lineTo(i + panel, y + 24);
+    ctx.moveTo(i + panel, y + 4);
+    ctx.lineTo(i, y + 24);
+    ctx.stroke();
+  }
+}
+
+function drawBagger(b) {
+  // If an excavator image is provided, draw centered on its position.
+  if (IMG.bagger && IMG.bagger.complete && IMG.bagger.naturalWidth) {
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.scale(b.facing, 1);
+    ctx.drawImage(IMG.bagger, -b.w / 2, -b.h, b.w, b.h * 1.4);
+    ctx.restore();
+    return;
+  }
+  ctx.save();
+  ctx.translate(b.x, b.y);
+  ctx.scale(b.facing, 1);
+  const w = b.w, h = b.h;
+  // tracks
+  ctx.fillStyle = '#333';
+  ctx.fillRect(-w / 2, -h * 0.35, w, h * 0.35);
+  // wheels (rotating dots)
+  ctx.fillStyle = '#888';
+  const wheels = 4;
+  for (let i = 0; i < wheels; i++) {
+    const cx = -w / 2 + (w / wheels) * i + (w / wheels) / 2;
+    const cy = -h * 0.18;
+    ctx.beginPath(); ctx.arc(cx, cy, h * 0.13, 0, Math.PI * 2); ctx.fill();
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(b.wheelPhase + i);
+    ctx.fillStyle = '#444';
+    ctx.fillRect(-2, -h * 0.1, 4, h * 0.2);
+    ctx.fillStyle = '#888';
+    ctx.restore();
+  }
+  // body
+  ctx.fillStyle = '#f2c200';
+  ctx.fillRect(-w * 0.45, -h, w * 0.9, h * 0.65);
+  // cabin
+  ctx.fillStyle = '#f2c200';
+  ctx.fillRect(-w * 0.05, -h * 1.45, w * 0.4, h * 0.5);
+  // window
+  ctx.fillStyle = '#bde7ff';
+  ctx.fillRect(0, -h * 1.4, w * 0.3, h * 0.35);
+  // arm (shoulder)
+  ctx.strokeStyle = '#f2c200';
+  ctx.lineWidth = Math.max(8, h * 0.14);
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.2, -h * 0.9);
+  ctx.lineTo(w * 0.25, -h * 1.1);
+  ctx.lineTo(w * 0.55, -h * 0.6);
+  ctx.stroke();
+  // bucket
+  ctx.fillStyle = '#c99800';
+  ctx.beginPath();
+  ctx.moveTo(w * 0.45, -h * 0.55);
+  ctx.lineTo(w * 0.75, -h * 0.55);
+  ctx.lineTo(w * 0.7, -h * 0.2);
+  ctx.lineTo(w * 0.5, -h * 0.2);
+  ctx.closePath();
+  ctx.fill();
+  // outline for contrast
+  ctx.strokeStyle = '#6b4a00';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(-w * 0.45, -h, w * 0.9, h * 0.65);
+  ctx.strokeRect(-w * 0.05, -h * 1.45, w * 0.4, h * 0.5);
+  ctx.restore();
+}
+
+function drawStein(s) {
+  // If a rubble image is provided, draw centered on stone position.
+  if (IMG.stein && IMG.stein.complete && IMG.stein.naturalWidth) {
+    const size = s.r * 2.2;
+    ctx.drawImage(IMG.stein, s.x - size / 2, s.y - size / 2, size, size);
+    return;
+  }
+  // pile of small rocks
+  ctx.save();
+  ctx.translate(s.x, s.y);
+  // shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.beginPath();
+  ctx.ellipse(0, s.r * 0.5, s.r * 1.1, s.r * 0.3, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // three stones
+  const cols = ['#8a8a8a', '#a6a6a6', '#6e6e6e'];
+  const offsets = [
+    [-s.r * 0.5, s.r * 0.1, s.r * 0.7],
+    [s.r * 0.35, -s.r * 0.2, s.r * 0.55],
+    [0, s.r * 0.4, s.r * 0.45]
+  ];
+  for (let i = 0; i < 3; i++) {
+    const [ox, oy, r] = offsets[i];
+    ctx.fillStyle = cols[i];
+    ctx.beginPath(); ctx.arc(ox, oy, r, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawPuff(p) {
+  ctx.save();
+  const alpha = 1 - p.t / p.life;
+  ctx.globalAlpha = Math.max(0, alpha);
+  ctx.fillStyle = '#f2e6c2';
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2;
+    const d = p.r + p.t * 80;
+    ctx.beginPath();
+    ctx.arc(p.x + Math.cos(a) * d, p.y + Math.sin(a) * d, 10 + p.t * 10, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawConfetti(c) {
+  ctx.save();
+  ctx.translate(c.x, c.y);
+  ctx.rotate(c.rot);
+  ctx.fillStyle = c.color;
+  ctx.fillRect(-6, -3, 12, 6);
+  ctx.restore();
+}
+
+// ---------------------------------------------------------------------------
+// Update / Game loop
+// ---------------------------------------------------------------------------
+let last = performance.now();
+
+function update(dt) {
+  // Move bagger toward target
+  if (!won && bagger.targetX != null) {
+    const dx = bagger.targetX - bagger.x;
+    const dy = bagger.targetY - bagger.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist < 2) {
+      bagger.targetX = null;
+      bagger.targetY = null;
+      stopEngine();
+    } else {
+      const step = BAGGER_SPEED * dt;
+      if (dist <= step) {
+        bagger.x = bagger.targetX;
+        bagger.y = bagger.targetY;
+      } else {
+        bagger.x += (dx / dist) * step;
+        bagger.y += (dy / dist) * step;
+      }
+      bagger.facing = dx >= 0 ? 1 : -1;
+      bagger.wheelPhase += dt * 10;
+      startEngine();
+    }
+  }
+
+  // Collision with steine
+  for (let i = steine.length - 1; i >= 0; i--) {
+    const s = steine[i];
+    const dx = s.x - bagger.x;
+    const dy = s.y - (bagger.y - bagger.h * 0.2); // center of bagger body
+    const reach = s.r + bagger.w * 0.45;
+    if (Math.hypot(dx, dy) < reach) {
+      steine.splice(i, 1);
+      puffs.push({ x: s.x, y: s.y, r: s.r, t: 0, life: 0.5 });
+      playPlop();
+      if (steine.length === 0 && !won) {
+        triggerWin();
+      }
+    }
+  }
+
+  // Puffs
+  for (let i = puffs.length - 1; i >= 0; i--) {
+    puffs[i].t += dt;
+    if (puffs[i].t >= puffs[i].life) puffs.splice(i, 1);
+  }
+
+  // Confetti physics
+  for (let i = confetti.length - 1; i >= 0; i--) {
+    const c = confetti[i];
+    c.vy += 400 * dt;
+    c.x += c.vx * dt;
+    c.y += c.vy * dt;
+    c.rot += c.vr * dt;
+    c.life -= dt;
+    if (c.y > H + 40 || c.life <= 0) confetti.splice(i, 1);
+  }
+}
+
+function triggerWin() {
+  won = true;
+  stopEngine();
+  playWin();
+  // spawn confetti
+  const colors = ['#e94e1b', '#f2c200', '#2b9ad6', '#4caf50', '#d63384', '#ffffff'];
+  for (let i = 0; i < 140; i++) {
+    confetti.push({
+      x: W / 2 + rand(-80, 80),
+      y: H / 2 + rand(-40, 40),
+      vx: rand(-260, 260),
+      vy: rand(-520, -120),
+      rot: rand(0, Math.PI * 2),
+      vr: rand(-8, 8),
+      color: colors[(Math.random() * colors.length) | 0],
+      life: rand(2.5, 4.5)
+    });
+  }
+  againBtn.style.display = 'block';
+}
+
+function render() {
+  drawHintergrund();
+  // sort steine by y for pseudo-depth
+  steine.slice().sort((a, b) => a.y - b.y).forEach(drawStein);
+  drawBagger(bagger);
+  puffs.forEach(drawPuff);
+  confetti.forEach(drawConfetti);
+
+  if (won) {
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const fs = Math.min(W, H) * 0.18;
+    ctx.font = '900 ' + fs + 'px system-ui, sans-serif';
+    ctx.lineWidth = Math.max(6, fs * 0.08);
+    ctx.strokeStyle = '#fff';
+    ctx.fillStyle = '#e94e1b';
+    ctx.strokeText('JUCHU!', W / 2, H * 0.4);
+    ctx.fillText('JUCHU!', W / 2, H * 0.4);
+    ctx.restore();
+  }
+}
+
+function loop(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  update(dt);
+  render();
+  requestAnimationFrame(loop);
+}
+
+resetGame();
+requestAnimationFrame((t) => { last = t; loop(t); });
+</script>
+</body>
+</html>
