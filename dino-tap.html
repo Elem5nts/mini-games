@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dino Tap</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; background: #000; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+
+  // Clouds: each has a fixed relative position (0..1) and a y offset
+  const clouds = [
+    { rx: 0.15, ry: 0.12, r: 0 },
+    { rx: 0.48, ry: 0.20, r: 0 },
+    { rx: 0.78, ry: 0.10, r: 0 },
+  ];
+
+  // T-Rex state: x in pixels, speed in px/s
+  const dino = { x: 0, speed: 120 };
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Draw three overlapping circles to form a simple cloud
+  function drawCloud(cx, cy, r) {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(cx,      cy,      r,      0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx - r,  cy + r * 0.3, r * 0.75, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + r,  cy + r * 0.3, r * 0.75, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // Draw T-Rex from rectangles at position (x, groundY)
+  // groundY is the top of the ground strip; dino stands on it
+  function drawDino(x, groundY) {
+    const W = canvas.width;
+    // Scale dino relative to canvas width
+    const s = W / 800;
+    const body_w = 60 * s, body_h = 40 * s;
+    const leg_w  = 14 * s, leg_h  = 30 * s;
+    const neck_w = 18 * s, neck_h = 28 * s;
+    const head_w = 34 * s, head_h = 24 * s;
+    const tail_w = 36 * s, tail_h = 16 * s;
+    const arm_w  = 14 * s, arm_h  = 12 * s;
+
+    const bx = x;                      // body left
+    const by = groundY - leg_h - body_h; // body top
+
+    ctx.fillStyle = '#c0392b';
+
+    // Tail (behind body, pointing left)
+    ctx.fillRect(bx - tail_w, by + body_h - tail_h, tail_w, tail_h);
+
+    // Body
+    ctx.fillRect(bx, by, body_w, body_h);
+
+    // Legs
+    ctx.fillRect(bx + body_w * 0.2 - leg_w / 2, by + body_h, leg_w, leg_h);
+    ctx.fillRect(bx + body_w * 0.6 - leg_w / 2, by + body_h, leg_w, leg_h);
+
+    // Neck
+    ctx.fillRect(bx + body_w - neck_w, by - neck_h, neck_w, neck_h);
+
+    // Head
+    ctx.fillRect(bx + body_w - neck_w - head_w + neck_w, by - neck_h - head_h, head_w, head_h);
+
+    // Tiny arm
+    ctx.fillRect(bx + body_w * 0.5, by + body_h * 0.1, arm_w, arm_h);
+
+    // Eye (white dot on head)
+    const hx = bx + body_w - neck_w - head_w + neck_w;
+    const hy = by - neck_h - head_h;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(hx + head_w * 0.75, hy + head_h * 0.3, 3 * s, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  let last = null;
+
+  function loop(ts) {
+    if (!last) last = ts;
+    const dt = (ts - last) / 1000;
+    last = ts;
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const groundY = H * 0.70; // top of ground strip
+
+    // Sky
+    ctx.fillStyle = '#5b9bd5';
+    ctx.fillRect(0, 0, W, groundY);
+
+    // Ground
+    ctx.fillStyle = '#4a7c3f';
+    ctx.fillRect(0, groundY, W, H - groundY);
+
+    // Clouds (positions are relative so they survive resize)
+    const cloudR = W * 0.04;
+    for (const cl of clouds) {
+      drawCloud(cl.rx * W, cl.ry * groundY, cloudR);
+    }
+
+    // Move dino left; reset when fully off-screen to the right side
+    const dinoWidth = (60 / 800) * W + (36 / 800) * W; // body + tail
+    dino.x -= dino.speed * dt;
+    if (dino.x + dinoWidth < 0) {
+      dino.x = W;
+    }
+
+    drawDino(dino.x, groundY);
+
+    requestAnimationFrame(loop);
+  }
+
+  // Start dino at right edge
+  dino.x = canvas.width;
+  requestAnimationFrame(loop);
+</script>
+</body>
+</html>
