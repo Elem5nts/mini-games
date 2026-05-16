@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Gaming-Profil — Tim &amp; Katrin</title>
+<!--
+  Gaming-Profil-Tool (single-file, LocalStorage-backed).
+
+  ============================================================
+  DATENMODELL
+  ============================================================
+  {
+    version: 1,
+    customMechanics: [{ id, label }],
+    activePerson:   'tim' | 'katrin',
+    activeTab:      'rate' | 'overview' | 'profile',
+    games: [
+      {
+        id:      <slug>,
+        title:   <string>,
+        addedBy: 'tim' | 'katrin' | 'system',
+        ratings: { tim: <Rating>, katrin: <Rating> }
+      }
+    ]
+  }
+
+  Rating = {
+    played:   'yes' | 'no' | 'watched' | null,
+    eras:     ('damals' | 'heute')[],
+    modes:    ('solo' | 'koop_partner' | 'koop_others' | 'pvp')[],
+    status:   'durchgespielt' | 'abgebrochen' | 'noch_dabei' | 'reingeschnuppert' | null,
+    damals:   EraData | null,
+    heute:    EraData | null
+  }
+
+  EraData = {
+    stars:            1..5 | null,
+    wouldPlayAgain:   'yes' | 'maybe' | 'no' | null,
+    soloStars:        1..5 | 'na' | null,
+    coopPartnerStars: 1..5 | 'na' | null,
+    coopOthersStars:  1..5 | 'na' | null,
+    liked:    <mechanicId>[],
+    disliked: <mechanicId>[]
+  }
+
+  ============================================================
+  LOCALSTORAGE
+  ============================================================
+  Key: gaming_profile_v1
+  Reset: Button "Reset" im Footer, oder in DevTools:
+         localStorage.removeItem('gaming_profile_v1'); location.reload()
+
+  Backup: "Export JSON" lädt das komplette State-Objekt als Datei.
+  Restore: "Import JSON" lädt eine vorher exportierte Datei.
+  KI-Briefing: "Export für KI" baut ein Markdown-Briefing beider Profile.
+-->
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html, body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; }
+  /* Star glyph spacing on mobile */
+  .stars-row button { font-size: 1.5rem; line-height: 1; }
+  /* No animation per spec */
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  /* Scrollbar in modal */
+  #modal-content::-webkit-scrollbar { width: 6px; }
+  #modal-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+
+<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+  <div class="max-w-3xl mx-auto px-3 py-2 flex items-center justify-between gap-2">
+    <h1 class="text-base sm:text-lg font-bold">Gaming-Profil</h1>
+    <div class="flex gap-1" id="person-toggle"></div>
+  </div>
+  <nav class="max-w-3xl mx-auto px-3 flex border-t border-slate-100" id="tab-nav">
+    <button data-tab="rate"     class="tab-btn flex-1 py-2 text-sm font-medium">Bewerten</button>
+    <button data-tab="overview" class="tab-btn flex-1 py-2 text-sm font-medium">Übersicht</button>
+    <button data-tab="profile"  class="tab-btn flex-1 py-2 text-sm font-medium">Profil</button>
+  </nav>
+</header>
+
+<main class="max-w-3xl mx-auto px-3 py-3 pb-24">
+  <section id="tab-rate"     class="tab-content"></section>
+  <section id="tab-overview" class="tab-content hidden"></section>
+  <section id="tab-profile"  class="tab-content hidden"></section>
+</main>
+
+<footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-10">
+  <div class="max-w-3xl mx-auto px-3 py-2 flex flex-wrap items-center gap-2 text-xs">
+    <button id="export-json" class="px-3 py-1.5 bg-slate-200 rounded">Export JSON</button>
+    <button id="import-json" class="px-3 py-1.5 bg-slate-200 rounded">Import JSON</button>
+    <button id="export-md"   class="px-3 py-1.5 bg-emerald-600 text-white rounded">Export für KI</button>
+    <button id="reset-data"  class="ml-auto px-2 py-1.5 text-slate-400 hover:text-rose-600">Reset</button>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div id="modal" class="hidden fixed inset-0 z-20 bg-slate-900/50 flex items-end sm:items-center sm:justify-center">
+  <div id="modal-content"
+       class="bg-white w-full max-h-[92vh] overflow-y-auto sm:max-w-2xl sm:rounded-lg sm:max-h-[90vh] rounded-t-2xl"></div>
+</div>
+
+<input type="file" id="file-input" accept="application/json,.json" class="hidden">
+
+<script>
+'use strict';
+
+// =====================================================================
+// CONSTANTS
+// =====================================================================
+const STORAGE_KEY = 'gaming_profile_v1';
+const VERSION = 1;
+
+const PEOPLE = [
+  { id: 'tim',    label: 'Tim'    },
+  { id: 'katrin', label: 'Katrin' }
+];
+
+const ERAS = [
+  { id: 'damals', label: 'Damals', sub: 'vor ~2020 / vor Kindern' },
+  { id: 'heute',  label: 'Heute',  sub: 'aktuell / letzte 2 Jahre' }
+];
+
+const PLAYED_OPTS = [
+  { id: 'yes',     label: 'Gespielt'        },
+  { id: 'no',      label: 'Nicht gespielt'  },
+  { id: 'watched', label: 'Nur zugeschaut'  }
+];
+
+const MODES = [
+  { id: 'solo',         label: 'Solo'             },
+  { id: 'koop_partner', label: 'Koop mit Partner' },
+  { id: 'koop_others',  label: 'Koop mit anderen' },
+  { id: 'pvp',          label: 'PvP'              }
+];
+
+const STATUSES = [
+  { id: 'durchgespielt',     label: 'Durchgespielt'        },
+  { id: 'abgebrochen',       label: 'Abgebrochen'          },
+  { id: 'noch_dabei',        label: 'Noch dabei'           },
+  { id: 'reingeschnuppert',  label: 'Nur reingeschnuppert' }
+];
+
+const WOULD_PLAY = [
+  { id: 'yes',   label: 'Ja'         },
+  { id: 'maybe', label: 'Vielleicht' },
+  { id: 'no',    label: 'Nein'       }
+];
+
+const MECHANICS = [
+  { id: 'instanced',     label: 'Instanced Missions / Sessions' },
+  { id: 'loot',          label: 'Loot-System' },
+  { id: 'progression',   label: 'Progression / Langzeitfortschritt' },
+  { id: 'customization', label: 'Customization (Charakter, Waffen, Pets)' },
+  { id: 'pets',          label: 'Pet-/Companion-System' },
+  { id: 'story',         label: 'Story / Narrative' },
+  { id: 'openworld',     label: 'Open World / Exploration' },
+  { id: 'building',      label: 'Building / Crafting' },
+  { id: 'survival',      label: 'Survival-Mechaniken' },
+  { id: 'pvp_mech',      label: 'PvP' },
+  { id: 'pve_mech',      label: 'PvE' },
+  { id: 'difficulty',    label: 'Schwierigkeit / Stress-Level' },
+  { id: 'dopamine',      label: 'Dopamin-Rushs / Belohnungsgefühl' },
+  { id: 'easyhard',      label: '"Easy to learn, hard to master"' },
+  { id: 'grind',         label: 'Grind / Endgame-Grind' },
+  { id: 'replayability', label: 'Replayability' },
+  { id: 'atmosphere',    label: 'Atmosphäre / Stimmung' },
+  { id: 'gunplay',       label: 'Gunplay / Combat-Feel' },
+  { id: 'skilltree',     label: 'Skill-Trees' },
+  { id: 'sessions',      label: 'Session-basierter Aufbau (kurze Runden)' },
+  { id: 'coopbalance',   label: 'Koop-Balance (auch bei Skill-Unterschieden)' },
+  { id: 'visuals',       label: 'Visueller Stil / Grafik' },
+  { id: 'sound',         label: 'Soundtrack / Sound-Design' }
+];
+
+const SEED_GAMES = [
+  // Tims Hauptliste
+  { title: 'Heroes of the Storm',          addedBy: 'tim' },
+  { title: 'Warframe',                     addedBy: 'tim' },
+  { title: 'Sea of Thieves',               addedBy: 'tim' },
+  { title: 'Palworld',                     addedBy: 'tim' },
+  { title: 'Deep Rock Galactic',           addedBy: 'tim' },
+  { title: 'Borderlands Series',           addedBy: 'tim' },
+  { title: 'Valheim',                      addedBy: 'tim' },
+  { title: 'It Takes Two',                 addedBy: 'tim' },
+  { title: 'Monster Hunter (World/Wilds)', addedBy: 'tim' },
+  { title: 'Phasmophobia',                 addedBy: 'tim' },
+  { title: 'Diablo Series',                addedBy: 'tim' },
+  // Katrins Liste
+  { title: 'Hearthstone',                  addedBy: 'katrin' },
+  { title: 'Overwatch',                    addedBy: 'katrin' },
+  { title: "Luigi's Mansion",              addedBy: 'katrin' },
+  { title: 'World of Warcraft',            addedBy: 'katrin' },
+  { title: 'Spore',                        addedBy: 'katrin' },
+  { title: 'Hogwarts Legacy',              addedBy: 'katrin' },
+  { title: 'Minecraft',                    addedBy: 'katrin' },
+  { title: 'Dark Souls',                   addedBy: 'katrin' },
+  { title: 'Pokémon Go',                   addedBy: 'katrin' },
+  { title: "Pokémon Let's Go Pikachu",     addedBy: 'katrin' },
+  { title: 'Pokémon Sword and Shield',     addedBy: 'katrin' },
+  { title: 'Dark Pictures Anthology',      addedBy: 'katrin' },
+  { title: 'Uncharted-Reihe',              addedBy: 'katrin' },
+  { title: 'Sengoku Basara (Basara Heroes)', addedBy: 'katrin' },
+  { title: "Assassin's Creed",             addedBy: 'katrin' },
+  { title: 'Hop (?)',                      addedBy: 'katrin' },
+  { title: 'Skyrim',                       addedBy: 'katrin' },
+  { title: 'Portal',                       addedBy: 'katrin' },
+  { title: 'Sims',                         addedBy: 'katrin' },
+  { title: 'Trine',                        addedBy: 'katrin' },
+  { title: 'Mass Effect',                  addedBy: 'katrin' },
+  { title: 'Life is Strange',              addedBy: 'katrin' },
+  { title: 'The Wolf Among Us',            addedBy: 'katrin' },
+  { title: 'Detroit Become Human',         addedBy: 'katrin' },
+  { title: 'Heavy Rain',                   addedBy: 'katrin' },
+  { title: "Mirror's Edge",                addedBy: 'katrin' },
+  { title: 'Dishonored',                   addedBy: 'katrin' },
+  { title: 'Black Mirror (Point and Click)', addedBy: 'katrin' },
+  { title: 'Syberia',                      addedBy: 'katrin' },
+  { title: 'Dragon Age Origins',           addedBy: 'katrin' },
+  { title: 'L.A. Noire',                   addedBy: 'katrin' },
+  { title: 'To the Moon',                  addedBy: 'katrin' },
+  { title: 'Dead Island',                  addedBy: 'katrin' },
+  { title: 'Bioshock-Reihe',               addedBy: 'katrin' },
+  { title: "Baldur's Gate",                addedBy: 'katrin' },
+  { title: 'Dead Space',                   addedBy: 'katrin' },
+  { title: 'Horizon Zero Dawn',            addedBy: 'katrin' },
+  { title: 'Crysis',                       addedBy: 'katrin' },
+  { title: 'Left 4 Dead',                  addedBy: 'katrin' },
+  { title: 'Mighty Quest for Epic Loot',   addedBy: 'katrin' }
+];
+
+// =====================================================================
+// HELPERS
+// =====================================================================
+function slugify(s) {
+  return s.toLowerCase()
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .replace(/_+/g, '_');
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function emptyEraData() {
+  return {
+    stars: null, wouldPlayAgain: null,
+    soloStars: null, coopPartnerStars: null, coopOthersStars: null,
+    liked: [], disliked: []
+  };
+}
+
+function emptyRating() {
+  return { played: null, eras: [], modes: [], status: null, damals: null, heute: null };
+}
+
+function defaultState() {
+  return {
+    version: VERSION,
+    customMechanics: [],
+    activePerson: 'tim',
+    activeTab: 'rate',
+    games: SEED_GAMES.map(g => ({
+      id: slugify(g.title),
+      title: g.title,
+      addedBy: g.addedBy,
+      ratings: { tim: emptyRating(), katrin: emptyRating() }
+    }))
+  };
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+    const p = JSON.parse(raw);
+    if (!p || !p.version) return defaultState();
+    p.customMechanics = Array.isArray(p.customMechanics) ? p.customMechanics : [];
+    p.activePerson = p.activePerson || 'tim';
+    p.activeTab    = p.activeTab    || 'rate';
+    p.games = Array.isArray(p.games) ? p.games : [];
+    for (const g of p.games) {
+      g.ratings = g.ratings || {};
+      g.ratings.tim    = g.ratings.tim    || emptyRating();
+      g.ratings.katrin = g.ratings.katrin || emptyRating();
+      for (const person of ['tim', 'katrin']) {
+        const r = g.ratings[person];
+        r.eras  = Array.isArray(r.eras)  ? r.eras  : [];
+        r.modes = Array.isArray(r.modes) ? r.modes : [];
+      }
+    }
+    return p;
+  } catch (e) {
+    console.error('loadState failed', e);
+    return defaultState();
+  }
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch (e) { alert('LocalStorage-Schreibfehler: ' + e.message); }
+}
+
+function allMechanics() {
+  return [...MECHANICS, ...state.customMechanics];
+}
+
+function mechanicLabel(id) {
+  const m = allMechanics().find(x => x.id === id);
+  return m ? m.label : id;
+}
+
+function isRatingComplete(r) {
+  if (!r.played) return false;
+  if (r.played === 'no' || r.played === 'watched') return true;
+  if (!r.eras.length) return false;
+  return r.eras.some(era => r[era] && r[era].stars != null);
+}
+
+function getGame(id) { return state.games.find(g => g.id === id); }
+
+// =====================================================================
+// STATE
+// =====================================================================
+let state = loadState();
+let modalGameId = null;
+
+// =====================================================================
+// RENDER ENTRY
+// =====================================================================
+function render() {
+  renderPersonToggle();
+  renderTabs();
+  renderActiveTab();
+  if (modalGameId) renderModal();
+}
+
+function renderActiveTab() {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+  document.getElementById('tab-' + state.activeTab).classList.remove('hidden');
+  if      (state.activeTab === 'rate')     renderRateTab();
+  else if (state.activeTab === 'overview') renderOverviewTab();
+  else if (state.activeTab === 'profile')  renderProfileTab();
+}
+
+// =====================================================================
+// HEADER
+// =====================================================================
+function renderPersonToggle() {
+  const el = document.getElementById('person-toggle');
+  el.innerHTML = PEOPLE.map(p => {
+    const active = state.activePerson === p.id;
+    return `<button data-person="${p.id}" class="px-3 py-1.5 rounded text-sm font-semibold ${active ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'}">${p.label}</button>`;
+  }).join('');
+  el.querySelectorAll('button').forEach(b => b.onclick = () => {
+    state.activePerson = b.dataset.person;
+    saveState();
+    render();
+  });
+}
+
+function renderTabs() {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    const active = b.dataset.tab === state.activeTab;
+    b.className = 'tab-btn flex-1 py-2 text-sm font-medium ' +
+      (active ? 'border-b-2 border-slate-900 text-slate-900' : 'text-slate-500');
+    b.onclick = () => {
+      state.activeTab = b.dataset.tab;
+      saveState();
+      render();
+    };
+  });
+}
+
+// =====================================================================
+// TAB: BEWERTEN
+// =====================================================================
+function renderRateTab() {
+  const person = state.activePerson;
+  const container = document.getElementById('tab-rate');
+
+  const total = state.games.length;
+  const done  = state.games.filter(g => isRatingComplete(g.ratings[person])).length;
+
+  // Preserve filter input value if already rendered
+  const prevFilter = document.getElementById('rate-filter');
+  const filterValue = prevFilter ? prevFilter.value : '';
+
+  const filtered = state.games
+    .filter(g => g.title.toLowerCase().includes(filterValue.toLowerCase()))
+    .sort((a, b) => a.title.localeCompare(b.title, 'de'));
+
+  container.innerHTML = `
+    <div class="mb-2 flex items-center gap-2">
+      <input id="rate-filter" type="search" placeholder="Spiel suchen…"
+             class="flex-1 px-3 py-2 border border-slate-300 rounded text-sm bg-white"
+             value="${escapeHtml(filterValue)}">
+      <button id="add-game" class="px-3 py-2 bg-slate-900 text-white rounded text-sm whitespace-nowrap">+ Spiel</button>
+    </div>
+    <div class="mb-3 flex items-center justify-between text-sm">
+      <span class="text-slate-600"><strong>${done}</strong> / ${total} bewertet</span>
+      <span class="text-slate-400 text-xs">Person: <strong>${escapeHtml(PEOPLE.find(p => p.id === person).label)}</strong></span>
+    </div>
+    <ul class="space-y-1">
+      ${filtered.map(g => rateRowHtml(g, person)).join('') || '<li class="text-slate-400 text-sm p-4 text-center">Keine Spiele.</li>'}
+    </ul>
+  `;
+
+  const filterEl = document.getElementById('rate-filter');
+  filterEl.addEventListener('input', () => {
+    // Just re-render the list (lightweight)
+    renderRateTab();
+    document.getElementById('rate-filter').focus();
+  });
+  document.getElementById('add-game').onclick = addGamePrompt;
+  container.querySelectorAll('[data-open-game]').forEach(el => {
+    el.onclick = () => openModal(el.dataset.openGame);
+  });
+}
+
+function rateRowHtml(game, person) {
+  const r = game.ratings[person];
+  let badge = '';
+  if (!r.played) {
+    badge = '<span class="text-xs text-slate-400">offen</span>';
+  } else if (r.played === 'no') {
+    badge = '<span class="text-xs text-slate-500">nicht gespielt</span>';
+  } else if (r.played === 'watched') {
+    badge = '<span class="text-xs text-slate-500">nur zugeschaut</span>';
+  } else {
+    const parts = [];
+    if (r.damals && r.damals.stars) parts.push(`D ${'★'.repeat(r.damals.stars)}`);
+    if (r.heute  && r.heute.stars)  parts.push(`H ${'★'.repeat(r.heute.stars)}`);
+    badge = parts.length
+      ? `<span class="text-xs text-amber-600 font-medium">${parts.join(' · ')}</span>`
+      : '<span class="text-xs text-slate-400">begonnen</span>';
+  }
+  const addedBy = game.addedBy && game.addedBy !== 'system' ? ` <span class="text-[10px] text-slate-300">·${game.addedBy}</span>` : '';
+  return `
+    <li>
+      <button data-open-game="${game.id}"
+              class="w-full text-left bg-white border border-slate-200 rounded px-3 py-2 flex items-center justify-between gap-2 hover:border-slate-400">
+        <span class="font-medium text-sm">${escapeHtml(game.title)}${addedBy}</span>
+        ${badge}
+      </button>
+    </li>
+  `;
+}
+
+function addGamePrompt() {
+  const title = prompt('Spiel-Titel:');
+  if (!title || !title.trim()) return;
+  const t = title.trim();
+  let id = slugify(t);
+  if (!id) id = 'game_' + Date.now();
+  if (state.games.some(g => g.id === id)) {
+    alert('Ein Spiel mit diesem Titel existiert bereits.');
+    return;
+  }
+  state.games.push({
+    id, title: t, addedBy: state.activePerson,
+    ratings: { tim: emptyRating(), katrin: emptyRating() }
+  });
+  saveState();
+  render();
+}
+
+// =====================================================================
+// MODAL
+// =====================================================================
+function openModal(gameId) {
+  modalGameId = gameId;
+  document.getElementById('modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  renderModal();
+}
+
+function closeModal() {
+  modalGameId = null;
+  document.getElementById('modal').classList.add('hidden');
+  document.body.style.overflow = '';
+  renderRateTab();
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const modal = document.getElementById('modal');
+  if (modal.classList.contains('hidden')) return;
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+  modalGameId = null;
+  renderRateTab();
+});
+
+function renderModal() {
+  const game = getGame(modalGameId);
+  if (!game) { closeModal(); return; }
+  const person = state.activePerson;
+  const r = game.ratings[person];
+
+  const c = document.getElementById('modal-content');
+  c.innerHTML = `
+    <div class="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-start justify-between gap-3">
+      <div>
+        <div class="text-xs text-slate-500">${escapeHtml(PEOPLE.find(p => p.id === person).label)} bewertet</div>
+        <h2 class="text-lg font-bold leading-tight">${escapeHtml(game.title)}</h2>
+      </div>
+      <button id="modal-close" class="text-slate-400 text-2xl leading-none p-1 -m-1">×</button>
+    </div>
+
+    <div class="p-4 space-y-5">
+
+      <!-- PLAYED -->
+      ${section('Gespielt?', renderChoice('played', PLAYED_OPTS, r.played))}
+
+      ${r.played === 'yes' ? `
+
+        <!-- ERAS -->
+        ${section('Wann gespielt?',
+          `<div class="flex flex-wrap gap-2">
+             ${ERAS.map(e => {
+               const on = r.eras.includes(e.id);
+               return `<button data-toggle-era="${e.id}"
+                               class="px-3 py-1.5 rounded text-sm border ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-300'}">
+                          ${e.label} <span class="opacity-60 text-xs">(${e.sub})</span>
+                       </button>`;
+             }).join('')}
+           </div>`)}
+
+        <!-- MODES -->
+        ${section('Spielmodus erfahren',
+          `<div class="flex flex-wrap gap-2">
+             ${MODES.map(m => {
+               const on = r.modes.includes(m.id);
+               return `<button data-toggle-mode="${m.id}"
+                               class="px-3 py-1.5 rounded text-sm border ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-300'}">${m.label}</button>`;
+             }).join('')}
+           </div>`)}
+
+        <!-- STATUS -->
+        ${section('Spielstand',
+          `<div class="flex flex-wrap gap-2">
+             ${STATUSES.map(s => {
+               const on = r.status === s.id;
+               return `<button data-set-status="${s.id}"
+                               class="px-3 py-1.5 rounded text-sm border ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-300'}">${s.label}</button>`;
+             }).join('')}
+           </div>`)}
+
+        <!-- PER ERA -->
+        ${r.eras.map(eraId => renderEraBlock(eraId, r)).join('')}
+
+      ` : ''}
+
+      <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+        <button id="delete-game" class="text-xs text-rose-500">Spiel löschen</button>
+        <button id="modal-done"  class="px-4 py-1.5 bg-slate-900 text-white rounded text-sm">Fertig</button>
+      </div>
+    </div>
+  `;
+
+  // Bind events
+  c.querySelector('#modal-close').onclick = closeModal;
+  c.querySelector('#modal-done').onclick  = closeModal;
+  c.querySelector('#delete-game').onclick = deleteCurrentGame;
+
+  // Played
+  c.querySelectorAll('[data-set-played]').forEach(b => b.onclick = () => setPlayed(b.dataset.setPlayed));
+  // Eras
+  c.querySelectorAll('[data-toggle-era]').forEach(b => b.onclick = () => toggleEra(b.dataset.toggleEra));
+  // Modes
+  c.querySelectorAll('[data-toggle-mode]').forEach(b => b.onclick = () => toggleMode(b.dataset.toggleMode));
+  // Status
+  c.querySelectorAll('[data-set-status]').forEach(b => b.onclick = () => setStatus(b.dataset.setStatus));
+
+  // Era-block buttons
+  c.querySelectorAll('[data-stars]').forEach(b => b.onclick = () => setStars(b.dataset.era, b.dataset.field, parseInt(b.dataset.stars, 10)));
+  c.querySelectorAll('[data-stars-na]').forEach(b => b.onclick = () => setStars(b.dataset.era, b.dataset.field, 'na'));
+  c.querySelectorAll('[data-would]').forEach(b => b.onclick = () => setWould(b.dataset.era, b.dataset.would));
+  c.querySelectorAll('[data-mech-like]').forEach(b => b.onclick = () => toggleMech(b.dataset.era, b.dataset.mechLike, 'liked'));
+  c.querySelectorAll('[data-mech-dis]').forEach(b => b.onclick = () => toggleMech(b.dataset.era, b.dataset.mechDis, 'disliked'));
+  c.querySelectorAll('[data-add-mech]').forEach(b => b.onclick = addCustomMechanic);
+}
+
+function section(title, body) {
+  return `<div>
+    <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">${title}</div>
+    ${body}
+  </div>`;
+}
+
+function renderChoice(field, opts, current) {
+  return `<div class="flex flex-wrap gap-2">
+    ${opts.map(o => {
+      const on = current === o.id;
+      return `<button data-set-${field}="${o.id}"
+                      class="px-3 py-1.5 rounded text-sm border ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-300'}">${o.label}</button>`;
+    }).join('')}
+  </div>`;
+}
+
+function renderEraBlock(eraId, rating) {
+  const eraData = rating[eraId] || emptyEraData();
+  const eraLabel = ERAS.find(e => e.id === eraId).label;
+  return `
+    <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-4">
+      <div class="font-bold text-slate-800">${eraLabel}</div>
+
+      ${section('Gesamtbewertung',  starsRowHtml(eraId, 'stars', eraData.stars, false))}
+      ${section('Würde (wieder) spielen',
+        `<div class="flex flex-wrap gap-2">
+           ${WOULD_PLAY.map(w => {
+             const on = eraData.wouldPlayAgain === w.id;
+             return `<button data-era="${eraId}" data-would="${w.id}"
+                             class="px-3 py-1.5 rounded text-sm border ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-300'}">${w.label}</button>`;
+           }).join('')}
+         </div>`)}
+
+      ${section('Solo-Spaß',           starsRowHtml(eraId, 'soloStars',        eraData.soloStars,        true))}
+      ${section('Koop-Spaß (Partner)', starsRowHtml(eraId, 'coopPartnerStars', eraData.coopPartnerStars, true))}
+      ${section('Koop-Spaß (andere)',  starsRowHtml(eraId, 'coopOthersStars',  eraData.coopOthersStars,  true))}
+
+      ${section('Mechaniken', renderMechanicsList(eraId, eraData))}
+    </div>
+  `;
+}
+
+function starsRowHtml(eraId, field, value, allowNa) {
+  const stars = [1,2,3,4,5].map(n => {
+    const filled = typeof value === 'number' && n <= value;
+    return `<button data-era="${eraId}" data-field="${field}" data-stars="${n}"
+                    class="${filled ? 'text-amber-500' : 'text-slate-300'}"
+                    aria-label="${n} Sterne">★</button>`;
+  }).join('');
+  const na = allowNa
+    ? `<button data-era="${eraId}" data-field="${field}" data-stars-na="1"
+               class="ml-2 px-2 py-0.5 text-xs rounded border ${value === 'na' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-500 border-slate-300'}">n/a</button>`
+    : '';
+  return `<div class="stars-row flex items-center">${stars}${na}</div>`;
+}
+
+function renderMechanicsList(eraId, eraData) {
+  const items = allMechanics().map(m => {
+    const liked = eraData.liked.includes(m.id);
+    const dis   = eraData.disliked.includes(m.id);
+    return `
+      <div class="flex items-center justify-between gap-2 py-1">
+        <span class="text-sm leading-tight ${liked ? 'text-emerald-700 font-medium' : dis ? 'text-rose-700 line-through' : 'text-slate-700'}">${escapeHtml(m.label)}</span>
+        <div class="flex gap-1 shrink-0">
+          <button data-era="${eraId}" data-mech-like="${m.id}" aria-label="mochte"
+                  class="w-9 h-9 rounded text-base font-bold border ${liked ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-400 border-slate-300'}">+</button>
+          <button data-era="${eraId}" data-mech-dis="${m.id}" aria-label="mochte nicht"
+                  class="w-9 h-9 rounded text-base font-bold border ${dis ? 'bg-rose-500 text-white border-rose-500' : 'bg-white text-slate-400 border-slate-300'}">−</button>
+        </div>
+      </div>`;
+  }).join('');
+  return `
+    <div class="bg-white rounded border border-slate-200 px-2 py-1 max-h-80 overflow-y-auto">
+      ${items}
+    </div>
+    <button data-add-mech="1" class="mt-1.5 text-xs text-slate-500 underline">+ Eigene Mechanik</button>
+  `;
+}
+
+// =====================================================================
+// MODAL — STATE MUTATIONS
+// =====================================================================
+function currentRating() {
+  return getGame(modalGameId).ratings[state.activePerson];
+}
+
+function setPlayed(value) {
+  const r = currentRating();
+  r.played = value;
+  // Clean dependents if not "yes"
+  if (value !== 'yes') {
+    r.eras = []; r.modes = []; r.status = null; r.damals = null; r.heute = null;
+  }
+  saveState(); renderModal();
+}
+
+function toggleEra(era) {
+  const r = currentRating();
+  if (r.eras.includes(era)) {
+    r.eras = r.eras.filter(e => e !== era);
+    r[era] = null;
+  } else {
+    r.eras.push(era);
+    if (!r[era]) r[era] = emptyEraData();
+  }
+  saveState(); renderModal();
+}
+
+function toggleMode(mode) {
+  const r = currentRating();
+  if (r.modes.includes(mode)) r.modes = r.modes.filter(m => m !== mode);
+  else r.modes.push(mode);
+  saveState(); renderModal();
+}
+
+function setStatus(status) {
+  const r = currentRating();
+  r.status = (r.status === status) ? null : status;
+  saveState(); renderModal();
+}
+
+function setStars(era, field, n) {
+  const r = currentRating();
+  if (!r[era]) r[era] = emptyEraData();
+  const cur = r[era][field];
+  // Toggle off if same value clicked again (only for numeric click)
+  if (typeof n === 'number' && cur === n) r[era][field] = null;
+  else r[era][field] = n;
+  saveState(); renderModal();
+}
+
+function setWould(era, val) {
+  const r = currentRating();
+  if (!r[era]) r[era] = emptyEraData();
+  r[era].wouldPlayAgain = (r[era].wouldPlayAgain === val) ? null : val;
+  saveState(); renderModal();
+}
+
+function toggleMech(era, mechId, bucket) {
+  const r = currentRating();
+  if (!r[era]) r[era] = emptyEraData();
+  const other = bucket === 'liked' ? 'disliked' : 'liked';
+  const arr = r[era][bucket], otherArr = r[era][other];
+  if (arr.includes(mechId)) {
+    r[era][bucket] = arr.filter(x => x !== mechId);
+  } else {
+    r[era][bucket] = [...arr, mechId];
+    r[era][other]  = otherArr.filter(x => x !== mechId);
+  }
+  saveState(); renderModal();
+}
+
+function addCustomMechanic() {
+  const label = prompt('Eigene Mechanik (Kurzname):');
+  if (!label || !label.trim()) return;
+  const id = 'custom_' + slugify(label) + '_' + Date.now().toString(36);
+  state.customMechanics.push({ id, label: label.trim() });
+  saveState(); renderModal();
+}
+
+function deleteCurrentGame() {
+  const g = getGame(modalGameId);
+  if (!g) return;
+  if (!confirm(`Spiel "${g.title}" komplett aus der Datenbank löschen (für beide Personen)?`)) return;
+  state.games = state.games.filter(x => x.id !== modalGameId);
+  saveState(); closeModal();
+}
+
+// =====================================================================
+// TAB: ÜBERSICHT
+// =====================================================================
+const overviewFilter = { era: 'all', mode: 'all' };
+
+function renderOverviewTab() {
+  const container = document.getElementById('tab-overview');
+  const games = state.games.slice().sort((a,b) => a.title.localeCompare(b.title, 'de'));
+
+  function passesFilter(game) {
+    const ratings = [game.ratings.tim, game.ratings.katrin];
+    if (overviewFilter.era !== 'all') {
+      const e = overviewFilter.era;
+      if (!ratings.some(r => r.eras && r.eras.includes(e))) return false;
+    }
+    if (overviewFilter.mode !== 'all') {
+      const m = overviewFilter.mode;
+      if (!ratings.some(r => r.modes && r.modes.includes(m))) return false;
+    }
+    return true;
+  }
+
+  const filtered = games.filter(passesFilter);
+
+  container.innerHTML = `
+    <div class="mb-3 flex flex-wrap gap-2 text-xs">
+      <div class="flex gap-1 items-center">
+        <span class="text-slate-500">Era:</span>
+        ${['all','damals','heute'].map(v => `
+          <button data-filter-era="${v}" class="px-2 py-1 rounded border ${overviewFilter.era === v ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-300'}">${v === 'all' ? 'alle' : v}</button>
+        `).join('')}
+      </div>
+      <div class="flex gap-1 items-center">
+        <span class="text-slate-500">Modus:</span>
+        ${['all', ...MODES.map(m => m.id)].map(v => `
+          <button data-filter-mode="${v}" class="px-2 py-1 rounded border ${overviewFilter.mode === v ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-300'}">${v === 'all' ? 'alle' : MODES.find(m => m.id === v).label}</button>
+        `).join('')}
+      </div>
+    </div>
+    <div class="text-xs text-slate-500 mb-2">${filtered.length} / ${games.length} Spiele</div>
+    <div class="overflow-x-auto -mx-3 px-3">
+      <table class="w-full text-sm border-collapse">
+        <thead class="text-xs text-slate-500 uppercase">
+          <tr>
+            <th class="text-left py-2 pr-2">Spiel</th>
+            <th class="text-left py-2 pr-2">Tim</th>
+            <th class="text-left py-2 pr-2">Katrin</th>
+            <th class="text-left py-2 pr-2">Beide mochten</th>
+            <th class="text-left py-2 pr-2">Beide nicht</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filtered.map(overviewRowHtml).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  container.querySelectorAll('[data-filter-era]').forEach(b => b.onclick = () => {
+    overviewFilter.era = b.dataset.filterEra; renderOverviewTab();
+  });
+  container.querySelectorAll('[data-filter-mode]').forEach(b => b.onclick = () => {
+    overviewFilter.mode = b.dataset.filterMode; renderOverviewTab();
+  });
+  container.querySelectorAll('[data-open-game]').forEach(el => {
+    el.onclick = () => openModal(el.dataset.openGame);
+  });
+}
+
+function overviewRowHtml(game) {
+  const tim = game.ratings.tim, kat = game.ratings.katrin;
+  const tStr = personSummary(tim), kStr = personSummary(kat);
+  const tMech = collectMechs(tim), kMech = collectMechs(kat);
+  const bothLiked = tMech.liked.filter(m => kMech.liked.includes(m));
+  const bothDis   = tMech.disliked.filter(m => kMech.disliked.includes(m));
+  return `
+    <tr class="border-t border-slate-100 align-top">
+      <td class="py-2 pr-2 font-medium"><a href="#" data-open-game="${game.id}" class="text-slate-900 underline-offset-2 hover:underline">${escapeHtml(game.title)}</a></td>
+      <td class="py-2 pr-2 text-xs">${tStr}</td>
+      <td class="py-2 pr-2 text-xs">${kStr}</td>
+      <td class="py-2 pr-2 text-xs text-emerald-700">${bothLiked.map(mechanicLabel).join(', ') || '<span class="text-slate-300">—</span>'}</td>
+      <td class="py-2 pr-2 text-xs text-rose-700">${bothDis.map(mechanicLabel).join(', ') || '<span class="text-slate-300">—</span>'}</td>
+    </tr>
+  `;
+}
+
+function personSummary(r) {
+  if (!r.played) return '<span class="text-slate-300">—</span>';
+  if (r.played === 'no') return 'nicht gespielt';
+  if (r.played === 'watched') return 'zugeschaut';
+  const parts = [];
+  if (r.damals && r.damals.stars) parts.push(`D ${'★'.repeat(r.damals.stars)}`);
+  if (r.heute  && r.heute.stars)  parts.push(`H ${'★'.repeat(r.heute.stars)}`);
+  return parts.join(' · ') || '<span class="text-slate-300">begonnen</span>';
+}
+
+function collectMechs(r) {
+  const liked = [], disliked = [];
+  for (const era of ['damals','heute']) {
+    if (r[era]) {
+      liked.push(...r[era].liked);
+      disliked.push(...r[era].disliked);
+    }
+  }
+  return { liked: [...new Set(liked)], disliked: [...new Set(disliked)] };
+}
+
+// =====================================================================
+// TAB: PROFIL
+// =====================================================================
+function renderProfileTab() {
+  const container = document.getElementById('tab-profile');
+  const me    = state.activePerson;
+  const other = me === 'tim' ? 'katrin' : 'tim';
+
+  const myProf    = computeProfile(me);
+  const otherProf = computeProfile(other);
+
+  // Intersections (across all eras, dedup per game)
+  const myLikedSet     = mechSetByGame(me, 'liked');
+  const myDislikedSet  = mechSetByGame(me, 'disliked');
+  const otherLikedSet  = mechSetByGame(other, 'liked');
+  const otherDislikedSet = mechSetByGame(other, 'disliked');
+
+  const bothLike    = topIntersect(myLikedSet, otherLikedSet);
+  const bothDislike = topIntersect(myDislikedSet, otherDislikedSet);
+  const disagree    = computeDisagreements(myLikedSet, otherDislikedSet, otherLikedSet, myDislikedSet, me, other);
+
+  container.innerHTML = `
+    <div class="space-y-5">
+      <div class="text-sm text-slate-500">Profil von <strong class="text-slate-900">${PEOPLE.find(p => p.id === me).label}</strong> · Schnittmenge mit <strong>${PEOPLE.find(p => p.id === other).label}</strong></div>
+
+      ${profileCard('Top 5 Mechaniken (mochte ich)', myProf.topLiked, 'emerald')}
+      ${profileCard('Bottom 5 Mechaniken (mochte ich nicht)', myProf.topDisliked, 'rose')}
+
+      <div class="bg-white border border-slate-200 rounded-lg p-3">
+        <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Solo vs. Koop</div>
+        <div class="grid grid-cols-3 gap-2 text-sm">
+          <div><div class="text-xs text-slate-500">Solo Ø</div><div class="font-bold">${formatAvg(myProf.avgSolo)}</div></div>
+          <div><div class="text-xs text-slate-500">Koop Partner Ø</div><div class="font-bold">${formatAvg(myProf.avgCoopPartner)}</div></div>
+          <div><div class="text-xs text-slate-500">Koop andere Ø</div><div class="font-bold">${formatAvg(myProf.avgCoopOthers)}</div></div>
+        </div>
+      </div>
+
+      ${myProf.shifts.length ? `
+        <div class="bg-white border border-slate-200 rounded-lg p-3">
+          <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Damals → Heute (verschoben)</div>
+          <ul class="space-y-1 text-sm">
+            ${myProf.shifts.map(s => `<li>
+              <span class="font-medium">${escapeHtml(mechanicLabel(s.id))}:</span>
+              <span class="${s.dir === 'up' ? 'text-emerald-700' : 'text-rose-700'}">${s.dir === 'up' ? 'damals nicht so, heute mag ich' : 'damals mochte ich, heute nicht mehr'}</span>
+            </li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+
+      ${profileCard(`Beide (${PEOPLE.find(p=>p.id===me).label} ∩ ${PEOPLE.find(p=>p.id===other).label}) mochten`, bothLike, 'emerald')}
+      ${profileCard(`Beide mochten NICHT`, bothDislike, 'rose')}
+
+      ${disagree.length ? `
+        <div class="bg-white border border-slate-200 rounded-lg p-3">
+          <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Uneinigkeit</div>
+          <ul class="space-y-1 text-sm">
+            ${disagree.map(d => `<li>
+              <span class="font-medium">${escapeHtml(mechanicLabel(d.id))}:</span>
+              ${escapeHtml(PEOPLE.find(p=>p.id===d.likedBy).label)} mochte, ${escapeHtml(PEOPLE.find(p=>p.id===d.dislikedBy).label)} nicht
+              <span class="text-xs text-slate-400">(${d.count} Spiel${d.count>1?'e':''})</span>
+            </li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+
+      <div class="text-xs text-slate-400">Basis: ${myProf.ratedCount} bewertete Spiele für ${PEOPLE.find(p=>p.id===me).label}, ${otherProf.ratedCount} für ${PEOPLE.find(p=>p.id===other).label}.</div>
+    </div>
+  `;
+}
+
+function profileCard(title, entries, color) {
+  const colorMap = {
+    emerald: 'text-emerald-700',
+    rose:    'text-rose-700'
+  };
+  return `
+    <div class="bg-white border border-slate-200 rounded-lg p-3">
+      <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">${escapeHtml(title)}</div>
+      ${entries.length ? `<ul class="space-y-1 text-sm">
+        ${entries.map(e => `<li class="flex justify-between gap-2">
+          <span class="${colorMap[color] || ''}">${escapeHtml(mechanicLabel(e.id))}</span>
+          <span class="text-xs text-slate-400">${e.count}× </span>
+        </li>`).join('')}
+      </ul>` : '<div class="text-sm text-slate-400">Noch keine Daten.</div>'}
+    </div>
+  `;
+}
+
+function formatAvg(v) {
+  if (v == null) return '<span class="text-slate-300">—</span>';
+  return v.toFixed(2);
+}
+
+function computeProfile(person) {
+  const likedCount    = {};
+  const dislikedCount = {};
+  let ratedCount = 0;
+  const soloVals = [], coopPartnerVals = [], coopOthersVals = [];
+
+  // For era shifts: per game, did mechanic flip between damals & heute?
+  const shifts = [];
+
+  for (const g of state.games) {
+    const r = g.ratings[person];
+    if (!isRatingComplete(r)) continue;
+    ratedCount++;
+    for (const era of ['damals', 'heute']) {
+      const ed = r[era];
+      if (!ed) continue;
+      for (const m of ed.liked)    likedCount[m]    = (likedCount[m]    || 0) + 1;
+      for (const m of ed.disliked) dislikedCount[m] = (dislikedCount[m] || 0) + 1;
+      if (typeof ed.soloStars        === 'number') soloVals.push(ed.soloStars);
+      if (typeof ed.coopPartnerStars === 'number') coopPartnerVals.push(ed.coopPartnerStars);
+      if (typeof ed.coopOthersStars  === 'number') coopOthersVals.push(ed.coopOthersStars);
+    }
+    // Era shift: same game, both eras present
+    if (r.damals && r.heute) {
+      for (const m of allMechanics()) {
+        const wasLiked = r.damals.liked.includes(m.id);
+        const wasDis   = r.damals.disliked.includes(m.id);
+        const nowLiked = r.heute.liked.includes(m.id);
+        const nowDis   = r.heute.disliked.includes(m.id);
+        if (wasDis && nowLiked)         shifts.push({ id: m.id, dir: 'up',   game: g.title });
+        else if (wasLiked && nowDis)    shifts.push({ id: m.id, dir: 'down', game: g.title });
+      }
+    }
+  }
+
+  const topLiked    = Object.entries(likedCount).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,count])=>({id,count}));
+  const topDisliked = Object.entries(dislikedCount).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,count])=>({id,count}));
+
+  return {
+    ratedCount, topLiked, topDisliked,
+    avgSolo:         avg(soloVals),
+    avgCoopPartner:  avg(coopPartnerVals),
+    avgCoopOthers:   avg(coopOthersVals),
+    shifts
+  };
+}
+
+function avg(arr) { return arr.length ? arr.reduce((s,n)=>s+n,0)/arr.length : null; }
+
+// Map: gameId -> Set of mechanicIds (union across eras)
+function mechSetByGame(person, bucket) {
+  const map = new Map();
+  for (const g of state.games) {
+    const r = g.ratings[person];
+    if (!isRatingComplete(r)) continue;
+    const set = new Set();
+    for (const era of ['damals','heute']) {
+      if (r[era]) for (const m of r[era][bucket]) set.add(m);
+    }
+    if (set.size) map.set(g.id, set);
+  }
+  return map;
+}
+
+function topIntersect(mapA, mapB) {
+  // Count games where both A and B have mechanic in given bucket
+  const counts = {};
+  for (const [gameId, setA] of mapA.entries()) {
+    const setB = mapB.get(gameId);
+    if (!setB) continue;
+    for (const m of setA) if (setB.has(m)) counts[m] = (counts[m] || 0) + 1;
+  }
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([id,count])=>({id,count}));
+}
+
+function computeDisagreements(myLiked, otherDis, otherLiked, myDis, me, other) {
+  // Per-game: I liked X, other disliked X (and vice versa)
+  const counts = {};
+  for (const [gameId, set] of myLiked.entries()) {
+    const oDis = otherDis.get(gameId);
+    if (!oDis) continue;
+    for (const m of set) if (oDis.has(m)) {
+      const k = m + '|' + me + '>' + other;
+      counts[k] = counts[k] || { id: m, likedBy: me, dislikedBy: other, count: 0 };
+      counts[k].count++;
+    }
+  }
+  for (const [gameId, set] of otherLiked.entries()) {
+    const mDis = myDis.get(gameId);
+    if (!mDis) continue;
+    for (const m of set) if (mDis.has(m)) {
+      const k = m + '|' + other + '>' + me;
+      counts[k] = counts[k] || { id: m, likedBy: other, dislikedBy: me, count: 0 };
+      counts[k].count++;
+    }
+  }
+  return Object.values(counts).sort((a,b)=>b.count-a.count).slice(0,8);
+}
+
+// =====================================================================
+// EXPORT / IMPORT
+// =====================================================================
+function downloadFile(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+document.getElementById('export-json').onclick = () => {
+  const dateStr = new Date().toISOString().slice(0,10);
+  downloadFile(`gaming-profile_${dateStr}.json`, JSON.stringify(state, null, 2), 'application/json');
+};
+
+document.getElementById('import-json').onclick = () => document.getElementById('file-input').click();
+document.getElementById('file-input').onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data || !data.version) throw new Error('Format unbekannt (kein version-Feld).');
+      if (!confirm('Aktuellen Stand mit Datei überschreiben?')) return;
+      state = data;
+      // Re-validate
+      state = loadStateFromObject(state);
+      saveState(); render();
+    } catch (err) { alert('Import fehlgeschlagen: ' + err.message); }
+  };
+  reader.readAsText(f);
+  e.target.value = '';
+};
+
+function loadStateFromObject(p) {
+  p.customMechanics = Array.isArray(p.customMechanics) ? p.customMechanics : [];
+  p.activePerson = p.activePerson || 'tim';
+  p.activeTab    = p.activeTab    || 'rate';
+  p.games = Array.isArray(p.games) ? p.games : [];
+  for (const g of p.games) {
+    g.ratings = g.ratings || {};
+    g.ratings.tim    = g.ratings.tim    || emptyRating();
+    g.ratings.katrin = g.ratings.katrin || emptyRating();
+  }
+  return p;
+}
+
+document.getElementById('reset-data').onclick = () => {
+  if (!confirm('ALLE Bewertungen lokal löschen und neu starten? Vorher exportieren empfohlen.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = loadState();
+  render();
+};
+
+document.getElementById('export-md').onclick = () => {
+  const md = buildMarkdownBriefing();
+  // Show in a textarea-modal so user can copy
+  showMarkdownModal(md);
+};
+
+function showMarkdownModal(md) {
+  const wrapper = document.getElementById('modal');
+  const c = document.getElementById('modal-content');
+  wrapper.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  modalGameId = null; // not a game modal
+  c.innerHTML = `
+    <div class="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+      <h2 class="text-base font-bold">Markdown-Briefing (KI-Input)</h2>
+      <button id="md-close" class="text-slate-400 text-2xl leading-none p-1 -m-1">×</button>
+    </div>
+    <div class="p-4 space-y-3">
+      <div class="flex gap-2">
+        <button id="md-copy"     class="px-3 py-1.5 bg-slate-900 text-white rounded text-sm">Kopieren</button>
+        <button id="md-download" class="px-3 py-1.5 bg-slate-200 rounded text-sm">Als .md herunterladen</button>
+      </div>
+      <textarea id="md-text" class="w-full h-[60vh] text-xs font-mono p-3 border border-slate-300 rounded bg-slate-50">${escapeHtml(md)}</textarea>
+    </div>
+  `;
+  c.querySelector('#md-close').onclick = () => { wrapper.classList.add('hidden'); document.body.style.overflow=''; };
+  c.querySelector('#md-copy').onclick = () => {
+    const ta = c.querySelector('#md-text');
+    ta.select();
+    navigator.clipboard ? navigator.clipboard.writeText(ta.value).then(()=> {
+      c.querySelector('#md-copy').textContent = 'Kopiert ✓';
+    }) : document.execCommand('copy');
+  };
+  c.querySelector('#md-download').onclick = () => {
+    const dateStr = new Date().toISOString().slice(0,10);
+    downloadFile(`gaming-profile-briefing_${dateStr}.md`, md, 'text/markdown');
+  };
+}
+
+function buildMarkdownBriefing() {
+  const lines = [];
+  lines.push('# Gaming-Profil — Tim & Katrin');
+  lines.push('');
+  lines.push(`_Stand: ${new Date().toISOString().slice(0,10)}_`);
+  lines.push('');
+  lines.push('Dieses Dokument beschreibt die individuellen Spielpräferenzen von Tim und Katrin, sowie ihre gemeinsame Schnittmenge, basierend auf bewerteten Spielen aus ihrer Historie. Ziel: Spielempfehlungen finden, die zu beiden (oder einzeln) passen.');
+  lines.push('');
+
+  for (const person of ['tim','katrin']) {
+    const prof = computeProfile(person);
+    const label = PEOPLE.find(p=>p.id===person).label;
+    lines.push(`## ${label}`);
+    lines.push('');
+    lines.push(`**Bewertete Spiele:** ${prof.ratedCount}`);
+    lines.push('');
+
+    lines.push(`### Top-Mechaniken (mochte ich)`);
+    if (prof.topLiked.length) {
+      for (const e of prof.topLiked) lines.push(`- ${mechanicLabel(e.id)} _(${e.count}×)_`);
+    } else lines.push('_keine Daten_');
+    lines.push('');
+
+    lines.push(`### Bottom-Mechaniken (mochte ich nicht)`);
+    if (prof.topDisliked.length) {
+      for (const e of prof.topDisliked) lines.push(`- ${mechanicLabel(e.id)} _(${e.count}×)_`);
+    } else lines.push('_keine Daten_');
+    lines.push('');
+
+    lines.push('### Spielmodus-Präferenz (Ø-Sterne)');
+    lines.push(`- Solo: ${prof.avgSolo == null ? '—' : prof.avgSolo.toFixed(2)}`);
+    lines.push(`- Koop mit Partner: ${prof.avgCoopPartner == null ? '—' : prof.avgCoopPartner.toFixed(2)}`);
+    lines.push(`- Koop mit anderen: ${prof.avgCoopOthers == null ? '—' : prof.avgCoopOthers.toFixed(2)}`);
+    lines.push('');
+
+    if (prof.shifts.length) {
+      lines.push('### Damals → Heute (verschoben)');
+      for (const s of prof.shifts) {
+        lines.push(`- **${mechanicLabel(s.id)}** in _${s.game}_: ${s.dir === 'up' ? 'damals abgelehnt, heute geschätzt' : 'damals geschätzt, heute abgelehnt'}`);
+      }
+      lines.push('');
+    }
+
+    lines.push('### Bewertete Spiele im Detail');
+    for (const g of state.games) {
+      const r = g.ratings[person];
+      if (!isRatingComplete(r)) continue;
+      if (r.played === 'no') { lines.push(`- **${g.title}** — nicht gespielt`); continue; }
+      if (r.played === 'watched') { lines.push(`- **${g.title}** — nur zugeschaut`); continue; }
+      const modes = r.modes.map(m => MODES.find(x=>x.id===m).label).join(', ') || '—';
+      const status = r.status ? STATUSES.find(s=>s.id===r.status).label : '—';
+      lines.push(`- **${g.title}** _(Modi: ${modes}; Status: ${status})_`);
+      for (const era of ['damals','heute']) {
+        const ed = r[era]; if (!ed) continue;
+        const stars = ed.stars ? '★'.repeat(ed.stars) + '☆'.repeat(5-ed.stars) : '—';
+        const wp = ed.wouldPlayAgain ? WOULD_PLAY.find(w=>w.id===ed.wouldPlayAgain).label : '—';
+        lines.push(`  - _${ERAS.find(e=>e.id===era).label}_: ${stars}, würde wieder: ${wp}`);
+        const renderModeRating = (lbl, val) => val == null ? null : `${lbl}: ${val === 'na' ? 'n/a' : '★'.repeat(val)+'☆'.repeat(5-val)}`;
+        const modeBits = [
+          renderModeRating('Solo', ed.soloStars),
+          renderModeRating('Koop-Partner', ed.coopPartnerStars),
+          renderModeRating('Koop-Andere', ed.coopOthersStars)
+        ].filter(Boolean);
+        if (modeBits.length) lines.push(`    - ${modeBits.join(' · ')}`);
+        if (ed.liked.length)    lines.push(`    - Mochte: ${ed.liked.map(mechanicLabel).join(', ')}`);
+        if (ed.disliked.length) lines.push(`    - Mochte nicht: ${ed.disliked.map(mechanicLabel).join(', ')}`);
+      }
+    }
+    lines.push('');
+  }
+
+  // Intersection
+  const myLikedSet     = mechSetByGame('tim', 'liked');
+  const myDislikedSet  = mechSetByGame('tim', 'disliked');
+  const otherLikedSet  = mechSetByGame('katrin', 'liked');
+  const otherDislikedSet = mechSetByGame('katrin', 'disliked');
+  const bothLike    = topIntersect(myLikedSet, otherLikedSet);
+  const bothDislike = topIntersect(myDislikedSet, otherDislikedSet);
+  const disagree    = computeDisagreements(myLikedSet, otherDislikedSet, otherLikedSet, myDislikedSet, 'tim', 'katrin');
+
+  lines.push('## Schnittmenge Tim ∩ Katrin');
+  lines.push('');
+  lines.push('### Beide mochten');
+  if (bothLike.length) for (const e of bothLike) lines.push(`- ${mechanicLabel(e.id)} _(in ${e.count} gemeinsamen Spiel${e.count>1?'en':''})_`);
+  else lines.push('_keine gemeinsamen Daten_');
+  lines.push('');
+
+  lines.push('### Beide mochten NICHT');
+  if (bothDislike.length) for (const e of bothDislike) lines.push(`- ${mechanicLabel(e.id)} _(in ${e.count} gemeinsamen Spiel${e.count>1?'en':''})_`);
+  else lines.push('_keine gemeinsamen Daten_');
+  lines.push('');
+
+  if (disagree.length) {
+    lines.push('### Uneinigkeit');
+    for (const d of disagree) {
+      const a = PEOPLE.find(p=>p.id===d.likedBy).label;
+      const b = PEOPLE.find(p=>p.id===d.dislikedBy).label;
+      lines.push(`- **${mechanicLabel(d.id)}**: ${a} mochte, ${b} nicht _(${d.count} Spiel${d.count>1?'e':''})_`);
+    }
+    lines.push('');
+  }
+
+  lines.push('---');
+  lines.push('## Aufgabe für die KI');
+  lines.push('Schlage uns 10 Spiele vor, die zu unserem gemeinsamen Profil passen — besonders mit Koop-Fokus (mit Partner). Liste pro Vorschlag: Titel, warum es passt (mit Bezug auf unsere Top-Mechaniken und Schnittmenge), Plattform, Koop-Modus, ungefährer Zeitaufwand, mögliche Reibungspunkte (basierend auf unseren Bottom-Mechaniken und Uneinigkeiten).');
+  lines.push('');
+
+  return lines.join('\n');
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+render();
+</script>
+</body>
+</html>
