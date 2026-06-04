@@ -217,6 +217,172 @@
     "updated": "2026-06-04"
   },
   {
+    "id": "ammonia",
+    "name": "Ammonia",
+    "category": "catalytic element",
+    "value": 58,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Stasis Device commodity chain",
+      "Technology crafting",
+      "Refining"
+    ],
+    "where": "Dig the marked deposit nodes on Toxic planets with the terrain tool.",
+    "hidden": "A key link in the very lucrative Stasis Device chain, so stock up on toxic worlds, which only appear occasionally in some regions.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "chlorine",
+    "name": "Chlorine",
+    "category": "catalytic element",
+    "value": 38,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting & refining",
+      "The classic Chlorine money loop",
+      "Underwater technology"
+    ],
+    "where": "Mine underwater crystal growths, or refine it from Salt.",
+    "hidden": "Chlorine + Oxygen in a refiner yields MORE Chlorine than you put in. Loop it with cheap station-bought Oxygen to print millions. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "cobalt",
+    "name": "Cobalt",
+    "category": "catalytic element",
+    "value": 58,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Ionised Cobalt",
+      "Ion Battery crafting",
+      "Trade commodity"
+    ],
+    "where": "Mine the glowing deposits inside caves on most planets; guaranteed in quantity on irradiated worlds.",
+    "hidden": "Caves keep you safe from surface hazards, so you can farm Cobalt for ages. Refine it to Ionised Cobalt for a free value bump before selling.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "dioxite",
+    "name": "Dioxite",
+    "category": "catalytic element",
+    "value": 52,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Cryogenic Chamber and cold-weather tech",
+      "Refining"
+    ],
+    "where": "Mine deposits on Frozen/icy planets.",
+    "hidden": "Frozen-world locked; station traders sometimes sell it, but it is far easier to stock up whenever you land on snow.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "ionised_cobalt",
+    "name": "Ionised Cobalt",
+    "category": "catalytic element",
+    "value": 85,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Ion Battery & Advanced Ion Battery crafting",
+      "Charging technology",
+      "Trading"
+    ],
+    "where": "Refine Cobalt 1:1, or buy Cobalt cheaply and refine it in bulk.",
+    "hidden": "Crafting it into Ion Batteries multiplies its value again; a single Cobalt-rich cave becomes a tidy income stream this way.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "paraffinium",
+    "name": "Paraffinium",
+    "category": "catalytic element",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Building materials and decorations",
+      "Refines into Thermic Condensate",
+      "Technology recipes"
+    ],
+    "where": "Harvest the yellow-flowering plants on Lush and warm worlds, or mine surface deposits.",
+    "hidden": "Frequently needed for base parts; if your home planet lacks it, keep a supply from a lush world rather than hunting for it mid-build.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "phosphorus",
+    "name": "Phosphorus",
+    "category": "catalytic element",
+    "value": 45,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Explosive and weapon technology crafting",
+      "Refining recipes"
+    ],
+    "where": "Dig the marked deposit nodes on Scorched/fiery planets with the terrain tool.",
+    "hidden": "Locked to hot worlds, so grab a stack whenever you visit one; a recipe needing it can catch you out far from a scorched system. (unsicher: Biom-Verteilung variiert je Update)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "pyrite",
+    "name": "Pyrite",
+    "category": "catalytic element",
+    "value": 50,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Geodesite and related items",
+      "Refining"
+    ],
+    "where": "Mine deposits on desert and scorched worlds, or refine Gold together with Oxygen.",
+    "hidden": "You can manufacture it in a refiner from Gold + Oxygen when no desert world is nearby, which beginners rarely realise.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "salt",
+    "name": "Salt",
+    "category": "catalytic element",
+    "value": 25,
+    "rarity": "common",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Chlorine",
+      "Feeds the Chlorine money loop",
+      "Refining"
+    ],
+    "where": "Mine the bright deposits on ocean worlds and some dead/barren planets; check coasts and the seabed.",
+    "hidden": "The entry point to the Chlorine money loop: refine Salt to Chlorine, then multiply Chlorine with Oxygen for huge profit. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "uranium",
+    "name": "Uranium",
+    "category": "catalytic element",
+    "value": 30,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Launch thruster fuel",
+      "Crafting Health Station, Megawatt Heater, Radiation Deflector, etc."
+    ],
+    "where": "Mine Uranium deposits on Irradiated (green/yellow) worlds with the terrain tool; sometimes inside metal 'fingers'.",
+    "hidden": "It can fuel launch thrusters as a cheap alternative to Di-hydrogen and feeds many early base/tech recipes, so don't dump it. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
     "id": "activated_indium",
     "name": "Activated Indium",
     "category": "resource",
@@ -230,23 +396,6 @@
     "where": "",
     "hidden": "",
     "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "ammonia",
-    "name": "Ammonia",
-    "category": "resource",
-    "value": 58,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Crafting Stasis Device chain components",
-      "Technology crafting",
-      "Refining"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
     "updated": "2026-06-04"
   },
   {
@@ -283,23 +432,6 @@
     "updated": "2026-06-04"
   },
   {
-    "id": "cobalt",
-    "name": "Cobalt",
-    "category": "resource",
-    "value": 58,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": [
-      "Refining into Ionised Cobalt",
-      "Crafting Ion Batteries",
-      "Trade commodity"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
     "id": "copper",
     "name": "Copper",
     "category": "resource",
@@ -316,22 +448,6 @@
     "updated": "2026-06-04"
   },
   {
-    "id": "dioxite",
-    "name": "Dioxite",
-    "category": "resource",
-    "value": 52,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Crafting Cryogenic Chamber and related components",
-      "Technology crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
     "id": "gold",
     "name": "Gold",
     "category": "resource",
@@ -341,23 +457,6 @@
     "uses": [
       "Crafting electrical components and Warp Drive parts",
       "Refining catalyst for Chromatic Metal (boosts ratio)",
-      "Trading"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "ionised_cobalt",
-    "name": "Ionised Cobalt",
-    "category": "resource",
-    "value": 85,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": [
-      "Crafting Ion Batteries & Advanced Ion Batteries",
-      "Various tech crafting",
       "Trading"
     ],
     "where": "",
@@ -383,39 +482,6 @@
     "updated": "2026-06-04"
   },
   {
-    "id": "paraffinium",
-    "name": "Paraffinium",
-    "category": "resource",
-    "value": 60,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Crafting building materials and decorations",
-      "Refining into Thermic Condensate",
-      "Various tech recipes"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "phosphorus",
-    "name": "Phosphorus",
-    "category": "resource",
-    "value": 45,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Explosive weapon crafting",
-      "Technology crafting recipes"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
     "id": "platinum",
     "name": "Platinum",
     "category": "resource",
@@ -430,22 +496,6 @@
     "where": "",
     "hidden": "",
     "source": "NMS community wikis & Sportskeeda guide (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "pyrite",
-    "name": "Pyrite",
-    "category": "resource",
-    "value": 50,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Crafting Geodesite and related items",
-      "Planet-specific technology crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
     "updated": "2026-06-04"
   },
   {
