@@ -383,19 +383,163 @@
     "updated": "2026-06-04"
   },
   {
+    "id": "activated_cadmium",
+    "name": "Activated Cadmium",
+    "category": "stellar metal",
+    "value": 260,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "Sells well raw",
+      "Refines into Chromatic Metal"
+    ],
+    "where": "Mine Activated Cadmium deposits in red-star systems.",
+    "hidden": "Sell the activated version; the value jump over base Cadmium is large. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "activated_copper",
+    "name": "Activated Copper",
+    "category": "stellar metal",
+    "value": 120,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "Sells well raw",
+      "Refines into Chromatic Metal"
+    ],
+    "where": "Mine the rarer Activated Copper surface deposits in yellow-star systems.",
+    "hidden": "Worth markedly more than plain Copper raw, so sell the activated form and keep ordinary Copper for refining. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "activated_emeril",
+    "name": "Activated Emeril",
+    "category": "stellar metal",
+    "value": 600,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "Sells very well raw",
+      "Refines into Chromatic Metal"
+    ],
+    "where": "Mine Activated Emeril deposits in green-star systems.",
+    "hidden": "Roughly double the value of base Emeril; an automated extractor on a hotspot prints units passively. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
     "id": "activated_indium",
     "name": "Activated Indium",
-    "category": "resource",
+    "category": "stellar metal",
     "value": 949,
     "rarity": "very_rare",
     "verdict": "sell",
     "uses": [
-      "Premium unit-farming resource",
+      "Premium unit farming",
       "High-end technology crafting"
     ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "where": "Mine Activated Indium deposits on blue-star planets.",
+    "hidden": "The highest-value raw resource in the game; a large automated Activated Indium mine is the classic mid-game money machine.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "cadmium",
+    "name": "Cadmium",
+    "category": "stellar metal",
+    "value": 130,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Cadmium Drive upgrades"
+    ],
+    "where": "Mine deposits on planets in red-star systems (needs a Cadmium Drive installed to warp there).",
+    "hidden": "Higher up the colour chain than Copper, so it yields more Chromatic Metal per unit when refined with Gold or Silver. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "chromatic_metal",
+    "name": "Chromatic Metal",
+    "category": "stellar metal",
+    "value": 120,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Required by almost all technology crafting",
+      "Ship and multitool upgrades"
+    ],
+    "where": "Refine any stellar metal (Copper, Cadmium, Emeril, Indium, Quartzite) in a refiner.",
+    "hidden": "Never sell it: nearly every tech component needs it, so keep a few hundred on hand. Higher-colour metals refine into far more of it.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "copper",
+    "name": "Copper",
+    "category": "stellar metal",
+    "value": 86,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Wiring and electrical crafting"
+    ],
+    "where": "Mine Copper deposits near Electromagnetic Hotspots in yellow-star systems (scan with the Analysis Visor).",
+    "hidden": "The cheapest road to Chromatic Metal; refine it together with Silver and Gold to boost the conversion ratio dramatically.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "emeril",
+    "name": "Emeril",
+    "category": "stellar metal",
+    "value": 275,
+    "rarity": "rare",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Emeril Drive upgrades"
+    ],
+    "where": "Mine deposits on planets in green-star systems (needs an Emeril Drive).",
+    "hidden": "Refining Emeril with Gold/Silver gives a strong Chromatic Metal return; many players over-mine cheap Copper instead and miss this.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "indium",
+    "name": "Indium",
+    "category": "stellar metal",
+    "value": 464,
+    "rarity": "rare",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Top-tier technology crafting"
+    ],
+    "where": "Mine deposits on planets in blue-star systems (needs an Indium Drive, the final colour drive).",
+    "hidden": "Blue systems are the end of the colour-drive chain; once there, an extractor on an Indium hotspot gives serious passive income.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "quartzite",
+    "name": "Quartzite",
+    "category": "stellar metal",
+    "value": 90,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal (unsicher)",
+      "Crafting"
+    ],
+    "where": "Mine Quartzite stellar-metal deposits; the exact star-colour association is uncertain.",
+    "hidden": "An often-overlooked stellar metal; treat it like the coloured metals and refine toward Chromatic Metal. (unsicher: Quelle/Verwendung je Version)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
@@ -409,38 +553,6 @@
       "Crafting Poly Fibre",
       "Cooking recipes",
       "Refining into Carbon"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "chromatic_metal",
-    "name": "Chromatic Metal",
-    "category": "resource",
-    "value": 120,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Required by almost all technology crafting recipes",
-      "Ship and multitool upgrades"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "copper",
-    "name": "Copper",
-    "category": "resource",
-    "value": 86,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Refining into Chromatic Metal",
-      "Base of the Chromatic Metal multiplication chain"
     ],
     "where": "",
     "hidden": "",
