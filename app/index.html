@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NMS Lookup</title>
+  <meta name="description" content="Private, local No Man's Sky lookup tool.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">NMS Lookup</h1>
+    <p class="app-subtitle">Private offline reference</p>
+  </header>
+
+  <!-- Tab bar is rendered by core.js from the registered modules. -->
+  <nav id="tabbar" class="tabbar" aria-label="Features"></nav>
+
+  <!-- Each module mounts its UI into this container. -->
+  <main id="view" class="view" aria-live="polite"></main>
+
+  <footer class="app-footer">
+    <span>Local data only · no tracking · not affiliated with Hello Games</span>
+  </footer>
+
+  <!-- Core first: provides the registry + data loader. -->
+  <script src="js/core.js"></script>
+  <!-- Feature modules: one file each. Adding a feature = adding a file here. -->
+  <script src="js/modules/items.js"></script>
+  <!-- Boot last: starts the app once all modules have registered. -->
+  <script>NMS.start();</script>
+</body>
+</html>
