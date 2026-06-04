@@ -543,6 +543,74 @@
     "updated": "2026-06-04"
   },
   {
+    "id": "gold",
+    "name": "Gold",
+    "category": "valuable metal",
+    "value": 253,
+    "rarity": "rare",
+    "verdict": "keep",
+    "uses": [
+      "Electrical components and Warp Drive parts",
+      "Refiner catalyst that boosts Chromatic Metal output",
+      "Trading"
+    ],
+    "where": "Mine gold-flecked asteroids, dig Gold deposits in caves, or take it from defeated pirates.",
+    "hidden": "Needed for Warp Drive and other key tech, so keep ~50 before selling surplus. As a refiner catalyst it boosts stellar-metal-to-Chromatic conversion.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "platinum",
+    "name": "Platinum",
+    "category": "valuable metal",
+    "value": 505,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading",
+      "Refining chains (e.g. toward Nanites)",
+      "Some technology crafting"
+    ],
+    "where": "Mine Platinum-rich asteroids, or dig surface and cave deposits.",
+    "hidden": "One of the best raw earners early and rarely needed for crafting, so sell freely. (unsicher: aktuelle Refining-Rezepte)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "silver",
+    "name": "Silver",
+    "category": "valuable metal",
+    "value": 171,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "Trading for units",
+      "Refiner catalyst (boosts Chromatic Metal output)",
+      "Some technology crafting"
+    ],
+    "where": "Mine Silver deposits in underground caves.",
+    "hidden": "Less craft-critical than Gold, so sell the bulk and keep only ~50 for refining combos with stellar metals.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "silicate_powder",
+    "name": "Silicate Powder",
+    "category": "mineral",
+    "value": 8,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Concrete and stone building pieces",
+      "Refines into Glass (40:1)",
+      "Refines into Deuterium with Di-hydrogen"
+    ],
+    "where": "Dig soil with the terrain manipulator on any rocky world; extremely abundant.",
+    "hidden": "Often grouped with valuables but actually low-value: keep it for building and for making Deuterium rather than selling. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
     "id": "cactus_flesh",
     "name": "Cactus Flesh",
     "category": "resource",
@@ -560,23 +628,6 @@
     "updated": "2026-06-04"
   },
   {
-    "id": "gold",
-    "name": "Gold",
-    "category": "resource",
-    "value": 253,
-    "rarity": "rare",
-    "verdict": "keep",
-    "uses": [
-      "Crafting electrical components and Warp Drive parts",
-      "Refining catalyst for Chromatic Metal (boosts ratio)",
-      "Trading"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
     "id": "mordite",
     "name": "Mordite",
     "category": "resource",
@@ -591,40 +642,6 @@
     "where": "",
     "hidden": "",
     "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "platinum",
-    "name": "Platinum",
-    "category": "resource",
-    "value": 505,
-    "rarity": "rare",
-    "verdict": "sell",
-    "uses": [
-      "High-value trading",
-      "Refining chain involving Nanites (unsicher: verify current recipe)",
-      "Some tech crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & Sportskeeda guide (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "silver",
-    "name": "Silver",
-    "category": "resource",
-    "value": 171,
-    "rarity": "rare",
-    "verdict": "sell",
-    "uses": [
-      "Trading for units",
-      "Refining catalyst (boosts Chromatic Metal output from stellar metals)",
-      "Some tech crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
     "updated": "2026-06-04"
   },
   {
