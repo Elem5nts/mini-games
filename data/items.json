@@ -166,6 +166,57 @@
     "updated": "2026-06-04"
   },
   {
+    "id": "nitrogen",
+    "name": "Nitrogen",
+    "category": "gas",
+    "value": 40,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Nitrogen Salt",
+      "Stasis Device commodity chain",
+      "Refining loops"
+    ],
+    "where": "Build a Gas Extractor on a Nitrogen gas hotspot (locate one with the survey device), usually on Lush or Toxic worlds; also via Atmosphere Harvesters.",
+    "hidden": "Cheap raw, but combined with Condensed Carbon it makes Nitrogen Salt, a step toward commodities worth hundreds of thousands. Keep it for crafting, not selling. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "radon",
+    "name": "Radon",
+    "category": "gas",
+    "value": 40,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Enriched Carbon",
+      "Advanced commodity chains",
+      "Refining"
+    ],
+    "where": "Gas Extractor on a Radon hotspot, found on Irradiated and Frozen worlds; also via Atmosphere Harvesters.",
+    "hidden": "Turns into Enriched Carbon with Condensed Carbon; an automated extractor makes it near-free passive income. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "sulphurine",
+    "name": "Sulphurine",
+    "category": "gas",
+    "value": 40,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Thermic Condensate",
+      "Advanced commodity chains",
+      "Refining"
+    ],
+    "where": "Gas Extractor on a Sulphurine hotspot, found on Scorched, Desert and Volcanic worlds.",
+    "hidden": "Feeds the Thermic Condensate chain; a passive Gas Extractor farm quietly stockpiles it while you play elsewhere. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
     "id": "activated_indium",
     "name": "Activated Indium",
     "category": "resource",
