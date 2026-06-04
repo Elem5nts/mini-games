@@ -108,8 +108,13 @@ html, body {
 .tag--rarity { color: var(--accent); }
 .tag--verdict { color: var(--text); }
 
-.card__uses, .card__tips, .card__source { margin: 8px 0 0; font-size: 0.9rem; }
+.card__uses, .card__where, .card__hidden, .card__source { margin: 8px 0 0; font-size: 0.9rem; }
+.card__hidden { color: var(--accent); }
 .card__source { color: var(--muted); font-size: 0.8rem; }
+
+/* FAQ cards */
+.faq__q { margin: 0; font-size: 1.05rem; }
+.faq__a { margin: 8px 0 0; font-size: 0.9rem; }
 
 /* Placeholder */
 .placeholder {

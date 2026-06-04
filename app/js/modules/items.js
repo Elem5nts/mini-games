@@ -83,7 +83,7 @@
   function passes(it, state) {
     if (state.category !== 'all' && (it.category || '') !== state.category) return false;
     if (!state.query) return true;
-    var hay = [it.name, it.category, it.source, it.tips]
+    var hay = [it.name, it.category, it.source, it.where, it.hidden]
       .concat(Array.isArray(it.uses) ? it.uses : [])
       .join(' ').toLowerCase();
     return hay.indexOf(state.query) !== -1;
@@ -125,10 +125,15 @@
       uses.innerHTML = '<strong>Uses:</strong> ' + escapeHtml(it.uses.join(', '));
       c.appendChild(uses);
     }
-    if (it.tips) {
-      var tips = el('p', 'card__tips');
-      tips.textContent = it.tips;
-      c.appendChild(tips);
+    if (it.where) {
+      var where = el('p', 'card__where');
+      where.innerHTML = '<strong>Where:</strong> ' + escapeHtml(it.where);
+      c.appendChild(where);
+    }
+    if (it.hidden) {
+      var hidden = el('p', 'card__hidden');
+      hidden.innerHTML = '<strong>Hidden:</strong> ' + escapeHtml(it.hidden);
+      c.appendChild(hidden);
     }
     if (it.source || it.updated) {
       var src = el('p', 'card__source');
