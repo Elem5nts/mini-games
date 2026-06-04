@@ -33,6 +33,22 @@
     "updated": "2026-06-04"
   },
   {
+    "id": "deuterium",
+    "name": "Deuterium",
+    "category": "common element",
+    "value": 200,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Hyperdrive/pulse fuel component",
+      "Crafting fuel items"
+    ],
+    "where": "Refine Tritium + Di-hydrogen, or Silicate Powder + Di-hydrogen, in a refiner; rarely found directly.",
+    "hidden": "A refined fuel, not a raw find: making your own from cheap Di-hydrogen + Silicate Powder beats buying it. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
     "id": "di_hydrogen",
     "name": "Di-hydrogen",
     "category": "common element",
@@ -594,6 +610,346 @@
     "updated": "2026-06-04"
   },
   {
+    "id": "cactus_flesh",
+    "name": "Cactus Flesh",
+    "category": "organic element",
+    "value": 63,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Poly Fibre",
+      "Cooking",
+      "Refines into Carbon"
+    ],
+    "where": "Harvest Echinocactus plants on Desert worlds.",
+    "hidden": "Surplus refines straight to Carbon, so it is rarely wasted even when you only wanted the units.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "cyto_phosphate",
+    "name": "Cyto-Phosphate",
+    "category": "organic element",
+    "value": 40,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Nautilon submarine fuel",
+      "Crafting Glass, Condensed Carbon, Aquatic Crystal"
+    ],
+    "where": "Mine underwater flora with the mining beam; be careful, it can spawn Abyssal Horrors.",
+    "hidden": "It fuels the Nautilon submarine, so stock up before deep dives; mining it can summon underwater predators. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "faecium",
+    "name": "Faecium",
+    "category": "organic element",
+    "value": 35,
+    "rarity": "common",
+    "verdict": "sell",
+    "uses": [
+      "Cooking",
+      "Crafting",
+      "Refining"
+    ],
+    "where": "Best farmed from the Gutrot Flower crop (~25 every 4h); also drops from creatures and damaged machinery.",
+    "hidden": "Mainly a cooking ingredient; multiply it by refining Mordite with Condensed Carbon when a recipe needs a lot. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "frost_crystal",
+    "name": "Frost Crystal",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting (Poly Fibre, cold-weather tech)",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Frostwort plants on Frozen worlds.",
+    "hidden": "The cold-biome counterpart to Cactus Flesh and Star Bulb; handy for the cold-tech recipes you meet on icy worlds. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "fungal_mould",
+    "name": "Fungal Mould",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Fungal Clusters on Toxic worlds.",
+    "hidden": "Shares the toxic biome with Ammonia, so combine the gathering runs. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "gamma_root",
+    "name": "Gamma Root",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting (e.g. Gamma Weed)",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Gamma Weed plants on Radioactive worlds.",
+    "hidden": "Pick it while mining Uranium on the same irradiated planet to save a separate trip. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "kelp_sac",
+    "name": "Kelp Sac",
+    "category": "organic element",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Chlorine and Oxygen",
+      "Underwater recipes"
+    ],
+    "where": "Harvest Candle Kelp underwater; approaching it also tops up your exosuit oxygen.",
+    "hidden": "Harvesting refills your dive oxygen, so it doubles as a diving aid; it cannot be farmed, only gathered. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "marrow_bulb",
+    "name": "Marrow Bulb",
+    "category": "organic element",
+    "value": 50,
+    "rarity": "common",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Poly Fibre and others",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Cave Marrow growths inside caves on most planets; also refinable from Crystallised Helium.",
+    "hidden": "Grows in the same caves as Cobalt, so grab both in one descent. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "mordite",
+    "name": "Mordite",
+    "category": "organic element",
+    "value": 25,
+    "rarity": "common",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Carbon",
+      "Cooking (Creature Pellets, etc.)",
+      "Minor crafting"
+    ],
+    "where": "Drops when you kill fauna; also from Mordite Root crops, organic rocks on scorched/desert worlds, and some marsh deposits.",
+    "hidden": "Piles up automatically as you fight wildlife; low value, so refine spares to Carbon or cook with it rather than hauling it around. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "solanium",
+    "name": "Solanium",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Solar Vine plants on Scorched worlds.",
+    "hidden": "Gather it on the same trips you mine Phosphorus, since both sit on hot planets. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "star_bulb",
+    "name": "Star Bulb",
+    "category": "organic element",
+    "value": 63,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Poly Fibre",
+      "Cooking",
+      "Refines into Paraffinium"
+    ],
+    "where": "Harvest Star Bramble plants, which grow in clusters on Lush worlds.",
+    "hidden": "Dense clusters mean one short run fills a stack; refine to Paraffinium if needed, otherwise selling is usually quicker.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "gravitino_ball",
+    "name": "Gravitino Ball",
+    "category": "exotic element",
+    "value": 27600,
+    "rarity": "very_rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading"
+    ],
+    "where": "Pick them up on Sentinel-heavy planets; each pickup instantly triggers a Sentinel alert.",
+    "hidden": "Grabbing one always aggroes Sentinels, so fight, flee, or plant Gravitino Hosts to farm them safely. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "living_pearl",
+    "name": "Living Pearl",
+    "category": "exotic element",
+    "value": 28000,
+    "rarity": "very_rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading"
+    ],
+    "where": "Found inside Armoured Clams deep underwater.",
+    "hidden": "Interact slowly instead of attacking to take the pearl before the clam snaps shut. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "pugneum",
+    "name": "Pugneum",
+    "category": "exotic element",
+    "value": 50,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Refining into other metals",
+      "Crafting"
+    ],
+    "where": "Drops from destroyed Sentinels; larger Sentinel types drop more.",
+    "hidden": "Stacks up naturally during Sentinel fights, so refine it instead of letting it sit unused. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "runaway_mould",
+    "name": "Runaway Mould",
+    "category": "exotic element",
+    "value": 1,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Nanite Clusters (5:1)"
+    ],
+    "where": "Loot the small canisters inside abandoned buildings and some caches.",
+    "hidden": "Nearly worthless to sell, but refines 5:1 into Nanites, an easy early way to bank upgrade currency. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "sac_venom",
+    "name": "Sac Venom",
+    "category": "exotic element",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting",
+      "Cooking"
+    ],
+    "where": "Destroy urchin-like creatures on land or underwater; also farmable via the Venom Urchin plant.",
+    "hidden": "A planted Venom Urchin gives a steady supply without hunting. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "storm_crystal",
+    "name": "Storm Crystal",
+    "category": "exotic element",
+    "value": 211150,
+    "rarity": "very_rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading",
+      "Crafting efficiency/weather tech"
+    ],
+    "where": "On extreme-weather worlds, during a storm, scan with the Analysis Visor and dig up the marked crystal.",
+    "hidden": "Worth a fortune each, but only spawns mid-storm exactly when hazard protection drains fastest, so bring Sodium Nitrate.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "tainted_metal",
+    "name": "Tainted Metal",
+    "category": "exotic element",
+    "value": 1,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Nanite Clusters (1:2)"
+    ],
+    "where": "Drops from Corrupted Sentinels on Dissonant planets (those with purple crystal formations).",
+    "hidden": "Refines 1:2 into Nanites, an excellent rate, making Dissonant-planet fights a reliable nanite farm. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "basalt",
+    "name": "Basalt",
+    "category": "mineral",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting/refining (limited)"
+    ],
+    "where": "Mine the stellar-metal-shaped deposits found on some planets.",
+    "hidden": "Looks like a stellar-metal node but is its own localised element with limited uses, so treat it as a minor sell item. (unsicher: Verwendung je Version)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "crystallised_helium",
+    "name": "Crystallised Helium",
+    "category": "mineral",
+    "value": 240,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Ferrite Dust, Lithium, Sodium Nitrate, Uranium, etc.",
+      "Crafting Exocraft Summoning Unit"
+    ],
+    "where": "Mine the large deposits on gas-giant worlds around purple stars (scan with the Analysis Visor).",
+    "hidden": "A flexible refiner feedstock that converts into several scarce elements when a planet lacks them. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "lithium",
+    "name": "Lithium",
+    "category": "mineral",
+    "value": 110,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Crystallised Helium, Ferrite Dust, Kelp Sac, Pyrite, Sodium Nitrate",
+      "Crafting Dredging Laser"
+    ],
+    "where": "Mine deposits on Ocean worlds.",
+    "hidden": "An ocean-world staple that refines into many scarce elements; stock up while diving for other water resources. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
     "id": "silicate_powder",
     "name": "Silicate Powder",
     "category": "mineral",
@@ -608,57 +964,6 @@
     "where": "Dig soil with the terrain manipulator on any rocky world; extremely abundant.",
     "hidden": "Often grouped with valuables but actually low-value: keep it for building and for making Deuterium rather than selling. (Werte unsicher)",
     "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "cactus_flesh",
-    "name": "Cactus Flesh",
-    "category": "resource",
-    "value": 63,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": [
-      "Crafting Poly Fibre",
-      "Cooking recipes",
-      "Refining into Carbon"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "mordite",
-    "name": "Mordite",
-    "category": "resource",
-    "value": 25,
-    "rarity": "common",
-    "verdict": "sell",
-    "uses": [
-      "Refining into Carbon",
-      "Cooking recipes",
-      "Minor crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "star_bulb",
-    "name": "Star Bulb",
-    "category": "resource",
-    "value": 63,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": [
-      "Crafting Poly Fibre",
-      "Cooking",
-      "Refining into Paraffinium"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
     "updated": "2026-06-04"
   }
 ]
