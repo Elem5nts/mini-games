@@ -1,151 +1,234 @@
 [
   {
+    "id": "carbon",
+    "name": "Carbon",
+    "category": "common element",
+    "value": 12,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Fuel for the mining tool",
+      "Crafting & cooking ingredient",
+      "Refines into Condensed Carbon"
+    ],
+    "where": "Cut down any plant, tree or fungal growth with the mining beam; available on every planet.",
+    "hidden": "Running out strands you, because it fuels the very tool you mine with. Always keep a buffer before exploring far from your ship.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "condensed_carbon",
+    "name": "Condensed Carbon",
+    "category": "common element",
+    "value": 24,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Long-burning tool fuel",
+      "Crafting & refining ingredient"
+    ],
+    "where": "Refine Carbon 2:1 in any refiner, or mine the red crystal clusters dotted across planet surfaces.",
+    "hidden": "Burns much longer per inventory slot than raw Carbon and feeds countless recipes, so keep a stack even though it barely sells. (Wert unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "di_hydrogen",
+    "name": "Di-hydrogen",
+    "category": "common element",
+    "value": 16,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Launch thruster fuel",
+      "Frigate fuel crafting",
+      "Refines into Di-hydrogen Jelly"
+    ],
+    "where": "Mine the blue crystal formations scattered across every planet surface.",
+    "hidden": "It fuels your launch thrusters; without it you cannot take off. Refine 5:1 into Di-hydrogen Jelly to store launch fuel compactly.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
     "id": "ferrite_dust",
     "name": "Ferrite Dust",
-    "category": "resource",
+    "category": "common element",
     "value": 12,
     "rarity": "common",
     "verdict": "keep",
     "uses": [
       "Base building",
       "Crafting components",
-      "Refining into Pure Ferrite"
+      "Refines into Pure Ferrite"
     ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "pure_ferrite",
-    "name": "Pure Ferrite",
-    "category": "resource",
-    "value": 22,
-    "rarity": "common",
-    "verdict": "keep",
-    "uses": [
-      "Advanced base building",
-      "Technology crafting",
-      "Refining into Magnetised Ferrite"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "where": "Shoot any rocky boulder or terrain with the mining beam; found on practically every planet, moon and base.",
+    "hidden": "It is the backbone of almost every build and craft. Never sell it; the few units it fetches are not worth the constant re-gathering.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "magnetised_ferrite",
     "name": "Magnetised Ferrite",
-    "category": "resource",
-    "value": 50,
+    "category": "common element",
+    "value": 49,
     "rarity": "uncommon",
     "verdict": "keep",
     "uses": [
       "Advanced structure building",
       "High-tier technology crafting"
     ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "carbon",
-    "name": "Carbon",
-    "category": "resource",
-    "value": 12,
-    "rarity": "common",
-    "verdict": "keep",
-    "uses": [
-      "Mining laser fuel",
-      "Refining into Condensed Carbon",
-      "Numerous crafting & cooking recipes"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "condensed_carbon",
-    "name": "Condensed Carbon",
-    "category": "resource",
-    "value": 52,
-    "rarity": "common",
-    "verdict": "keep",
-    "uses": [
-      "Dense mining laser fuel",
-      "Crafting & refining ingredient"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "di_hydrogen",
-    "name": "Di-hydrogen",
-    "category": "resource",
-    "value": 15,
-    "rarity": "common",
-    "verdict": "keep",
-    "uses": [
-      "Launch Thruster fuel",
-      "Frigate fuel crafting",
-      "Di-hydrogen Jelly crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "where": "Refine Pure Ferrite together with a metal (Copper, Silver or Gold) in a refiner; occasionally found as surface deposits.",
+    "hidden": "Only a handful of advanced parts need it, so make it on demand rather than hoarding and clogging inventory slots.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "oxygen",
     "name": "Oxygen",
-    "category": "resource",
+    "category": "common element",
     "value": 20,
     "rarity": "common",
     "verdict": "keep",
     "uses": [
-      "Life support fuel",
+      "Life support recharge",
       "Hazard protection boost",
-      "Refining catalyst (doubles output of many recipes)"
+      "Refiner catalyst (doubles many outputs)"
     ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "where": "Harvest red-flagged plants on almost any planet, or buy it cheaply at most trade terminals.",
+    "hidden": "It doubles as a refiner catalyst: feeding Oxygen into many recipes multiplies the output, so it is worth far more than its sell price suggests.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "pure_ferrite",
+    "name": "Pure Ferrite",
+    "category": "common element",
+    "value": 24,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Advanced base building",
+      "Technology crafting",
+      "Refines into Magnetised Ferrite"
+    ],
+    "where": "Refine Ferrite Dust 1:1 in any refiner; also sold at construction and trade terminals.",
+    "hidden": "You rarely need to mine for it: surplus Ferrite Dust converts for free in the refiner while you get on with other things.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "sodium",
     "name": "Sodium",
-    "category": "resource",
-    "value": 30,
+    "category": "common element",
+    "value": 25,
     "rarity": "common",
     "verdict": "keep",
     "uses": [
       "Hazard protection recharge",
-      "Refining into Sodium Nitrate"
+      "Refines into Sodium Nitrate"
     ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "where": "Harvest yellow-flagged plants, or grab the glowing yellow crystals on cliffs and in caves.",
+    "hidden": "Recharges hazard protection instantly, even mid-storm; a cheap lifesaver beginners often ignore in favour of running for shelter.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "sodium_nitrate",
     "name": "Sodium Nitrate",
-    "category": "resource",
-    "value": 60,
+    "category": "common element",
+    "value": 62,
     "rarity": "uncommon",
     "verdict": "keep",
     "uses": [
       "Stronger hazard protection recharge",
       "Various refining recipes"
     ],
+    "where": "Refine Sodium 2:1, or mine it directly as a deposit on some planets.",
+    "hidden": "Restores far more protection per unit than raw Sodium, so refine a stack before heading to extreme-weather worlds.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "tritium",
+    "name": "Tritium",
+    "category": "common element",
+    "value": 24,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Pulse engine fuel",
+      "Frigate fuel crafting",
+      "Freighter base building"
+    ],
+    "where": "Shoot asteroids from your starship; interstellar belts are full of it. Watch for 'Tritium-Rich' asteroids and Hyperclusters (~100 each).",
+    "hidden": "It refuels the pulse engine directly with no crafting. Outlaw stations always stock some, handy when an asteroid belt is far away.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "activated_indium",
+    "name": "Activated Indium",
+    "category": "resource",
+    "value": 949,
+    "rarity": "very_rare",
+    "verdict": "sell",
+    "uses": [
+      "Premium unit-farming resource",
+      "High-end technology crafting"
+    ],
     "where": "",
     "hidden": "",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "ammonia",
+    "name": "Ammonia",
+    "category": "resource",
+    "value": 58,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Stasis Device chain components",
+      "Technology crafting",
+      "Refining"
+    ],
+    "where": "",
+    "hidden": "",
+    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "cactus_flesh",
+    "name": "Cactus Flesh",
+    "category": "resource",
+    "value": 63,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Poly Fibre",
+      "Cooking recipes",
+      "Refining into Carbon"
+    ],
+    "where": "",
+    "hidden": "",
+    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "chromatic_metal",
+    "name": "Chromatic Metal",
+    "category": "resource",
+    "value": 120,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Required by almost all technology crafting recipes",
+      "Ship and multitool upgrades"
+    ],
+    "where": "",
+    "hidden": "",
+    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
     "updated": "2026-06-04"
   },
   {
@@ -159,6 +242,55 @@
       "Refining into Ionised Cobalt",
       "Crafting Ion Batteries",
       "Trade commodity"
+    ],
+    "where": "",
+    "hidden": "",
+    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "copper",
+    "name": "Copper",
+    "category": "resource",
+    "value": 86,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refining into Chromatic Metal",
+      "Base of the Chromatic Metal multiplication chain"
+    ],
+    "where": "",
+    "hidden": "",
+    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "dioxite",
+    "name": "Dioxite",
+    "category": "resource",
+    "value": 52,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Cryogenic Chamber and related components",
+      "Technology crafting"
+    ],
+    "where": "",
+    "hidden": "",
+    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "gold",
+    "name": "Gold",
+    "category": "resource",
+    "value": 253,
+    "rarity": "rare",
+    "verdict": "keep",
+    "uses": [
+      "Crafting electrical components and Warp Drive parts",
+      "Refining catalyst for Chromatic Metal (boosts ratio)",
+      "Trading"
     ],
     "where": "",
     "hidden": "",
@@ -183,31 +315,16 @@
     "updated": "2026-06-04"
   },
   {
-    "id": "pyrite",
-    "name": "Pyrite",
+    "id": "mordite",
+    "name": "Mordite",
     "category": "resource",
-    "value": 50,
-    "rarity": "uncommon",
-    "verdict": "keep",
+    "value": 25,
+    "rarity": "common",
+    "verdict": "sell",
     "uses": [
-      "Crafting Geodesite and related items",
-      "Planet-specific technology crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "dioxite",
-    "name": "Dioxite",
-    "category": "resource",
-    "value": 52,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Crafting Cryogenic Chamber and related components",
-      "Technology crafting"
+      "Refining into Carbon",
+      "Cooking recipes",
+      "Minor crafting"
     ],
     "where": "",
     "hidden": "",
@@ -248,120 +365,36 @@
     "updated": "2026-06-04"
   },
   {
-    "id": "ammonia",
-    "name": "Ammonia",
+    "id": "platinum",
+    "name": "Platinum",
     "category": "resource",
-    "value": 58,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Crafting Stasis Device chain components",
-      "Technology crafting",
-      "Refining"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "cactus_flesh",
-    "name": "Cactus Flesh",
-    "category": "resource",
-    "value": 63,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": [
-      "Crafting Poly Fibre",
-      "Cooking recipes",
-      "Refining into Carbon"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "star_bulb",
-    "name": "Star Bulb",
-    "category": "resource",
-    "value": 63,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": [
-      "Crafting Poly Fibre",
-      "Cooking",
-      "Refining into Paraffinium"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "mordite",
-    "name": "Mordite",
-    "category": "resource",
-    "value": 25,
-    "rarity": "common",
-    "verdict": "sell",
-    "uses": [
-      "Refining into Carbon",
-      "Cooking recipes",
-      "Minor crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "copper",
-    "name": "Copper",
-    "category": "resource",
-    "value": 86,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Refining into Chromatic Metal",
-      "Base of the Chromatic Metal multiplication chain"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "chromatic_metal",
-    "name": "Chromatic Metal",
-    "category": "resource",
-    "value": 120,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": [
-      "Required by almost all technology crafting recipes",
-      "Ship and multitool upgrades"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "gold",
-    "name": "Gold",
-    "category": "resource",
-    "value": 253,
+    "value": 505,
     "rarity": "rare",
-    "verdict": "keep",
+    "verdict": "sell",
     "uses": [
-      "Crafting electrical components and Warp Drive parts",
-      "Refining catalyst for Chromatic Metal (boosts ratio)",
-      "Trading"
+      "High-value trading",
+      "Refining chain involving Nanites (unsicher: verify current recipe)",
+      "Some tech crafting"
     ],
     "where": "",
     "hidden": "",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "source": "NMS community wikis & Sportskeeda guide (paraphrased), 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "pyrite",
+    "name": "Pyrite",
+    "category": "resource",
+    "value": 50,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Geodesite and related items",
+      "Planet-specific technology crafting"
+    ],
+    "where": "",
+    "hidden": "",
+    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
     "updated": "2026-06-04"
   },
   {
@@ -382,36 +415,20 @@
     "updated": "2026-06-04"
   },
   {
-    "id": "platinum",
-    "name": "Platinum",
+    "id": "star_bulb",
+    "name": "Star Bulb",
     "category": "resource",
-    "value": 505,
-    "rarity": "rare",
+    "value": 63,
+    "rarity": "uncommon",
     "verdict": "sell",
     "uses": [
-      "High-value trading",
-      "Refining chain involving Nanites (unsicher: verify current recipe)",
-      "Some tech crafting"
+      "Crafting Poly Fibre",
+      "Cooking",
+      "Refining into Paraffinium"
     ],
     "where": "",
     "hidden": "",
-    "source": "NMS community wikis & Sportskeeda guide (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "activated_indium",
-    "name": "Activated Indium",
-    "category": "resource",
-    "value": 949,
-    "rarity": "very_rare",
-    "verdict": "sell",
-    "uses": [
-      "Premium unit-farming resource",
-      "High-end technology crafting"
-    ],
-    "where": "",
-    "hidden": "",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
     "updated": "2026-06-04"
   }
 ]
