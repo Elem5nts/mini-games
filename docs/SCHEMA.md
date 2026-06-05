@@ -19,7 +19,8 @@ shows a friendly placeholder).
   "rarity": "common | uncommon | rare | very_rare",
   "verdict": "keep | sell | ignore",
   "uses": ["string", "..."],
-  "tips": "string",
+  "where": "string",
+  "hidden": "string",
   "source": "string",
   "updated": "YYYY-MM-DD"
 }
@@ -36,7 +37,8 @@ shows a friendly placeholder).
 | `rarity`   | enum            | One of `common`, `uncommon`, `rare`, `very_rare`. |
 | `verdict`  | enum            | One of `keep`, `sell`, `ignore`. Drives the traffic light. |
 | `uses`     | array of string | What the item is used for. |
-| `tips`     | string          | Short curated advice. |
+| `where`    | string          | How/where you obtain it in-game (short). Empty `""` if unknown. |
+| `hidden`   | string          | The non-obvious tip — what the game does **not** tell you. Empty `""` if unknown. |
 | `source`   | string          | Where the info came from (paraphrased). |
 | `updated`  | string          | ISO date `YYYY-MM-DD` of last review. |
 
@@ -61,7 +63,8 @@ shows a friendly placeholder).
     "rarity": "uncommon",
     "verdict": "keep",
     "uses": ["Crafting", "Refining"],
-    "tips": "Handy early on; stockpile a small buffer.",
+    "where": "Mined from rocky deposits on most planets.",
+    "hidden": "Refines 1:1 into a more valuable form — don't sell it raw.",
     "source": "Paraphrased from public wiki",
     "updated": "2026-06-04"
   }
@@ -71,6 +74,51 @@ shows a friendly placeholder).
 ### Conventions
 
 - Unknown/optional fields may be omitted; the app degrades gracefully.
+- `where` and `hidden` may be empty strings `""` until researched.
 - Keep `rarity` and `verdict` to the documented enum values so styling works.
 - Paraphrase source material — never copy text verbatim (see
   [../DATA-SOURCES.md](../DATA-SOURCES.md)).
+
+## `data/faq.json`
+
+A JSON **array** of FAQ entry objects. An empty file is `[]` (valid — the app
+shows a friendly placeholder).
+
+### FAQ entry object
+
+```json
+{
+  "id": "string",
+  "question": "string",
+  "answer": "string",
+  "category": "string",
+  "source": "string",
+  "updated": "YYYY-MM-DD"
+}
+```
+
+### Fields
+
+| Field      | Type   | Notes |
+|------------|--------|-------|
+| `id`       | string | Stable unique key (e.g. `"how_to_warp"`). |
+| `question` | string | The question, shown as the card heading. |
+| `answer`   | string | The answer body. |
+| `category` | string | Free-text group (shown as a tag). Optional. |
+| `source`   | string | Where the info came from (paraphrased). |
+| `updated`  | string | ISO date `YYYY-MM-DD` of last review. |
+
+### Example entry
+
+```json
+[
+  {
+    "id": "example_question",
+    "question": "How do I do the thing?",
+    "answer": "Short, paraphrased explanation of how to do the thing.",
+    "category": "Basics",
+    "source": "Paraphrased from public wiki",
+    "updated": "2026-06-04"
+  }
+]
+```

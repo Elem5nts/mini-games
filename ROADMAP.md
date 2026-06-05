@@ -8,9 +8,15 @@ core rewrites. See [ARCHITECTURE.md](ARCHITECTURE.md) for the recipe.
 - [x] **App v1 — Item list**: search, category filter, verdict traffic light,
       reads `data/items.json`, friendly empty/missing-data placeholder.
 - [x] Project scaffold: folders, schema, architecture & source docs.
+- [x] **Item schema extension** — added `where` (how/where to obtain) and
+      `hidden` (the non-obvious tip) fields, replacing `tips`. App renders both.
+- [x] **FAQ tab** — `modules/faq.js` reads `data/faq.json`; searchable
+      question/answer list. Structure only; content to be added.
 
 ## Backlog
 
+- [ ] **FAQ content** — populate `data/faq.json` with curated, paraphrased Q&A.
+- [ ] **Items content** — fill `where` + `hidden` for existing entries.
 - [ ] **Class explainer** — what ship/multitool/etc. classes (C/B/A/S) mean and
       when each is worth it. Likely `data/classes.json` + `modules/classes.js`.
 - [ ] **Beginner checklist** — an early-game "do these first" list.

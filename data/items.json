@@ -1,302 +1,969 @@
 [
   {
-    "id": "ferrite_dust",
-    "name": "Ferrite Dust",
-    "category": "resource",
-    "value": 12,
-    "rarity": "common",
-    "verdict": "keep",
-    "uses": ["Base building", "Crafting components", "Refining into Pure Ferrite"],
-    "tips": "Mine from any rocky outcrop on any planet — it is everywhere. Never sell it; almost every crafting recipe calls for it directly or indirectly. Always carry a full stack.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "pure_ferrite",
-    "name": "Pure Ferrite",
-    "category": "resource",
-    "value": 22,
-    "rarity": "common",
-    "verdict": "keep",
-    "uses": ["Advanced base building", "Technology crafting", "Refining into Magnetised Ferrite"],
-    "tips": "Refine Ferrite Dust 1:1 in any portable refiner — free upgrade. Keep a stack ready; building and tech upgrades will consume it constantly.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "magnetised_ferrite",
-    "name": "Magnetised Ferrite",
-    "category": "resource",
-    "value": 50,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": ["Advanced structure building", "High-tier technology crafting"],
-    "tips": "Craft by refining Pure Ferrite together with metals (e.g. Gold or Silver). Only needed for specific advanced builds — don't stockpile until a recipe actually calls for it.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
     "id": "carbon",
     "name": "Carbon",
-    "category": "resource",
+    "category": "common element",
     "value": 12,
     "rarity": "common",
     "verdict": "keep",
-    "uses": ["Mining laser fuel", "Refining into Condensed Carbon", "Numerous crafting & cooking recipes"],
-    "tips": "Harvest from any plant or tree. It fuels your mining laser — the tool you use to gather everything else — so running out is a real problem. Always keep at least half a stack.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Fuel for the mining tool",
+      "Crafting & cooking ingredient",
+      "Refines into Condensed Carbon"
+    ],
+    "where": "Cut down any plant, tree or fungal growth with the mining beam; available on every planet.",
+    "hidden": "Running out strands you, because it fuels the very tool you mine with. Always keep a buffer before exploring far from your ship.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "condensed_carbon",
     "name": "Condensed Carbon",
-    "category": "resource",
-    "value": 52,
+    "category": "common element",
+    "value": 24,
     "rarity": "common",
     "verdict": "keep",
-    "uses": ["Dense mining laser fuel", "Crafting & refining ingredient"],
-    "tips": "Refine Carbon 2:1 to produce Condensed Carbon, which burns longer per unit. Also drops from red crystals on planetary surfaces. Worth making early once you have a portable refiner.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Long-burning tool fuel",
+      "Crafting & refining ingredient"
+    ],
+    "where": "Refine Carbon 2:1 in any refiner, or mine the red crystal clusters dotted across planet surfaces.",
+    "hidden": "Burns much longer per inventory slot than raw Carbon and feeds countless recipes, so keep a stack even though it barely sells. (Wert unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "deuterium",
+    "name": "Deuterium",
+    "category": "common element",
+    "value": 200,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Hyperdrive/pulse fuel component",
+      "Crafting fuel items"
+    ],
+    "where": "Refine Tritium + Di-hydrogen, or Silicate Powder + Di-hydrogen, in a refiner; rarely found directly.",
+    "hidden": "A refined fuel, not a raw find: making your own from cheap Di-hydrogen + Silicate Powder beats buying it. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "di_hydrogen",
     "name": "Di-hydrogen",
-    "category": "resource",
-    "value": 15,
+    "category": "common element",
+    "value": 16,
     "rarity": "common",
     "verdict": "keep",
-    "uses": ["Launch Thruster fuel", "Frigate fuel crafting", "Di-hydrogen Jelly crafting"],
-    "tips": "Blue crystals scattered on nearly every planet surface. Without it your ship can't take off — stock up before leaving on a long expedition. Refine 5 into Di-hydrogen Jelly for a more storage-efficient fuel form.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Launch thruster fuel",
+      "Frigate fuel crafting",
+      "Refines into Di-hydrogen Jelly"
+    ],
+    "where": "Mine the blue crystal formations scattered across every planet surface.",
+    "hidden": "It fuels your launch thrusters; without it you cannot take off. Refine 5:1 into Di-hydrogen Jelly to store launch fuel compactly.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "ferrite_dust",
+    "name": "Ferrite Dust",
+    "category": "common element",
+    "value": 12,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Base building",
+      "Crafting components",
+      "Refines into Pure Ferrite"
+    ],
+    "where": "Shoot any rocky boulder or terrain with the mining beam; found on practically every planet, moon and base.",
+    "hidden": "It is the backbone of almost every build and craft. Never sell it; the few units it fetches are not worth the constant re-gathering.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "magnetised_ferrite",
+    "name": "Magnetised Ferrite",
+    "category": "common element",
+    "value": 49,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Advanced structure building",
+      "High-tier technology crafting"
+    ],
+    "where": "Refine Pure Ferrite together with a metal (Copper, Silver or Gold) in a refiner; occasionally found as surface deposits.",
+    "hidden": "Only a handful of advanced parts need it, so make it on demand rather than hoarding and clogging inventory slots.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "oxygen",
     "name": "Oxygen",
-    "category": "resource",
+    "category": "common element",
     "value": 20,
     "rarity": "common",
     "verdict": "keep",
-    "uses": ["Life support fuel", "Hazard protection boost", "Refining catalyst (doubles output of many recipes)"],
-    "tips": "Collect from red plants or buy cheaply at stations. Beyond keeping you alive, Oxygen acts as a free catalyst in the refiner — combine it with Chlorine to duplicate it endlessly, a classic early money loop.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Life support recharge",
+      "Hazard protection boost",
+      "Refiner catalyst (doubles many outputs)"
+    ],
+    "where": "Harvest red-flagged plants on almost any planet, or buy it cheaply at most trade terminals.",
+    "hidden": "It doubles as a refiner catalyst: feeding Oxygen into many recipes multiplies the output, so it is worth far more than its sell price suggests.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "pure_ferrite",
+    "name": "Pure Ferrite",
+    "category": "common element",
+    "value": 24,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Advanced base building",
+      "Technology crafting",
+      "Refines into Magnetised Ferrite"
+    ],
+    "where": "Refine Ferrite Dust 1:1 in any refiner; also sold at construction and trade terminals.",
+    "hidden": "You rarely need to mine for it: surplus Ferrite Dust converts for free in the refiner while you get on with other things.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "sodium",
     "name": "Sodium",
-    "category": "resource",
-    "value": 30,
+    "category": "common element",
+    "value": 25,
     "rarity": "common",
     "verdict": "keep",
-    "uses": ["Hazard protection recharge", "Refining into Sodium Nitrate"],
-    "tips": "Harvest from yellow plants on any planet. Use it to recharge your hazard protection module during storms or toxic/heat exposure. Always carry a stack when exploring hostile worlds.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Hazard protection recharge",
+      "Refines into Sodium Nitrate"
+    ],
+    "where": "Harvest yellow-flagged plants, or grab the glowing yellow crystals on cliffs and in caves.",
+    "hidden": "Recharges hazard protection instantly, even mid-storm; a cheap lifesaver beginners often ignore in favour of running for shelter.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "sodium_nitrate",
     "name": "Sodium Nitrate",
-    "category": "resource",
-    "value": 60,
+    "category": "common element",
+    "value": 62,
     "rarity": "uncommon",
     "verdict": "keep",
-    "uses": ["Stronger hazard protection recharge", "Various refining recipes"],
-    "tips": "Refine Sodium at a 2:1 ratio to get Sodium Nitrate, which restores twice as much hazard protection. Well worth the refiner time before heading to extreme-weather planets.",
-    "source": "NMS community wikis & beginner guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Stronger hazard protection recharge",
+      "Various refining recipes"
+    ],
+    "where": "Refine Sodium 2:1, or mine it directly as a deposit on some planets.",
+    "hidden": "Restores far more protection per unit than raw Sodium, so refine a stack before heading to extreme-weather worlds.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "cobalt",
-    "name": "Cobalt",
-    "category": "resource",
-    "value": 58,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": ["Refining into Ionised Cobalt", "Crafting Ion Batteries", "Trade commodity"],
-    "tips": "Abundant in caves on most planets; guaranteed on irradiated worlds. Decent sell value in bulk. Also works as a simple trade-route item: buy cheap at one station and sell at a station with a market bonus.",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "id": "tritium",
+    "name": "Tritium",
+    "category": "common element",
+    "value": 24,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Pulse engine fuel",
+      "Frigate fuel crafting",
+      "Freighter base building"
+    ],
+    "where": "Shoot asteroids from your starship; interstellar belts are full of it. Watch for 'Tritium-Rich' asteroids and Hyperclusters (~100 each).",
+    "hidden": "It refuels the pulse engine directly with no crafting. Outlaw stations always stock some, handy when an asteroid belt is far away.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "ionised_cobalt",
-    "name": "Ionised Cobalt",
-    "category": "resource",
-    "value": 85,
-    "rarity": "uncommon",
-    "verdict": "sell",
-    "uses": ["Crafting Ion Batteries & Advanced Ion Batteries", "Various tech crafting", "Trading"],
-    "tips": "Refine Cobalt 1:1 for a free value bump. Crafting Ion Batteries from it yields even more units per stack. A solid early money-maker if you farm caves aggressively.",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "pyrite",
-    "name": "Pyrite",
-    "category": "resource",
-    "value": 50,
+    "id": "nitrogen",
+    "name": "Nitrogen",
+    "category": "gas",
+    "value": 40,
     "rarity": "uncommon",
     "verdict": "keep",
-    "uses": ["Crafting Geodesite and related items", "Planet-specific technology crafting"],
-    "tips": "Found on desert and scorched planet types. Not particularly lucrative to sell; keep a small buffer for planet-specific crafting recipes you will encounter during story progression.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Crafting Nitrogen Salt",
+      "Stasis Device commodity chain",
+      "Refining loops"
+    ],
+    "where": "Build a Gas Extractor on a Nitrogen gas hotspot (locate one with the survey device), usually on Lush or Toxic worlds; also via Atmosphere Harvesters.",
+    "hidden": "Cheap raw, but combined with Condensed Carbon it makes Nitrogen Salt, a step toward commodities worth hundreds of thousands. Keep it for crafting, not selling. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "dioxite",
-    "name": "Dioxite",
-    "category": "resource",
-    "value": 52,
+    "id": "radon",
+    "name": "Radon",
+    "category": "gas",
+    "value": 40,
     "rarity": "uncommon",
     "verdict": "keep",
-    "uses": ["Crafting Cryogenic Chamber and related components", "Technology crafting"],
-    "tips": "Only found on frozen/icy planets. If a recipe calls for it and you are far from a frozen world, check space station traders. Stock up whenever you visit a frozen planet.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Crafting Enriched Carbon",
+      "Advanced commodity chains",
+      "Refining"
+    ],
+    "where": "Gas Extractor on a Radon hotspot, found on Irradiated and Frozen worlds; also via Atmosphere Harvesters.",
+    "hidden": "Turns into Enriched Carbon with Condensed Carbon; an automated extractor makes it near-free passive income. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "paraffinium",
-    "name": "Paraffinium",
-    "category": "resource",
-    "value": 60,
+    "id": "sulphurine",
+    "name": "Sulphurine",
+    "category": "gas",
+    "value": 40,
     "rarity": "uncommon",
     "verdict": "keep",
-    "uses": ["Crafting building materials and decorations", "Refining into Thermic Condensate", "Various tech recipes"],
-    "tips": "Harvested from yellow-flowering plants on lush and warm continental planets. Important for base building. If your home planet lacks it, either trade for it or keep a supply from a nearby lush world.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "phosphorus",
-    "name": "Phosphorus",
-    "category": "resource",
-    "value": 45,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": ["Explosive weapon crafting", "Technology crafting recipes"],
-    "tips": "Found on scorched and fiery planet types. Needed for specific tech and weapons — keep a small stock. (unsicher: exact planet type distribution can vary between game updates)",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Crafting Thermic Condensate",
+      "Advanced commodity chains",
+      "Refining"
+    ],
+    "where": "Gas Extractor on a Sulphurine hotspot, found on Scorched, Desert and Volcanic worlds.",
+    "hidden": "Feeds the Thermic Condensate chain; a passive Gas Extractor farm quietly stockpiles it while you play elsewhere. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "ammonia",
     "name": "Ammonia",
-    "category": "resource",
+    "category": "catalytic element",
     "value": 58,
     "rarity": "uncommon",
     "verdict": "keep",
-    "uses": ["Crafting Stasis Device chain components", "Technology crafting", "Refining"],
-    "tips": "Exclusive to toxic planets. It is a key ingredient in the high-value Stasis Device crafting chain later in the game. Stock up during any toxic planet visit — they appear infrequently in some systems.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Stasis Device commodity chain",
+      "Technology crafting",
+      "Refining"
+    ],
+    "where": "Dig the marked deposit nodes on Toxic planets with the terrain tool.",
+    "hidden": "A key link in the very lucrative Stasis Device chain, so stock up on toxic worlds, which only appear occasionally in some regions.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "cactus_flesh",
-    "name": "Cactus Flesh",
-    "category": "resource",
-    "value": 63,
+    "id": "chlorine",
+    "name": "Chlorine",
+    "category": "catalytic element",
+    "value": 38,
     "rarity": "uncommon",
     "verdict": "sell",
-    "uses": ["Crafting Poly Fibre", "Cooking recipes", "Refining into Carbon"],
-    "tips": "Harvested from cactus plants on desert planets. Sells reasonably well and any surplus refines to Carbon for fuel. Not a critical crafting material early on — sell what you don't need.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Crafting & refining",
+      "The classic Chlorine money loop",
+      "Underwater technology"
+    ],
+    "where": "Mine underwater crystal growths, or refine it from Salt.",
+    "hidden": "Chlorine + Oxygen in a refiner yields MORE Chlorine than you put in. Loop it with cheap station-bought Oxygen to print millions. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "star_bulb",
-    "name": "Star Bulb",
-    "category": "resource",
-    "value": 63,
+    "id": "cobalt",
+    "name": "Cobalt",
+    "category": "catalytic element",
+    "value": 58,
     "rarity": "uncommon",
     "verdict": "sell",
-    "uses": ["Crafting Poly Fibre", "Cooking", "Refining into Paraffinium"],
-    "tips": "From Star Bramble plants on lush planets — they grow in clusters, so a quick run yields a large stack. Refines into Paraffinium if you need it, but selling is often more efficient early on.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Refines into Ionised Cobalt",
+      "Ion Battery crafting",
+      "Trade commodity"
+    ],
+    "where": "Mine the glowing deposits inside caves on most planets; guaranteed in quantity on irradiated worlds.",
+    "hidden": "Caves keep you safe from surface hazards, so you can farm Cobalt for ages. Refine it to Ionised Cobalt for a free value bump before selling.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "mordite",
-    "name": "Mordite",
-    "category": "resource",
+    "id": "dioxite",
+    "name": "Dioxite",
+    "category": "catalytic element",
+    "value": 52,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Cryogenic Chamber and cold-weather tech",
+      "Refining"
+    ],
+    "where": "Mine deposits on Frozen/icy planets.",
+    "hidden": "Frozen-world locked; station traders sometimes sell it, but it is far easier to stock up whenever you land on snow.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "ionised_cobalt",
+    "name": "Ionised Cobalt",
+    "category": "catalytic element",
+    "value": 85,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Ion Battery & Advanced Ion Battery crafting",
+      "Charging technology",
+      "Trading"
+    ],
+    "where": "Refine Cobalt 1:1, or buy Cobalt cheaply and refine it in bulk.",
+    "hidden": "Crafting it into Ion Batteries multiplies its value again; a single Cobalt-rich cave becomes a tidy income stream this way.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "paraffinium",
+    "name": "Paraffinium",
+    "category": "catalytic element",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Building materials and decorations",
+      "Refines into Thermic Condensate",
+      "Technology recipes"
+    ],
+    "where": "Harvest the yellow-flowering plants on Lush and warm worlds, or mine surface deposits.",
+    "hidden": "Frequently needed for base parts; if your home planet lacks it, keep a supply from a lush world rather than hunting for it mid-build.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "phosphorus",
+    "name": "Phosphorus",
+    "category": "catalytic element",
+    "value": 45,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Explosive and weapon technology crafting",
+      "Refining recipes"
+    ],
+    "where": "Dig the marked deposit nodes on Scorched/fiery planets with the terrain tool.",
+    "hidden": "Locked to hot worlds, so grab a stack whenever you visit one; a recipe needing it can catch you out far from a scorched system. (unsicher: Biom-Verteilung variiert je Update)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "pyrite",
+    "name": "Pyrite",
+    "category": "catalytic element",
+    "value": 50,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Crafting Geodesite and related items",
+      "Refining"
+    ],
+    "where": "Mine deposits on desert and scorched worlds, or refine Gold together with Oxygen.",
+    "hidden": "You can manufacture it in a refiner from Gold + Oxygen when no desert world is nearby, which beginners rarely realise.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "salt",
+    "name": "Salt",
+    "category": "catalytic element",
     "value": 25,
     "rarity": "common",
     "verdict": "sell",
-    "uses": ["Refining into Carbon", "Cooking recipes", "Minor crafting"],
-    "tips": "Drops from almost any creature you kill. Accumulates naturally during exploration. Low individual value — sell in batches or refine to Carbon. (unsicher: exact sell value per unit varies by market)",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Refines into Chlorine",
+      "Feeds the Chlorine money loop",
+      "Refining"
+    ],
+    "where": "Mine the bright deposits on ocean worlds and some dead/barren planets; check coasts and the seabed.",
+    "hidden": "The entry point to the Chlorine money loop: refine Salt to Chlorine, then multiply Chlorine with Oxygen for huge profit. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "copper",
-    "name": "Copper",
-    "category": "resource",
-    "value": 86,
-    "rarity": "uncommon",
+    "id": "uranium",
+    "name": "Uranium",
+    "category": "catalytic element",
+    "value": 30,
+    "rarity": "common",
     "verdict": "keep",
-    "uses": ["Refining into Chromatic Metal", "Base of the Chromatic Metal multiplication chain"],
-    "tips": "Mine from Copper deposits found near Electromagnetic Hotspots (scan for hotspots with your Analysis Visor). The primary early source of Chromatic Metal — the material that goes into nearly every piece of tech.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
+    "uses": [
+      "Launch thruster fuel",
+      "Crafting Health Station, Megawatt Heater, Radiation Deflector, etc."
+    ],
+    "where": "Mine Uranium deposits on Irradiated (green/yellow) worlds with the terrain tool; sometimes inside metal 'fingers'.",
+    "hidden": "It can fuel launch thrusters as a cheap alternative to Di-hydrogen and feeds many early base/tech recipes, so don't dump it. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "chromatic_metal",
-    "name": "Chromatic Metal",
-    "category": "resource",
+    "id": "activated_cadmium",
+    "name": "Activated Cadmium",
+    "category": "stellar metal",
+    "value": 260,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "Sells well raw",
+      "Refines into Chromatic Metal"
+    ],
+    "where": "Mine Activated Cadmium deposits in red-star systems.",
+    "hidden": "Sell the activated version; the value jump over base Cadmium is large. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "activated_copper",
+    "name": "Activated Copper",
+    "category": "stellar metal",
     "value": 120,
-    "rarity": "uncommon",
-    "verdict": "keep",
-    "uses": ["Required by almost all technology crafting recipes", "Ship and multitool upgrades"],
-    "tips": "Produced by refining any stellar metal (Copper, Cadmium, Emeril, Indium). Do not sell it — nearly every technology component calls for it. Keep a running stock of at least 200-300 units.",
-    "source": "NMS community wikis & guides (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "gold",
-    "name": "Gold",
-    "category": "resource",
-    "value": 253,
-    "rarity": "rare",
-    "verdict": "keep",
-    "uses": ["Crafting electrical components and Warp Drive parts", "Refining catalyst for Chromatic Metal (boosts ratio)", "Trading"],
-    "tips": "Found in asteroids and underground cave deposits. Needed for Warp Drive components and other critical tech — keep a buffer of at least 50 units before selling surplus. Sells well in emergencies.",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
-    "updated": "2026-06-04"
-  },
-  {
-    "id": "silver",
-    "name": "Silver",
-    "category": "resource",
-    "value": 171,
     "rarity": "rare",
     "verdict": "sell",
-    "uses": ["Trading for units", "Refining catalyst (boosts Chromatic Metal output from stellar metals)", "Some tech crafting"],
-    "tips": "Mined from underground cave deposits. Good sell value and less critical for crafting than Gold. Sell the bulk; keep only a small amount (~50) for refining combos with stellar metals.",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "uses": [
+      "Sells well raw",
+      "Refines into Chromatic Metal"
+    ],
+    "where": "Mine the rarer Activated Copper surface deposits in yellow-star systems.",
+    "hidden": "Worth markedly more than plain Copper raw, so sell the activated form and keep ordinary Copper for refining. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
-    "id": "platinum",
-    "name": "Platinum",
-    "category": "resource",
-    "value": 505,
+    "id": "activated_emeril",
+    "name": "Activated Emeril",
+    "category": "stellar metal",
+    "value": 600,
     "rarity": "rare",
     "verdict": "sell",
-    "uses": ["High-value trading", "Refining chain involving Nanites (unsicher: verify current recipe)", "Some tech crafting"],
-    "tips": "One of the best raw resources for earning units early. Worth ~505 units each, so even a modest haul converts to significant funds. Sell freely — there is rarely a crafting bottleneck on Platinum.",
-    "source": "NMS community wikis & Sportskeeda guide (paraphrased), 2026-06-04",
+    "uses": [
+      "Sells very well raw",
+      "Refines into Chromatic Metal"
+    ],
+    "where": "Mine Activated Emeril deposits in green-star systems.",
+    "hidden": "Roughly double the value of base Emeril; an automated extractor on a hotspot prints units passively. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   },
   {
     "id": "activated_indium",
     "name": "Activated Indium",
-    "category": "resource",
+    "category": "stellar metal",
     "value": 949,
     "rarity": "very_rare",
     "verdict": "sell",
-    "uses": ["Premium unit-farming resource", "High-end technology crafting"],
-    "tips": "Found only on planets orbiting blue-coloured stars — you need a Cadmium Drive → Emeril Drive → Indium Drive upgrade chain to reach blue systems. At ~949 units per item it is the highest-value raw resource in the game. A large automated mine here is the classic mid-game unit farm.",
-    "source": "NMS community wikis & Steam discussions (paraphrased), 2026-06-04",
+    "uses": [
+      "Premium unit farming",
+      "High-end technology crafting"
+    ],
+    "where": "Mine Activated Indium deposits on blue-star planets.",
+    "hidden": "The highest-value raw resource in the game; a large automated Activated Indium mine is the classic mid-game money machine.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "cadmium",
+    "name": "Cadmium",
+    "category": "stellar metal",
+    "value": 130,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Cadmium Drive upgrades"
+    ],
+    "where": "Mine deposits on planets in red-star systems (needs a Cadmium Drive installed to warp there).",
+    "hidden": "Higher up the colour chain than Copper, so it yields more Chromatic Metal per unit when refined with Gold or Silver. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "chromatic_metal",
+    "name": "Chromatic Metal",
+    "category": "stellar metal",
+    "value": 120,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Required by almost all technology crafting",
+      "Ship and multitool upgrades"
+    ],
+    "where": "Refine any stellar metal (Copper, Cadmium, Emeril, Indium, Quartzite) in a refiner.",
+    "hidden": "Never sell it: nearly every tech component needs it, so keep a few hundred on hand. Higher-colour metals refine into far more of it.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "copper",
+    "name": "Copper",
+    "category": "stellar metal",
+    "value": 86,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Wiring and electrical crafting"
+    ],
+    "where": "Mine Copper deposits near Electromagnetic Hotspots in yellow-star systems (scan with the Analysis Visor).",
+    "hidden": "The cheapest road to Chromatic Metal; refine it together with Silver and Gold to boost the conversion ratio dramatically.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "emeril",
+    "name": "Emeril",
+    "category": "stellar metal",
+    "value": 275,
+    "rarity": "rare",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Emeril Drive upgrades"
+    ],
+    "where": "Mine deposits on planets in green-star systems (needs an Emeril Drive).",
+    "hidden": "Refining Emeril with Gold/Silver gives a strong Chromatic Metal return; many players over-mine cheap Copper instead and miss this.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "indium",
+    "name": "Indium",
+    "category": "stellar metal",
+    "value": 464,
+    "rarity": "rare",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal",
+      "Top-tier technology crafting"
+    ],
+    "where": "Mine deposits on planets in blue-star systems (needs an Indium Drive, the final colour drive).",
+    "hidden": "Blue systems are the end of the colour-drive chain; once there, an extractor on an Indium hotspot gives serious passive income.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "quartzite",
+    "name": "Quartzite",
+    "category": "stellar metal",
+    "value": 90,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Chromatic Metal (unsicher)",
+      "Crafting"
+    ],
+    "where": "Mine Quartzite stellar-metal deposits; the exact star-colour association is uncertain.",
+    "hidden": "An often-overlooked stellar metal; treat it like the coloured metals and refine toward Chromatic Metal. (unsicher: Quelle/Verwendung je Version)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "gold",
+    "name": "Gold",
+    "category": "valuable metal",
+    "value": 253,
+    "rarity": "rare",
+    "verdict": "keep",
+    "uses": [
+      "Electrical components and Warp Drive parts",
+      "Refiner catalyst that boosts Chromatic Metal output",
+      "Trading"
+    ],
+    "where": "Mine gold-flecked asteroids, dig Gold deposits in caves, or take it from defeated pirates.",
+    "hidden": "Needed for Warp Drive and other key tech, so keep ~50 before selling surplus. As a refiner catalyst it boosts stellar-metal-to-Chromatic conversion.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "platinum",
+    "name": "Platinum",
+    "category": "valuable metal",
+    "value": 505,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading",
+      "Refining chains (e.g. toward Nanites)",
+      "Some technology crafting"
+    ],
+    "where": "Mine Platinum-rich asteroids, or dig surface and cave deposits.",
+    "hidden": "One of the best raw earners early and rarely needed for crafting, so sell freely. (unsicher: aktuelle Refining-Rezepte)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "silver",
+    "name": "Silver",
+    "category": "valuable metal",
+    "value": 171,
+    "rarity": "rare",
+    "verdict": "sell",
+    "uses": [
+      "Trading for units",
+      "Refiner catalyst (boosts Chromatic Metal output)",
+      "Some technology crafting"
+    ],
+    "where": "Mine Silver deposits in underground caves.",
+    "hidden": "Less craft-critical than Gold, so sell the bulk and keep only ~50 for refining combos with stellar metals.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "cactus_flesh",
+    "name": "Cactus Flesh",
+    "category": "organic element",
+    "value": 63,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Poly Fibre",
+      "Cooking",
+      "Refines into Carbon"
+    ],
+    "where": "Harvest Echinocactus plants on Desert worlds.",
+    "hidden": "Surplus refines straight to Carbon, so it is rarely wasted even when you only wanted the units.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "cyto_phosphate",
+    "name": "Cyto-Phosphate",
+    "category": "organic element",
+    "value": 40,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Nautilon submarine fuel",
+      "Crafting Glass, Condensed Carbon, Aquatic Crystal"
+    ],
+    "where": "Mine underwater flora with the mining beam; be careful, it can spawn Abyssal Horrors.",
+    "hidden": "It fuels the Nautilon submarine, so stock up before deep dives; mining it can summon underwater predators. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "faecium",
+    "name": "Faecium",
+    "category": "organic element",
+    "value": 35,
+    "rarity": "common",
+    "verdict": "sell",
+    "uses": [
+      "Cooking",
+      "Crafting",
+      "Refining"
+    ],
+    "where": "Best farmed from the Gutrot Flower crop (~25 every 4h); also drops from creatures and damaged machinery.",
+    "hidden": "Mainly a cooking ingredient; multiply it by refining Mordite with Condensed Carbon when a recipe needs a lot. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "frost_crystal",
+    "name": "Frost Crystal",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting (Poly Fibre, cold-weather tech)",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Frostwort plants on Frozen worlds.",
+    "hidden": "The cold-biome counterpart to Cactus Flesh and Star Bulb; handy for the cold-tech recipes you meet on icy worlds. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "fungal_mould",
+    "name": "Fungal Mould",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Fungal Clusters on Toxic worlds.",
+    "hidden": "Shares the toxic biome with Ammonia, so combine the gathering runs. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "gamma_root",
+    "name": "Gamma Root",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting (e.g. Gamma Weed)",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Gamma Weed plants on Radioactive worlds.",
+    "hidden": "Pick it while mining Uranium on the same irradiated planet to save a separate trip. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "kelp_sac",
+    "name": "Kelp Sac",
+    "category": "organic element",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Chlorine and Oxygen",
+      "Underwater recipes"
+    ],
+    "where": "Harvest Candle Kelp underwater; approaching it also tops up your exosuit oxygen.",
+    "hidden": "Harvesting refills your dive oxygen, so it doubles as a diving aid; it cannot be farmed, only gathered. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "marrow_bulb",
+    "name": "Marrow Bulb",
+    "category": "organic element",
+    "value": 50,
+    "rarity": "common",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Poly Fibre and others",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Cave Marrow growths inside caves on most planets; also refinable from Crystallised Helium.",
+    "hidden": "Grows in the same caves as Cobalt, so grab both in one descent. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "mordite",
+    "name": "Mordite",
+    "category": "organic element",
+    "value": 25,
+    "rarity": "common",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Carbon",
+      "Cooking (Creature Pellets, etc.)",
+      "Minor crafting"
+    ],
+    "where": "Drops when you kill fauna; also from Mordite Root crops, organic rocks on scorched/desert worlds, and some marsh deposits.",
+    "hidden": "Piles up automatically as you fight wildlife; low value, so refine spares to Carbon or cook with it rather than hauling it around. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "solanium",
+    "name": "Solanium",
+    "category": "organic element",
+    "value": 70,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting",
+      "Cooking",
+      "Refining"
+    ],
+    "where": "Harvest Solar Vine plants on Scorched worlds.",
+    "hidden": "Gather it on the same trips you mine Phosphorus, since both sit on hot planets. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "star_bulb",
+    "name": "Star Bulb",
+    "category": "organic element",
+    "value": 63,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting Poly Fibre",
+      "Cooking",
+      "Refines into Paraffinium"
+    ],
+    "where": "Harvest Star Bramble plants, which grow in clusters on Lush worlds.",
+    "hidden": "Dense clusters mean one short run fills a stack; refine to Paraffinium if needed, otherwise selling is usually quicker.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "gravitino_ball",
+    "name": "Gravitino Ball",
+    "category": "exotic element",
+    "value": 27600,
+    "rarity": "very_rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading"
+    ],
+    "where": "Pick them up on Sentinel-heavy planets; each pickup instantly triggers a Sentinel alert.",
+    "hidden": "Grabbing one always aggroes Sentinels, so fight, flee, or plant Gravitino Hosts to farm them safely. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "living_pearl",
+    "name": "Living Pearl",
+    "category": "exotic element",
+    "value": 28000,
+    "rarity": "very_rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading"
+    ],
+    "where": "Found inside Armoured Clams deep underwater.",
+    "hidden": "Interact slowly instead of attacking to take the pearl before the clam snaps shut. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "pugneum",
+    "name": "Pugneum",
+    "category": "exotic element",
+    "value": 50,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Refining into other metals",
+      "Crafting"
+    ],
+    "where": "Drops from destroyed Sentinels; larger Sentinel types drop more.",
+    "hidden": "Stacks up naturally during Sentinel fights, so refine it instead of letting it sit unused. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "runaway_mould",
+    "name": "Runaway Mould",
+    "category": "exotic element",
+    "value": 1,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Nanite Clusters (5:1)"
+    ],
+    "where": "Loot the small canisters inside abandoned buildings and some caches.",
+    "hidden": "Nearly worthless to sell, but refines 5:1 into Nanites, an easy early way to bank upgrade currency. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "sac_venom",
+    "name": "Sac Venom",
+    "category": "exotic element",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting",
+      "Cooking"
+    ],
+    "where": "Destroy urchin-like creatures on land or underwater; also farmable via the Venom Urchin plant.",
+    "hidden": "A planted Venom Urchin gives a steady supply without hunting. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "storm_crystal",
+    "name": "Storm Crystal",
+    "category": "exotic element",
+    "value": 211150,
+    "rarity": "very_rare",
+    "verdict": "sell",
+    "uses": [
+      "High-value trading",
+      "Crafting efficiency/weather tech"
+    ],
+    "where": "On extreme-weather worlds, during a storm, scan with the Analysis Visor and dig up the marked crystal.",
+    "hidden": "Worth a fortune each, but only spawns mid-storm exactly when hazard protection drains fastest, so bring Sodium Nitrate.",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "tainted_metal",
+    "name": "Tainted Metal",
+    "category": "exotic element",
+    "value": 1,
+    "rarity": "uncommon",
+    "verdict": "keep",
+    "uses": [
+      "Refines into Nanite Clusters (1:2)"
+    ],
+    "where": "Drops from Corrupted Sentinels on Dissonant planets (those with purple crystal formations).",
+    "hidden": "Refines 1:2 into Nanites, an excellent rate, making Dissonant-planet fights a reliable nanite farm. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "basalt",
+    "name": "Basalt",
+    "category": "mineral",
+    "value": 60,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Crafting/refining (limited)"
+    ],
+    "where": "Mine the stellar-metal-shaped deposits found on some planets.",
+    "hidden": "Looks like a stellar-metal node but is its own localised element with limited uses, so treat it as a minor sell item. (unsicher: Verwendung je Version)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "crystallised_helium",
+    "name": "Crystallised Helium",
+    "category": "mineral",
+    "value": 240,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Ferrite Dust, Lithium, Sodium Nitrate, Uranium, etc.",
+      "Crafting Exocraft Summoning Unit"
+    ],
+    "where": "Mine the large deposits on gas-giant worlds around purple stars (scan with the Analysis Visor).",
+    "hidden": "A flexible refiner feedstock that converts into several scarce elements when a planet lacks them. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "lithium",
+    "name": "Lithium",
+    "category": "mineral",
+    "value": 110,
+    "rarity": "uncommon",
+    "verdict": "sell",
+    "uses": [
+      "Refines into Crystallised Helium, Ferrite Dust, Kelp Sac, Pyrite, Sodium Nitrate",
+      "Crafting Dredging Laser"
+    ],
+    "where": "Mine deposits on Ocean worlds.",
+    "hidden": "An ocean-world staple that refines into many scarce elements; stock up while diving for other water resources. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
+    "updated": "2026-06-04"
+  },
+  {
+    "id": "silicate_powder",
+    "name": "Silicate Powder",
+    "category": "mineral",
+    "value": 8,
+    "rarity": "common",
+    "verdict": "keep",
+    "uses": [
+      "Concrete and stone building pieces",
+      "Refines into Glass (40:1)",
+      "Refines into Deuterium with Di-hydrogen"
+    ],
+    "where": "Dig soil with the terrain manipulator on any rocky world; extremely abundant.",
+    "hidden": "Often grouped with valuables but actually low-value: keep it for building and for making Deuterium rather than selling. (Werte unsicher)",
+    "source": "Paraphrased from NMS community wikis & guides, 2026-06-04",
     "updated": "2026-06-04"
   }
 ]

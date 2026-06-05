@@ -1,0 +1,146 @@
+[
+  {
+    "id": "how_to_save",
+    "question": "How do I save my game?",
+    "answer": "There is no \"save and quit\" button. The quickest save is to hop out of your starship — that writes a restore point instantly. You can also interact with any beacon at a structure, or craft a portable Save Beacon/Save Point. Always trigger a save before quitting, or you lose recent progress.",
+    "category": "Saving",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "fast_early_money",
+    "question": "What is the fastest way to make units early on?",
+    "answer": "Scan every plant and animal with your Analysis Visor for quick units. Dig up Buried Technology (a Wi-Fi-like scan signal) for Salvaged Data and sell it. Loot caves for items like Albumen Pearls. Later, buy-low/sell-high trade runs and mining Activated Indium scale up far more.",
+    "category": "Money",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "what_are_nanites",
+    "question": "What are Nanites and how do I get them?",
+    "answer": "Nanites are the second currency, used to buy blueprints and upgrade modules. Easiest early source: refine Salvaged Data (about 15 nanites each) or Runaway Mould (5 to 1) in a refiner. Later, buying cheap ships and scrapping them for modules is very fast. They are separate from units.",
+    "category": "Currency",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "what_is_quicksilver",
+    "question": "What is Quicksilver for?",
+    "answer": "Quicksilver is a cosmetic-only currency. Earn it from daily and weekend missions at the Nexus (the social hub inside the Space Anomaly) and from some story steps. Spend it at the Quicksilver vendor on decorations, ship/base parts and customisations. (unsicher: exakte Missionsbelohnungen ändern sich je Update)",
+    "category": "Currency",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "warp_to_new_system",
+    "question": "How do I travel to other star systems?",
+    "answer": "You need a Hyperdrive installed in your ship, then Warp Cells to fuel it. Craft a Warp Cell from Antimatter + Antimatter Housing. Antimatter itself is made from Chromatic Metal + Condensed Carbon (the story gives you the recipe). Each Warp Cell fills roughly 20% of the tank.",
+    "category": "Travel",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "expand_inventory",
+    "question": "How do I get more inventory slots?",
+    "answer": "Exosuit: buy slots at the suit terminal on space stations and claim free ones from Drop Pods on planets (scan for them). Starship: use the outfitting terminal on stations, or switch to a ship with more slots. Multi-Tool: buy slots at the station's multi-tool terminal. Each exosuit slot costs more than the last.",
+    "category": "Inventory",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "free_freighter",
+    "question": "How do I get a freighter, and is it free?",
+    "answer": "Your first freighter can be free. After a few warps you arrive into a space battle where pirates attack a freighter — defend it, and the grateful captain may give you the ship. Tip: decline payment on the first offer and the next rescued freighter is often a larger capital ship, also free. (unsicher: dieses Verhalten wurde über Updates angepasst)",
+    "category": "Ships",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "death_and_grave",
+    "question": "What happens when I die — do I lose everything?",
+    "answer": "In Normal mode you drop the resources you were carrying and a grave marker appears where you died; return and interact with it to reclaim them. Gear, blueprints and anything stored in your ship or base are safe. Warning: dying again before you reach the grave, or logging out, loses those dropped items for good. (Survival and Permadeath have no grave.)",
+    "category": "Survival",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "after_tutorial",
+    "question": "I finished the opening tutorial — what now?",
+    "answer": "Keep following the main missions (the Artemis Path). They hand out lots of free blueprints, teach the core systems, and point you to the Space Anomaly. It is worth doing most of the main missions before wandering off, because they unlock things you cannot get any other way.",
+    "category": "Progression",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "space_anomaly",
+    "question": "What is the Space Anomaly and why go there?",
+    "answer": "It is a travelling hub you can summon from the quick menu while in space (once unlocked). Inside, Nada and Polo give missions and sell key blueprints and upgrades for nanites, and the Nexus offers multiplayer missions for Quicksilver. Visit early — the blueprints there are a big help.",
+    "category": "Hubs",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "better_multitool",
+    "question": "How do I get a better Multi-Tool?",
+    "answer": "Watch for Multi-Tool cabinets at trading posts and minor settlements — they show a tool you can buy or sometimes claim. Crashed/abandoned tools and NPC gifts are cheap but need repairs. On Dissonant planets, Harmonic Camp cabinets give free Sentinel Multi-Tools. Tip: reloading a save reshuffles which tool a cabinet offers.",
+    "category": "Multi-Tool",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "learn_language",
+    "question": "How do I understand the alien NPCs?",
+    "answer": "You learn one word at a time. Talk to aliens on space stations (choose the language option), read Monoliths, Knowledge Stones and plaques, and solve some puzzles. As your vocabulary grows, conversations become readable, which makes trades and mission rewards much easier to judge.",
+    "category": "Exploration",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "recharge_protection",
+    "question": "My hazard protection and life support keep draining — how do I refuel them?",
+    "answer": "Hazard protection recharges with Sodium (or Sodium Nitrate for more), or instantly when you stand in shelter or a cave. Life support uses Oxygen, Carbon or charged items. Keep a small stock of Sodium and Oxygen at all times; entering a cave pauses environmental hazards entirely.",
+    "category": "Survival",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "start_a_base",
+    "question": "How do I start a base?",
+    "answer": "Craft and place a Base Computer (needs Chromatic Metal), then activate it to claim the area. The early story mission walks you through it and drips free building blueprints over time. Choose a calm spot — no extreme weather or aggressive Sentinels — with useful resources nearby.",
+    "category": "Bases",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "unlock_blueprints",
+    "question": "How do I unlock base-building and tech blueprints?",
+    "answer": "Dig up Buried Technology (a Wi-Fi-like icon in your Analysis Visor) for Salvaged Data, then spend it at a Construction Research Station — build one, or use the one on the Space Anomaly — to buy building blueprints. Spare Salvaged Data also refines into nanites.",
+    "category": "Progression",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "protect_valuables",
+    "question": "How do I avoid losing valuable resources?",
+    "answer": "Store anything valuable in your starship inventory or a base Storage Container before doing risky things — extreme planets, dogfights, deep dives. Items in your ship or base are never lost on death; only what you are personally carrying drops at your grave.",
+    "category": "Inventory",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "more_starships",
+    "question": "Can I get more starships, and are crashed ones worth it?",
+    "answer": "Yes — you can own several and swap between them. Buy ships from NPCs at stations and trading posts, or claim crashed/abandoned ones for free. Free ships need resources to repair every broken slot, so they are cheap to grab but can be slow to fix — good as a project, not a quick upgrade.",
+    "category": "Ships",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  },
+  {
+    "id": "install_tech_adjacency",
+    "question": "Where do I install upgrades, and does placement matter?",
+    "answer": "Install upgrades in the technology section of your suit, ship or tool, not the cargo section. Placement matters: identical or related upgrades placed next to each other (and next to the core tech) give an adjacency bonus, so cluster them together. Watch for the highlighted links shown while installing.",
+    "category": "Technology",
+    "source": "Paraphrased from NMS community guides & wikis, 2026-06-05",
+    "updated": "2026-06-05"
+  }
+]
