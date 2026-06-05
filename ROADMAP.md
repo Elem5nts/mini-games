@@ -17,13 +17,13 @@ core rewrites. See [ARCHITECTURE.md](ARCHITECTURE.md) for the recipe.
 - [x] **Getting Started checklist** — `modules/checklist.js` reads
       `data/checklist.json`; steps grouped by phase (First Hour / First Few
       Hours / First Week), ordered, with localStorage-persisted checkboxes.
+- [x] **Glossary** — `modules/glossary.js` reads `data/glossary.json`;
+      searchable list with category filter (41 curated terms).
 
 ## Backlog
 
 - [ ] **Class explainer** — what ship/multitool/etc. classes (C/B/A/S) mean and
       when each is worth it. Likely `data/classes.json` + `modules/classes.js`.
-- [ ] **Glossary** — plain-English definitions of game terms.
-      `data/glossary.json` + `modules/glossary.js`.
 - [ ] **Collection tracker** — mark what you've collected / still need.
       `data/collections.json` + `modules/collections.js` (may need local
       persistence via `localStorage`).
