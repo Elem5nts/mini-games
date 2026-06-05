@@ -11,16 +11,17 @@ core rewrites. See [ARCHITECTURE.md](ARCHITECTURE.md) for the recipe.
 - [x] **Item schema extension** — added `where` (how/where to obtain) and
       `hidden` (the non-obvious tip) fields, replacing `tips`. App renders both.
 - [x] **FAQ tab** — `modules/faq.js` reads `data/faq.json`; searchable
-      question/answer list. Structure only; content to be added.
+      question/answer list, with 18 curated beginner entries.
+- [x] **Items content** — full resource coverage (59 items across 8
+      categories) with `where` + `hidden` filled.
+- [x] **Getting Started checklist** — `modules/checklist.js` reads
+      `data/checklist.json`; steps grouped by phase (First Hour / First Few
+      Hours / First Week), ordered, with localStorage-persisted checkboxes.
 
 ## Backlog
 
-- [ ] **FAQ content** — populate `data/faq.json` with curated, paraphrased Q&A.
-- [ ] **Items content** — fill `where` + `hidden` for existing entries.
 - [ ] **Class explainer** — what ship/multitool/etc. classes (C/B/A/S) mean and
       when each is worth it. Likely `data/classes.json` + `modules/classes.js`.
-- [ ] **Beginner checklist** — an early-game "do these first" list.
-      `data/checklist.json` + `modules/checklist.js`.
 - [ ] **Glossary** — plain-English definitions of game terms.
       `data/glossary.json` + `modules/glossary.js`.
 - [ ] **Collection tracker** — mark what you've collected / still need.
@@ -36,4 +37,6 @@ core rewrites. See [ARCHITECTURE.md](ARCHITECTURE.md) for the recipe.
 
 ## Content backlog (data, not code)
 
-- [ ] Populate `data/items.json` with curated, paraphrased entries.
+- [x] Populate `data/items.json` with curated, paraphrased entries (59 items).
+- [x] Populate `data/faq.json` (18 entries) and `data/checklist.json` (19 steps).
+- [ ] Verify approximate item values in-game and clear the `(unsicher)` flags.

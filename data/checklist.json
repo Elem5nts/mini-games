@@ -1,0 +1,173 @@
+[
+  {
+    "id": "fh_recharge",
+    "phase": "First Hour",
+    "order": 1,
+    "title": "Recharge your survival systems",
+    "what": "Watch the two bars (Life Support and Hazard Protection). Refill Life Support with Oxygen (red plants) and recharge Hazard Protection with Sodium (yellow plants).",
+    "why": "Both drain whenever you are outside your ship, and hitting zero starts draining your health. Survival comes before everything else.",
+    "tip": "Ducking into a cave pauses environmental hazards completely — a free way to wait out storms."
+  },
+  {
+    "id": "fh_mine_basics",
+    "phase": "First Hour",
+    "order": 2,
+    "title": "Mine the three starter resources",
+    "what": "Use the mining beam on rocks for Ferrite Dust, on plants for Carbon, and on blue crystals for Di-hydrogen.",
+    "why": "These three cover almost every early repair, craft and fuel need.",
+    "tip": "Carbon refuels the mining beam itself — never let it run dry far from plants."
+  },
+  {
+    "id": "fh_visor",
+    "phase": "First Hour",
+    "order": 3,
+    "title": "Repair the Analysis Visor and scan",
+    "what": "Repair the Analysis Visor with the materials prompted, then scan plants and animals around you.",
+    "why": "Scanning pays out units instantly and is your very first source of income.",
+    "tip": "Scan everything new — full fauna scans on a planet pay a bonus."
+  },
+  {
+    "id": "fh_repair_ship",
+    "phase": "First Hour",
+    "order": 4,
+    "title": "Repair and fuel your starship",
+    "what": "Follow the markers to repair the Pulse Engine and Launch Thrusters (Metal Plating needs ~50 Ferrite Dust; thrusters need Pure Ferrite + Di-hydrogen Jelly). Refuel the launch thrusters.",
+    "why": "You cannot leave the starting planet without a working, fuelled ship.",
+    "tip": "Refine Ferrite Dust 1:1 into Pure Ferrite, and 40 Di-hydrogen into Di-hydrogen Jelly, in a portable refiner."
+  },
+  {
+    "id": "fh_save",
+    "phase": "First Hour",
+    "order": 5,
+    "title": "Learn how to save",
+    "what": "Hop out of your ship to create a restore point, or interact with any beacon at a structure.",
+    "why": "There is no \"save and quit\" — unsaved progress is lost when you close the game.",
+    "tip": "Make exiting the ship a habit before you ever quit."
+  },
+  {
+    "id": "fh_station",
+    "phase": "First Hour",
+    "order": 6,
+    "title": "Fly to a space station",
+    "what": "Take off and fly to the space station icon in the system.",
+    "why": "Stations are your hub for trading, upgrades, missions, fuel and saving.",
+    "tip": "The Pulse Engine (fuelled by Tritium from asteroids) makes in-system travel fast."
+  },
+  {
+    "id": "ffh_units",
+    "phase": "First Few Hours",
+    "order": 1,
+    "title": "Earn your first units",
+    "what": "Sell surplus resources at the Galactic Trade Terminal, and dig up Buried Technology (a Wi-Fi-like scan icon) for Salvaged Data.",
+    "why": "Units fund inventory slots, technology and fuel — your main early bottleneck.",
+    "tip": "Salvaged Data sells well, unlocks blueprints, and refines into nanites — collect plenty."
+  },
+  {
+    "id": "ffh_anomaly",
+    "phase": "First Few Hours",
+    "order": 2,
+    "title": "Visit the Space Anomaly",
+    "what": "Once unlocked, summon the Anomaly from the quick menu while in space and go aboard.",
+    "why": "Nada and Polo sell key blueprints and upgrades for nanites, and the Nexus offers missions.",
+    "tip": "Pick up early exosuit and tech blueprints here — they pay for themselves quickly."
+  },
+  {
+    "id": "ffh_exosuit",
+    "phase": "First Few Hours",
+    "order": 3,
+    "title": "Expand your Exosuit inventory",
+    "what": "Buy a slot at the suit terminal on the station, and claim free slots from Drop Pods on planets (scan for them).",
+    "why": "A cramped early inventory is the single biggest beginner frustration.",
+    "tip": "The first suit slot is cheap (~5,000 units); buy at least one every station visit."
+  },
+  {
+    "id": "ffh_nanites",
+    "phase": "First Few Hours",
+    "order": 4,
+    "title": "Start earning Nanites",
+    "what": "Refine Salvaged Data (~15 each) or Runaway Mould (5:1) into Nanite Clusters; later, buy and scrap cheap ships.",
+    "why": "Nanites are the second currency, used for upgrade modules and blueprints.",
+    "tip": "Units and nanites are spent in different shops — don't mix them up."
+  },
+  {
+    "id": "ffh_multitool",
+    "phase": "First Few Hours",
+    "order": 5,
+    "title": "Upgrade or swap your Multi-Tool",
+    "what": "Check Multi-Tool cabinets at trading posts and stations; buy or claim one with more slots and a stronger beam.",
+    "why": "A better tool mines, scans and fights faster, speeding up everything else.",
+    "tip": "Reloading a save reshuffles which tool a cabinet offers."
+  },
+  {
+    "id": "ffh_hyperdrive",
+    "phase": "First Few Hours",
+    "order": 6,
+    "title": "Build a Hyperdrive and craft Warp Cells",
+    "what": "Get and install the Hyperdrive blueprint, then craft a Warp Cell from Antimatter + Antimatter Housing.",
+    "why": "Warp Cells let you leave your starting system and continue the story.",
+    "tip": "Antimatter = Chromatic Metal + Condensed Carbon; the story hands you the recipe."
+  },
+  {
+    "id": "fw_base",
+    "phase": "First Week",
+    "order": 1,
+    "title": "Start your first base",
+    "what": "Craft and place a Base Computer (needs Chromatic Metal) and activate it to claim the area.",
+    "why": "A base gives storage, refiners, a teleporter and a steady drip of free blueprints.",
+    "tip": "Choose a calm planet — no extreme weather or aggressive Sentinels — with resources nearby."
+  },
+  {
+    "id": "fw_blueprints",
+    "phase": "First Week",
+    "order": 2,
+    "title": "Unlock building blueprints",
+    "what": "Build a Construction Research Station and trade Salvaged Data for building plans.",
+    "why": "This unlocks storage, doors, refiners and decoration you will reuse everywhere.",
+    "tip": "Over-collected Salvaged Data refines into nanites, so it is never wasted."
+  },
+  {
+    "id": "fw_storage_refiner",
+    "phase": "First Week",
+    "order": 3,
+    "title": "Set up storage and a refiner",
+    "what": "Build Storage Containers and a Refiner at your base.",
+    "why": "Stored items are never lost on death, and refining turns raw resources into profit and craft materials.",
+    "tip": "Deposit valuables before risky trips — your grave only holds what you were carrying."
+  },
+  {
+    "id": "fw_adjacency",
+    "phase": "First Week",
+    "order": 4,
+    "title": "Install upgrades with adjacency in mind",
+    "what": "Put upgrade modules in the Technology section and cluster matching ones together, next to the core tech.",
+    "why": "Adjacent related upgrades grant a bonus, so placement noticeably boosts performance.",
+    "tip": "Watch for the highlighted links shown while installing to confirm the bonus."
+  },
+  {
+    "id": "fw_freighter",
+    "phase": "First Week",
+    "order": 5,
+    "title": "Claim a free Freighter",
+    "what": "Keep warping; answer a freighter distress call and defeat the attacking pirate waves.",
+    "why": "A freighter is a mobile base with big storage and frigate fleet missions.",
+    "tip": "Decline payment on the first offer and the next free freighter is often larger. (unsicher: über Updates angepasst)"
+  },
+  {
+    "id": "fw_income",
+    "phase": "First Week",
+    "order": 6,
+    "title": "Build a basic income loop",
+    "what": "Pick one: Chlorine + Oxygen refining, Activated Indium mining, or buy-low/sell-high trade runs.",
+    "why": "A steady income lets you buy slots, ships and tech without grinding.",
+    "tip": "A few automated extractors or refiners earn while you are off exploring."
+  },
+  {
+    "id": "fw_story",
+    "phase": "First Week",
+    "order": 7,
+    "title": "Keep following the main missions",
+    "what": "Continue the Artemis Path (and dip into the Atlas Path) from your mission log.",
+    "why": "Story missions hand out free blueprints and unlock systems and features you cannot reach otherwise.",
+    "tip": "Do most main missions before wandering off — some unlocks are story-gated."
+  }
+]
