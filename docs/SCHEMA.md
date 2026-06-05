@@ -182,3 +182,44 @@ data, so it never lives in the JSON.
   }
 ]
 ```
+
+## `data/glossary.json`
+
+A JSON **array** of glossary term objects. An empty file is `[]` (valid — the
+app shows a friendly placeholder).
+
+### Term object
+
+```json
+{
+  "id": "string",
+  "term": "string",
+  "category": "string",
+  "plain": "string",
+  "note": "string"
+}
+```
+
+### Fields
+
+| Field      | Type   | Notes |
+|------------|--------|-------|
+| `id`       | string | Stable unique key (e.g. `"warp_cell"`). |
+| `term`     | string | The term/UI name, shown as the card heading. |
+| `category` | string | Group, powers the category filter. E.g. `Currencies`, `Crafting`, `Ships & Tech`, `Bases`, `NPCs/Factions`, `UI`. |
+| `plain`    | string | Short plain-language explanation. |
+| `note`     | string | Optional — why it matters / common beginner confusion. May be omitted/empty. |
+
+### Example entry
+
+```json
+[
+  {
+    "id": "warp_cell",
+    "term": "Warp Cell",
+    "category": "Ships & Tech",
+    "plain": "The fuel a Hyperdrive burns to warp between star systems.",
+    "note": "Crafted from Antimatter + Antimatter Housing; each fills about 20% of the tank."
+  }
+]
+```

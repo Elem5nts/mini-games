@@ -1,0 +1,289 @@
+[
+  {
+    "id": "units",
+    "term": "Units",
+    "category": "Currencies",
+    "plain": "The main money. Earned by selling resources, scanning life, and trading; spent on ships, slots, fuel and goods.",
+    "note": "One of three currencies — don't confuse it with Nanites or Quicksilver; each is spent in different places."
+  },
+  {
+    "id": "nanites",
+    "term": "Nanites",
+    "category": "Currencies",
+    "plain": "A secondary currency used to buy blueprints and upgrade modules.",
+    "note": "Earn them by refining Salvaged Data or Runaway Mould, or by scrapping ships. Units can't buy most upgrade modules — nanites can."
+  },
+  {
+    "id": "quicksilver",
+    "term": "Quicksilver",
+    "category": "Currencies",
+    "plain": "A cosmetic-only currency from the Nexus and some story steps.",
+    "note": "Spends only at the Quicksilver vendor on decorations and customisations — never needed for actual progress."
+  },
+  {
+    "id": "refiner",
+    "term": "Refiner",
+    "category": "Crafting",
+    "plain": "A machine that converts resources into other resources (e.g. Ferrite Dust into Pure Ferrite). Comes in portable, medium and large sizes.",
+    "note": "The heart of money-making: many recipes multiply output, so a refiner often beats selling raw materials."
+  },
+  {
+    "id": "nutrient_processor",
+    "term": "Nutrient Processor",
+    "category": "Crafting",
+    "plain": "A portable cooker. Combine up to three edible ingredients into food; valid combos give a product.",
+    "note": "Needs no fuel or power, unlike the refiner. Cooked food sells well and is an easy nanite/units side-earner."
+  },
+  {
+    "id": "blueprint",
+    "term": "Blueprint",
+    "category": "Crafting",
+    "plain": "A learned recipe that lets you craft a tech, product or base part.",
+    "note": "Gained from story missions, the Anomaly, manufacturing facilities and Salvaged Data — you must learn it before you can build it."
+  },
+  {
+    "id": "salvaged_data",
+    "term": "Salvaged Data",
+    "category": "Crafting",
+    "plain": "A item dug from Buried Technology, used to buy base/tech blueprints at a Construction Research Station.",
+    "note": "Also refines into nanites. Find it by scanning for a Wi-Fi-like icon and digging with the Terrain Manipulator."
+  },
+  {
+    "id": "stellar_metal",
+    "term": "Stellar Metal",
+    "category": "Crafting",
+    "plain": "The colour-coded metals (Copper, Cadmium, Emeril, Indium) found by star colour; refine into Chromatic Metal.",
+    "note": "Higher-colour metals need better warp drives to reach but refine into far more Chromatic Metal."
+  },
+  {
+    "id": "exosuit",
+    "term": "Exosuit",
+    "category": "Ships & Tech",
+    "plain": "Your spacesuit — it holds your personal inventory, survival systems and worn technology.",
+    "note": "Expanding its slots (station terminal + Drop Pods) is the single biggest early quality-of-life upgrade."
+  },
+  {
+    "id": "multitool",
+    "term": "Multi-Tool",
+    "category": "Ships & Tech",
+    "plain": "Your handheld device: mining beam, scanner, terrain tool and weapon in one.",
+    "note": "Comes in types (Pistol, Rifle, etc.) and classes C–S. You can own several and swap between them."
+  },
+  {
+    "id": "starship",
+    "term": "Starship",
+    "category": "Ships & Tech",
+    "plain": "Your spaceship for flight, space combat and interstellar travel.",
+    "note": "You can own many and switch freely; each has its own inventory, class and type."
+  },
+  {
+    "id": "starship_class",
+    "term": "Starship Class (C / B / A / S)",
+    "category": "Ships & Tech",
+    "plain": "A quality tier. C is lowest, S is best, with bigger stat bonuses and more slots as the class rises.",
+    "note": "Class applies to ships, multi-tools, freighters and frigates. S-class costs the most but is worth saving for."
+  },
+  {
+    "id": "ship_type",
+    "term": "Ship Type (archetype)",
+    "category": "Ships & Tech",
+    "plain": "The role of a ship: Fighter (combat), Hauler (storage), Explorer (warp range), Shuttle (balanced), Exotic (rare, always S-class), plus Solar, Interceptor and Living Ships.",
+    "note": "Type sets the class bonus, so pick one that matches how you play."
+  },
+  {
+    "id": "freighter",
+    "term": "Freighter",
+    "category": "Ships & Tech",
+    "plain": "A huge capital ship that acts as a mobile base with big storage and a fleet command room.",
+    "note": "Your first one can be free by defending a freighter under pirate attack. Not the same as a frigate."
+  },
+  {
+    "id": "frigate",
+    "term": "Frigate",
+    "category": "Ships & Tech",
+    "plain": "A mid-sized fleet ship you command from a freighter and send on automated expeditions.",
+    "note": "Frigates earn units and items over real-world hours, even while you're offline — passive income once set up."
+  },
+  {
+    "id": "hyperdrive",
+    "term": "Hyperdrive",
+    "category": "Ships & Tech",
+    "plain": "The starship tech that lets you warp between star systems.",
+    "note": "Upgrade drives (Cadmium/Emeril/Indium) unlock travel to higher-colour star systems."
+  },
+  {
+    "id": "warp_cell",
+    "term": "Warp Cell",
+    "category": "Ships & Tech",
+    "plain": "The fuel a Hyperdrive burns to warp. Crafted from Antimatter + Antimatter Housing.",
+    "note": "Each cell fills about 20% of the tank, so keep several before long trips."
+  },
+  {
+    "id": "antimatter",
+    "term": "Antimatter",
+    "category": "Ships & Tech",
+    "plain": "A crafted ingredient (Chromatic Metal + Condensed Carbon) that goes into Warp Cells.",
+    "note": "The story gives you the recipe; you can also buy it, but making it is far cheaper."
+  },
+  {
+    "id": "pulse_launch",
+    "term": "Pulse Engine & Launch Thruster",
+    "category": "Ships & Tech",
+    "plain": "Two ship systems: the Launch Thruster lifts you off a planet, the Pulse Engine zooms between points within a system.",
+    "note": "Launch Thrusters use Di-hydrogen/launch fuel; the Pulse Engine uses Tritium from asteroids. Running dry strands you."
+  },
+  {
+    "id": "hazard_lifesupport",
+    "term": "Hazard Protection & Life Support",
+    "category": "Ships & Tech",
+    "plain": "Two survival meters. Hazard Protection shields you from weather/toxicity; Life Support keeps your suit running.",
+    "note": "Recharge Hazard with Sodium and Life Support with Oxygen/Carbon; both refill instantly inside your ship."
+  },
+  {
+    "id": "analysis_visor",
+    "term": "Analysis Visor",
+    "category": "Ships & Tech",
+    "plain": "Your scanning view. Identifies resources, tags points of interest, and scans flora/fauna for units.",
+    "note": "Also reveals deposit/hotspot locations and Buried Technology — use it constantly."
+  },
+  {
+    "id": "terrain_manipulator",
+    "term": "Terrain Manipulator",
+    "category": "Ships & Tech",
+    "plain": "A multi-tool attachment that digs, removes and adds terrain.",
+    "note": "Needed to mine buried deposits and Salvaged Data, and to tunnel for shelter or bases."
+  },
+  {
+    "id": "upgrade_module",
+    "term": "Upgrade Module",
+    "category": "Ships & Tech",
+    "plain": "A slotted upgrade that boosts a ship/suit/tool stat. Bought with nanites or found.",
+    "note": "Adjacency matters: place matching upgrades next to each other and the core tech for a bonus."
+  },
+  {
+    "id": "exocraft",
+    "term": "Exocraft",
+    "category": "Ships & Tech",
+    "plain": "Planetary vehicles (Roamer, Colossus, Nomad, Pilgrim, Minotaur, Nautilon submarine) for fast ground or underwater travel.",
+    "note": "Built from a base or freighter Exocraft station; great for scanning hotspots and long surface hauls."
+  },
+  {
+    "id": "base_computer",
+    "term": "Base Computer",
+    "category": "Bases",
+    "plain": "The anchor you place to claim a build area and start a base.",
+    "note": "Setting one up drips free building blueprints over time via its archive mission."
+  },
+  {
+    "id": "storage_container",
+    "term": "Storage Container",
+    "category": "Bases",
+    "plain": "A base box for stashing resources; contents are shared and accessible from any of your bases.",
+    "note": "Items in storage (and your ship) are never lost on death — deposit valuables before risky trips."
+  },
+  {
+    "id": "teleporter",
+    "term": "Teleporter",
+    "category": "Bases",
+    "plain": "A base/station device for instant travel between your bases and visited space stations.",
+    "note": "Build one early; it saves huge amounts of flying once you have several bases."
+  },
+  {
+    "id": "construction_research_station",
+    "term": "Construction Research Station",
+    "category": "Bases",
+    "plain": "A terminal (on the Anomaly, or buildable) that sells base-building blueprints for Salvaged Data.",
+    "note": "This is where most storage, refiner, door and decoration plans come from."
+  },
+  {
+    "id": "extractor",
+    "term": "Extractor (Mineral / Gas)",
+    "category": "Bases",
+    "plain": "Automated harvesters placed on a hotspot to mine resources or gases continuously.",
+    "note": "Need power (Solar Panels + Batteries or a Biofuel Reactor). The basis of passive resource/income farms."
+  },
+  {
+    "id": "save_point",
+    "term": "Save Beacon / Save Point",
+    "category": "Bases",
+    "plain": "A placeable object that creates a manual save when you interact with it.",
+    "note": "Handy because there's no \"save and quit\"; otherwise just hop out of your ship to save."
+  },
+  {
+    "id": "gek",
+    "term": "Gek",
+    "category": "NPCs/Factions",
+    "plain": "A trade-focused amphibious species. Their systems specialise in Starship technology.",
+    "note": "Good relations and their planets/stations make ship upgrades easier to find."
+  },
+  {
+    "id": "korvax",
+    "term": "Korvax",
+    "category": "NPCs/Factions",
+    "plain": "A science-minded machine species that reveres the Atlas. Their systems specialise in Exosuit technology.",
+    "note": "Visit Korvax space when hunting exosuit upgrades."
+  },
+  {
+    "id": "vykeen",
+    "term": "Vy'keen",
+    "category": "NPCs/Factions",
+    "plain": "A warrior species with a strict honour code and a hatred of Sentinels. Their systems specialise in Multi-Tool technology.",
+    "note": "Best place to shop for multi-tool upgrades."
+  },
+  {
+    "id": "sentinels",
+    "term": "Sentinels",
+    "category": "NPCs/Factions",
+    "plain": "Robotic enforcers that police planets and react if you over-mine or attack wildlife.",
+    "note": "Provoking them escalates through drones, walkers and ships. Corrupted Sentinels on Dissonant worlds drop nanite-rich Tainted Metal."
+  },
+  {
+    "id": "travellers",
+    "term": "Travellers",
+    "category": "NPCs/Factions",
+    "plain": "Rare wandering explorers — the same kind of being you play as.",
+    "note": "Talking to them at stations advances a lore quest and can give useful rewards."
+  },
+  {
+    "id": "atlas",
+    "term": "Atlas",
+    "category": "NPCs/Factions",
+    "plain": "A vast cosmic entity central to the main story and the nature of the universe.",
+    "note": "The Atlas Path is one of the core questlines; its interfaces hand out story rewards."
+  },
+  {
+    "id": "space_anomaly",
+    "term": "Space Anomaly (Nada, Polo & the Nexus)",
+    "category": "NPCs/Factions",
+    "plain": "A travelling hub you can summon in space. Nada and Polo give missions and sell blueprints/upgrades; the Nexus offers multiplayer missions.",
+    "note": "Visit early and often — the cheap nanite blueprints here accelerate everything."
+  },
+  {
+    "id": "galactic_trade_terminal",
+    "term": "Galactic Trade Terminal",
+    "category": "UI",
+    "plain": "The buy/sell screen at stations, trading posts and freighters.",
+    "note": "Prices vary by system and demand; selling lots of one item crashes its local price."
+  },
+  {
+    "id": "hotspot",
+    "term": "Hotspot (Survey Device)",
+    "category": "UI",
+    "plain": "A located concentration of a resource (mineral, gas or power) found with the multi-tool's Survey Device.",
+    "note": "Build the matching Extractor on a hotspot for steady passive resources."
+  },
+  {
+    "id": "restore_point",
+    "term": "Restore Point / Autosave",
+    "category": "UI",
+    "plain": "Two save types: an autosave (the game makes periodically and on key events) and a Restore Point (made when you exit your ship).",
+    "note": "On reload you may be asked which to load — pick the more recent one."
+  },
+  {
+    "id": "discoveries_milestones",
+    "term": "Discoveries & Milestones",
+    "category": "UI",
+    "plain": "Discoveries are the planets, systems and life you scan and can name; Milestones track your overall progress and standings.",
+    "note": "Uploading discoveries pays units and is safe to do whenever you have a connection."
+  }
+]

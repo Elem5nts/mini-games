@@ -133,6 +133,11 @@ html, body {
 .step--done .step__title { color: var(--muted); text-decoration: line-through; }
 .step--done { opacity: 0.7; }
 
+/* Glossary cards */
+.glossary__term { margin: 0; font-size: 1.05rem; }
+.glossary__plain { margin: 8px 0 0; font-size: 0.9rem; }
+.glossary__note { margin: 8px 0 0; font-size: 0.85rem; color: var(--accent); }
+
 /* Placeholder */
 .placeholder {
   padding: 24px 16px;
