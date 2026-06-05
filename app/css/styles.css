@@ -116,6 +116,23 @@ html, body {
 .faq__q { margin: 0; font-size: 1.05rem; }
 .faq__a { margin: 8px 0 0; font-size: 0.9rem; }
 
+/* Getting Started checklist */
+.checklist__progress { margin: 0 0 12px; color: var(--muted); font-size: 0.85rem; }
+.phase__title {
+  margin: 18px 0 8px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+.step__head { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.step__check { flex: 0 0 auto; width: 20px; height: 20px; accent-color: var(--keep); }
+.step__title { font-size: 1.02rem; font-weight: 600; }
+.step__what, .step__why, .step__tip { margin: 8px 0 0; font-size: 0.9rem; }
+.step__tip { color: var(--accent); }
+.step--done .step__title { color: var(--muted); text-decoration: line-through; }
+.step--done { opacity: 0.7; }
+
 /* Placeholder */
 .placeholder {
   padding: 24px 16px;

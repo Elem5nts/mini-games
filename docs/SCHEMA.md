@@ -122,3 +122,63 @@ shows a friendly placeholder).
   }
 ]
 ```
+
+## `data/checklist.json`
+
+A JSON **array** of "Getting Started" step objects, grouped by phase in the
+app. An empty file is `[]` (valid — the app shows a friendly placeholder).
+
+### Step object
+
+```json
+{
+  "id": "string",
+  "phase": "First Hour | First Few Hours | First Week",
+  "order": 0,
+  "title": "string",
+  "what": "string",
+  "why": "string",
+  "tip": "string"
+}
+```
+
+### Fields
+
+| Field   | Type    | Notes |
+|---------|---------|-------|
+| `id`    | string  | Stable unique key (e.g. `"fh_recharge"`). Also used as the localStorage checkbox key. |
+| `phase` | enum    | One of `First Hour`, `First Few Hours`, `First Week`. Drives grouping/order. |
+| `order` | integer | Sort order within a phase (ascending). |
+| `title` | string  | Short step heading shown next to the checkbox. |
+| `what`  | string  | The concrete action to take. |
+| `why`   | string  | Why the step matters. |
+| `tip`   | string  | Optional non-obvious hint. May be omitted/empty. |
+
+### Phase → grouping
+
+| `phase`          | Shown |
+|------------------|-------|
+| `First Hour`     | First section |
+| `First Few Hours`| Second section |
+| `First Week`     | Third section |
+| (other)          | Appended after the known phases |
+
+Checkbox state is stored per browser in `localStorage` under
+`nms_checklist_done` (a map of `{ id: true }`); it is presentation state, not
+data, so it never lives in the JSON.
+
+### Example entry
+
+```json
+[
+  {
+    "id": "fh_recharge",
+    "phase": "First Hour",
+    "order": 1,
+    "title": "Recharge your survival systems",
+    "what": "Refill Life Support with Oxygen and Hazard Protection with Sodium.",
+    "why": "Both drain outside your ship; hitting zero costs health.",
+    "tip": "Caves pause environmental hazards entirely."
+  }
+]
+```
