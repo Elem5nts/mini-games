@@ -654,16 +654,25 @@ function showEquity(wins, ties, losses, iter, numOpp) {
   el('winVal').textContent = winPct.toFixed(1);
   el('tieVal').textContent = 'tie ' + tiePct.toFixed(1) + '%  ·  ' + iter.toLocaleString() + ' sims';
 
-  // Verdict traffic light vs. break-even equity = 100 / (opponents + 1).
+  // Verdict traffic light, judged against the break-even equity (your "fair
+  // share") = 100 / (opponents + 1). With multiple opponents that fair share is
+  // well below 50%, so being above it does NOT mean winning most of the time —
+  // hence we also require a clear margin before calling it a "clear favourite",
+  // and we show the fair-share reference so the rating is transparent.
+  const usable = winPct + tiePct / 2;
   const breakEven = 100 / (numOpp + 1);
-  const ratio = winPct / breakEven;
+  const ratio = usable / breakEven;
   let color, label;
-  if (ratio >= 1.2) { color = 'var(--green)'; label = 'clearly ahead'; }
-  else if (ratio >= 0.95) { color = 'var(--yellow)'; label = 'marginal'; }
-  else { color = 'var(--red)'; label = 'behind'; }
+  if (ratio >= 1.5)        { color = 'var(--green)';  label = 'clear favourite'; }
+  else if (ratio >= 1.15)  { color = 'var(--yellow)'; label = 'ahead of fair share'; }
+  else if (ratio >= 0.95)  { color = 'var(--yellow)'; label = 'marginal'; }
+  else                     { color = 'var(--red)';    label = 'behind'; }
   el('verdictBar').style.background = color;
-  el('verdictLabel').textContent = label;
   el('verdictLabel').style.color = color;
+  el('verdictLabel').innerHTML = label +
+    '<span style="text-transform:none;color:var(--muted);font-weight:500;margin-left:8px;">'
+    + 'fair share ' + breakEven.toFixed(0) + '% · ' + numOpp + (numOpp === 1 ? ' opp' : ' opps')
+    + '</span>';
 }
 
 function updateInfo(hero, board) {
