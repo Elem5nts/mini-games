@@ -146,7 +146,7 @@
   }
   /* Responsive glyphs: as large as possible while keeping all 52 cards on one
      clickable page; capped so they don't oversize on wide desktop screens. */
-  .card .rk { font-size: clamp(16px, 4.7vw, 26px); }
+  .card .rk { font-size: clamp(16px, 4.7vw, 26px); white-space: nowrap; letter-spacing: -1px; }
   .card .st { font-size: clamp(13px, 3.7vw, 21px); margin-top: 2px; }
   /* Four-color deck: spades black, hearts red, diamonds blue, clubs green. */
   .card.he { color: #e23b4e; }
@@ -265,7 +265,7 @@
    ===================================================================== */
 
 /* ---------- Display tables ---------- */
-const RANK_LABELS = ['2','3','4','5','6','7','8','9','T','J','Q','K','A']; // index 0..12 -> rank 2..14
+const RANK_LABELS = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']; // index 0..12 -> rank 2..14
 const SUIT_SYMBOLS = ['♠', '♥', '♦', '♣'];            // s h d c
 // Four-color deck class per suit: spades black, hearts red, diamonds blue, clubs green.
 const SUIT_CLASS = ['sp', 'he', 'di', 'cl'];                               // s h d c
