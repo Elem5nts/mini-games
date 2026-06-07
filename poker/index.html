@@ -663,7 +663,7 @@ function showEquity(wins, ties, losses, iter, numOpp) {
   const breakEven = 100 / (numOpp + 1);
   const ratio = usable / breakEven;
   let color, label;
-  if (ratio >= 1.25)       { color = 'var(--green)';  label = 'clear favourite'; }
+  if (ratio >= 1.25)       { color = 'var(--green)';  label = 'favourite vs field'; }
   else if (ratio >= 1.05)  { color = 'var(--yellow)'; label = 'ahead of fair share'; }
   else if (ratio >= 0.9)   { color = 'var(--yellow)'; label = 'marginal'; }
   else                     { color = 'var(--red)';    label = 'behind'; }
