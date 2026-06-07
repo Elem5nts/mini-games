@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Poker Equity — Texas Hold'em</title>
+<style>
+  /* ---------- Theme / layout ---------- */
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1f232c;
+    --line: #2a2f3a;
+    --txt: #e7ebf0;
+    --muted: #8b93a3;
+    --accent: #4f8cff;
+    --red: #ff5b6b;
+    --green: #2ecc71;
+    --yellow: #f5c542;
+    --slot: #11141a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 10px 10px 40px;
+    max-width: 720px;
+    margin: 0 auto;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 {
+    font-size: 18px;
+    margin: 4px 0 12px;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  h1 small { color: var(--muted); font-weight: 400; font-size: 12px; }
+
+  /* ---------- Result panel ---------- */
+  #result {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .equity-row { display: flex; align-items: stretch; gap: 12px; }
+  .verdict-bar {
+    width: 10px;
+    border-radius: 6px;
+    background: var(--muted);
+    flex: 0 0 10px;
+    transition: background 0.2s;
+  }
+  .equity-main { flex: 1; }
+  .winpct {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .winpct .unit { font-size: 22px; color: var(--muted); font-weight: 600; }
+  .subpct { color: var(--muted); font-size: 14px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .verdict-label { font-size: 13px; font-weight: 700; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .made-hand {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .made-hand .lbl { color: var(--muted); font-size: 12px; font-weight: 500; display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .draws { margin-top: 10px; font-size: 14px; color: var(--txt); }
+  .draws .lbl { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .chip {
+    display: inline-block;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin: 3px 4px 0 0;
+    font-size: 13px;
+  }
+  .outs-num { color: var(--green); font-weight: 700; }
+
+  /* ---------- Slots ---------- */
+  .slots-wrap { display: flex; gap: 12px; margin-bottom: 12px; }
+  .slot-group { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+  .slot-group.hand { flex: 0 0 auto; }
+  .slot-group.board { flex: 1; }
+  .slot-group .lbl { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .slot-row { display: flex; gap: 6px; }
+  .slot {
+    width: 40px; height: 56px;
+    border-radius: 8px;
+    background: var(--slot);
+    border: 1px dashed var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700;
+    flex-direction: column; line-height: 1;
+  }
+  .slot.filled { border-style: solid; background: #fff; color: #111; cursor: pointer; }
+  .slot.filled.red { color: #d11; }
+  .slot .rk { font-size: 19px; }
+  .slot .st { font-size: 16px; }
+  .street { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* ---------- Controls ---------- */
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .opp { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; }
+  .opp .lbl { color: var(--muted); font-size: 12px; }
+  .btn {
+    background: var(--panel-2); color: var(--txt); border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px 12px; font-size: 15px; cursor: pointer; user-select: none;
+  }
+  .btn:active { background: var(--line); }
+  .opp .count { font-size: 18px; font-weight: 700; min-width: 22px; text-align: center; font-variant-numeric: tabular-nums; }
+  .opp .step { width: 34px; height: 34px; font-size: 20px; padding: 0; line-height: 1; }
+  #reset { margin-left: auto; }
+  .kbd { flex: 1 1 160px; }
+  .kbd input {
+    width: 100%; background: var(--slot); color: var(--txt);
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; font-size: 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .kbd input::placeholder { color: var(--muted); }
+
+  /* ---------- Card grid ---------- */
+  #grid { display: flex; flex-direction: column; gap: 5px; }
+  .grid-row { display: grid; grid-template-columns: repeat(13, 1fr); gap: 5px; }
+  .card {
+    aspect-ratio: 3 / 4;
+    background: #fff; color: #111;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; line-height: 1;
+    font-weight: 700; cursor: pointer; user-select: none;
+    border: 2px solid transparent;
+    min-height: 34px;
+  }
+  .card .rk { font-size: 14px; }
+  .card .st { font-size: 12px; }
+  .card.red { color: #d11; }
+  .card.used { opacity: 0.22; pointer-events: none; }
+  .card.sel { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(79,140,255,0.4); }
+  @media (max-width: 420px) {
+    .card .rk { font-size: 12px; }
+    .card .st { font-size: 10px; }
+    .slot { width: 34px; height: 48px; }
+  }
+</style>
+</head>
+<body>
+  <h1>♠ Poker Equity <small>Texas Hold'em · Monte Carlo</small></h1>
+
+  <div id="result">
+    <div class="equity-row">
+      <div class="verdict-bar" id="verdictBar"></div>
+      <div class="equity-main">
+        <div class="winpct"><span id="winVal">—</span><span class="unit">% win</span></div>
+        <div class="subpct" id="tieVal">tie —</div>
+        <div class="verdict-label" id="verdictLabel">add your hole cards</div>
+      </div>
+    </div>
+    <div class="made-hand"><span class="lbl">Best made hand</span><span id="madeHand">—</span></div>
+    <div class="draws" id="drawsBox" style="display:none;"></div>
+  </div>
+
+  <div class="slots-wrap">
+    <div class="slot-group hand">
+      <div class="lbl">Hand</div>
+      <div class="slot-row" id="handSlots"></div>
+    </div>
+    <div class="slot-group board">
+      <div class="lbl">Board</div>
+      <div class="slot-row" id="boardSlots"></div>
+      <div class="street" id="streetLabel">Preflop</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="opp">
+      <span class="lbl">Opponents</span>
+      <button class="btn step" id="oppMinus">−</button>
+      <span class="count" id="oppCount">1</span>
+      <button class="btn step" id="oppPlus">+</button>
+    </div>
+    <div class="kbd">
+      <input id="kbdInput" type="text" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"
+             placeholder="type e.g.  As Th 9d  then Enter" />
+    </div>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+
+  <div id="grid"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   POKER EQUITY TOOL — Texas Hold'em
+   Single file, vanilla JS, no dependencies, no build step.
+
+   Card encoding: a card is an integer 0..51.
+     rank  = 2 + (card % 13)   -> 2..14  (14 = Ace)
+     suit  = (card / 13) | 0   -> 0=spades, 1=hearts, 2=diamonds, 3=clubs
+   ===================================================================== */
+
+/* ---------- Display tables ---------- */
+const RANK_LABELS = ['2','3','4','5','6','7','8','9','T','J','Q','K','A']; // index 0..12 -> rank 2..14
+const SUIT_SYMBOLS = ['♠', '♥', '♦', '♣'];            // s h d c
+const RED_SUITS = new Set([1, 2]);                                         // hearts, diamonds
+
+const rankOf = c => 2 + (c % 13);
+const suitOf = c => (c / 13) | 0;
+const makeCard = (rank, suit) => suit * 13 + (rank - 2);
+
+/* =====================================================================
+   HAND EVALUATOR
+   Returns a single integer score. Higher = stronger. Scores are directly
+   comparable (>, ===, <) which gives us tie / split detection for free.
+
+   Score layout (base-16 digits, most significant first):
+     [ category ][ t1 ][ t2 ][ t3 ][ t4 ][ t5 ]
+   Categories:
+     8 Straight Flush, 7 Quads, 6 Full House, 5 Flush,
+     4 Straight, 3 Trips, 2 Two Pair, 1 Pair, 0 High Card
+   ===================================================================== */
+
+// Reused scratch buffers to avoid per-evaluation allocation in the hot loop.
+const _rc = new Int8Array(15);  // rank counts, indexed by rank 2..14
+const _sm = new Int32Array(4);  // per-suit rank bitmask
+
+function popcount(x) {
+  let n = 0;
+  while (x) { x &= x - 1; n++; }
+  return n;
+}
+
+// Highest straight top-card from a rank bitmask, or 0 if none.
+// Handles the wheel (A-2-3-4-5) by mirroring the Ace (bit 14) down to bit 1.
+function straightFromMask(mask) {
+  if (mask & (1 << 14)) mask |= (1 << 1);
+  for (let high = 14; high >= 5; high--) {
+    const need = 0b11111 << (high - 4); // five consecutive bits ending at `high`
+    if ((mask & need) === need) return high;
+  }
+  return 0;
+}
+
+// Top `n` distinct ranks present in `mask`, excluding ranks in `excl`. Padded with 0.
+function topExcl(mask, excl, n) {
+  let m = mask;
+  for (let i = 0; i < excl.length; i++) m &= ~(1 << excl[i]);
+  const res = [];
+  for (let r = 14; r >= 2 && res.length < n; r--) if (m & (1 << r)) res.push(r);
+  while (res.length < n) res.push(0);
+  return res;
+}
+
+// Pack a category + up to 5 tiebreakers into one comparable integer.
+function mk(cat, t) {
+  let s = cat;
+  for (let i = 0; i < 5; i++) s = s * 16 + (t[i] || 0);
+  return s;
+}
+
+// Evaluate 5..7 cards (array of card ints). Returns the integer score.
+function handScore(cards) {
+  _rc.fill(0);
+  _sm[0] = _sm[1] = _sm[2] = _sm[3] = 0;
+  for (let i = 0; i < cards.length; i++) {
+    const c = cards[i];
+    const r = 2 + (c % 13);
+    _rc[r]++;
+    _sm[(c / 13) | 0] |= (1 << r);
+  }
+
+  // Flush / straight flush
+  let fmask = 0;
+  for (let s = 0; s < 4; s++) if (popcount(_sm[s]) >= 5) fmask = _sm[s];
+  if (fmask) {
+    const sf = straightFromMask(fmask);
+    if (sf > 0) return mk(8, [sf]);
+  }
+
+  // Collect quads / trips / pairs (scanning high to low) and a rank-presence mask.
+  let quad = 0, trip1 = 0, trip2 = 0, pair1 = 0, pair2 = 0, pmask = 0;
+  for (let r = 14; r >= 2; r--) {
+    const cnt = _rc[r];
+    if (cnt === 0) continue;
+    pmask |= (1 << r);
+    if (cnt === 4) { if (!quad) quad = r; }
+    else if (cnt === 3) { if (!trip1) trip1 = r; else if (!trip2) trip2 = r; }
+    else if (cnt === 2) { if (!pair1) pair1 = r; else if (!pair2) pair2 = r; }
+  }
+
+  if (quad) return mk(7, [quad, topExcl(pmask, [quad], 1)[0]]);
+
+  // Full house: a trip plus another trip or a pair (use the highest available pair part).
+  if (trip1 && (trip2 || pair1)) {
+    const pairPart = Math.max(trip2, pair1);
+    return mk(6, [trip1, pairPart]);
+  }
+
+  if (fmask) return mk(5, topExcl(fmask, [], 5));
+
+  const st = straightFromMask(pmask);
+  if (st > 0) return mk(4, [st]);
+
+  if (trip1) { const k = topExcl(pmask, [trip1], 2); return mk(3, [trip1, k[0], k[1]]); }
+  if (pair1 && pair2) return mk(2, [pair1, pair2, topExcl(pmask, [pair1, pair2], 1)[0]]);
+  if (pair1) { const k = topExcl(pmask, [pair1], 3); return mk(1, [pair1, k[0], k[1], k[2]]); }
+  return mk(0, topExcl(pmask, [], 5));
+}
+
+/* ---------- Decode a score into a human-readable hand name ---------- */
+const RANK_NAME = ['', '', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
+                   'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace'];
+function plural(r) { return r === 6 ? 'Sixes' : RANK_NAME[r] + 's'; }
+
+function describeScore(score) {
+  // Unpack the 5 tiebreaker base-16 digits + category.
+  let s = score;
+  const t = [0, 0, 0, 0, 0];
+  for (let i = 4; i >= 0; i--) { t[i] = s % 16; s = (s / 16) | 0; }
+  const cat = s;
+  switch (cat) {
+    case 8: return t[0] === 14 ? 'Royal Flush' : 'Straight Flush, ' + RANK_NAME[t[0]] + '-high';
+    case 7: return 'Four of a Kind, ' + plural(t[0]);
+    case 6: return 'Full House, ' + plural(t[0]) + ' full of ' + plural(t[1]);
+    case 5: return 'Flush, ' + RANK_NAME[t[0]] + '-high';
+    case 4: return 'Straight, ' + RANK_NAME[t[0]] + '-high';
+    case 3: return 'Three of a Kind, ' + plural(t[0]);
+    case 2: return 'Two Pair, ' + plural(t[0]) + ' and ' + plural(t[1]);
+    case 1: return 'Pair of ' + plural(t[0]);
+    default: return 'High Card ' + RANK_NAME[t[0]];
+  }
+}
+
+/* =====================================================================
+   DRAWS & OUTS (flop / turn only)
+   ===================================================================== */
+function computeDraws(cards) {
+  // cards: hero + known board (5 or 6 cards)
+  const suitCount = [0, 0, 0, 0];
+  const rankCount = new Array(15).fill(0);
+  let pmask = 0;
+  for (const c of cards) {
+    suitCount[suitOf(c)]++;
+    rankCount[rankOf(c)]++;
+    pmask |= (1 << rankOf(c));
+  }
+  const draws = [];
+  let outs = 0;
+
+  // Flush draw: exactly 4 to a suit (5+ would already be a made flush).
+  let flushDraw = false;
+  for (let s = 0; s < 4; s++) if (suitCount[s] === 4) flushDraw = true;
+  if (flushDraw) { draws.push('Flush Draw'); outs += 9; } // 13 - 4 remaining of the suit
+
+  // Straight draws: only if not already holding a straight.
+  if (straightFromMask(pmask) === 0) {
+    const completing = [];
+    for (let r = 2; r <= 14; r++) {
+      if (rankCount[r] >= 1) continue;               // adding a duplicate can't extend
+      if (straightFromMask(pmask | (1 << r)) > 0) completing.push(r);
+    }
+    if (completing.length >= 2) {
+      draws.push('Open-Ended Straight Draw');
+      for (const r of completing) outs += 4 - rankCount[r];
+    } else if (completing.length === 1) {
+      draws.push('Gutshot');
+      outs += 4 - rankCount[completing[0]];
+    }
+  }
+  return { draws, outs };
+}
+
+/* =====================================================================
+   MONTE CARLO SIMULATION
+   ===================================================================== */
+const ITERATIONS = 50000;
+const BATCH = 5000;
+let simGen = 0; // bumped on every recompute so stale async batches bail out
+
+function runSimulation() {
+  const myGen = ++simGen;
+  const hero = state.hand.slice();
+  const board = state.board.slice();
+
+  // Always refresh the synchronous info (made hand + draws) immediately.
+  updateInfo(hero, board);
+
+  if (hero.length < 2) {
+    setEquityWaiting();
+    return;
+  }
+
+  const used = new Set([...hero, ...board]);
+  const deck = [];
+  for (let c = 0; c < 52; c++) if (!used.has(c)) deck.push(c);
+
+  const numOpp = state.opponents;
+  const boardKnown = board.length;
+  const need = numOpp * 2 + (5 - boardKnown); // cards drawn per iteration
+  const n = deck.length;
+
+  let wins = 0, ties = 0, losses = 0, done = 0;
+  const heroFull = new Array(7);
+  const oppFull = new Array(7);
+  // Pre-place hero hole cards + known board (these never change).
+  heroFull[0] = hero[0];
+  heroFull[1] = hero[1];
+  for (let k = 0; k < boardKnown; k++) heroFull[2 + k] = board[k];
+
+  function batch() {
+    if (myGen !== simGen) return; // a newer recompute superseded us
+    const end = Math.min(done + BATCH, ITERATIONS);
+    for (; done < end; done++) {
+      // Partial Fisher-Yates: randomize the first `need` slots of the deck.
+      for (let i = 0; i < need; i++) {
+        const j = i + ((Math.random() * (n - i)) | 0);
+        const tmp = deck[i]; deck[i] = deck[j]; deck[j] = tmp;
+      }
+      // Fill remaining community cards (drawn after the opponents' hole cards).
+      const boardDrawStart = numOpp * 2;
+      for (let k = boardKnown; k < 5; k++) {
+        heroFull[2 + k] = deck[boardDrawStart + (k - boardKnown)];
+      }
+      const heroScore = handScore(heroFull);
+
+      // Opponents share the same full community board.
+      let bestOpp = -1;
+      for (let o = 0; o < numOpp; o++) {
+        oppFull[0] = deck[o * 2];
+        oppFull[1] = deck[o * 2 + 1];
+        for (let k = 0; k < 5; k++) oppFull[2 + k] = heroFull[2 + k];
+        const os = handScore(oppFull);
+        if (os > bestOpp) bestOpp = os;
+      }
+
+      if (heroScore > bestOpp) wins++;
+      else if (heroScore === bestOpp) ties++;
+      else losses++;
+    }
+    if (done < ITERATIONS) {
+      setTimeout(batch, 0); // yield to keep the UI responsive
+    } else {
+      showEquity(wins, ties, losses, ITERATIONS, numOpp);
+    }
+  }
+  batch();
+}
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+const state = {
+  hand: [],        // up to 2 card ints
+  board: [],       // up to 5 card ints
+  opponents: 1,
+};
+
+function isUsed(c) { return state.hand.includes(c) || state.board.includes(c); }
+
+function addCard(c) {
+  if (isUsed(c)) { removeCard(c); return; }
+  if (state.hand.length < 2) state.hand.push(c);
+  else if (state.board.length < 5) state.board.push(c);
+  else return; // everything full
+  render();
+}
+
+function removeCard(c) {
+  let i = state.hand.indexOf(c);
+  if (i >= 0) { state.hand.splice(i, 1); render(); return; }
+  i = state.board.indexOf(c);
+  if (i >= 0) { state.board.splice(i, 1); render(); }
+}
+
+function resetAll() {
+  state.hand = [];
+  state.board = [];
+  document.getElementById('kbdInput').value = '';
+  render();
+}
+
+/* =====================================================================
+   UI RENDERING
+   ===================================================================== */
+const el = id => document.getElementById(id);
+
+function cardInner(c) {
+  const rk = RANK_LABELS[c % 13];
+  const st = SUIT_SYMBOLS[suitOf(c)];
+  return '<span class="rk">' + rk + '</span><span class="st">' + st + '</span>';
+}
+
+function buildGrid() {
+  const grid = el('grid');
+  grid.innerHTML = '';
+  for (let suit = 0; suit < 4; suit++) {
+    const row = document.createElement('div');
+    row.className = 'grid-row';
+    for (let ri = 12; ri >= 0; ri--) {       // high to low (A ... 2)
+      const c = suit * 13 + ri;
+      const div = document.createElement('div');
+      div.className = 'card' + (RED_SUITS.has(suit) ? ' red' : '');
+      div.dataset.card = c;
+      div.innerHTML = cardInner(c);
+      div.addEventListener('click', () => addCard(c));
+      row.appendChild(div);
+    }
+    grid.appendChild(row);
+  }
+}
+
+function buildSlots() {
+  const hand = el('handSlots');
+  const board = el('boardSlots');
+  hand.innerHTML = '';
+  board.innerHTML = '';
+  for (let i = 0; i < 2; i++) hand.appendChild(makeSlot('hand', i));
+  for (let i = 0; i < 5; i++) board.appendChild(makeSlot('board', i));
+}
+
+function makeSlot(group, idx) {
+  const d = document.createElement('div');
+  d.className = 'slot';
+  d.dataset.group = group;
+  d.dataset.idx = idx;
+  d.addEventListener('click', () => {
+    const arr = group === 'hand' ? state.hand : state.board;
+    if (arr[idx] !== undefined) removeCard(arr[idx]);
+  });
+  return d;
+}
+
+function renderSlots() {
+  const fill = (group, arr) => {
+    const slots = el(group === 'hand' ? 'handSlots' : 'boardSlots').children;
+    for (let i = 0; i < slots.length; i++) {
+      const s = slots[i];
+      const c = arr[i];
+      if (c === undefined) {
+        s.className = 'slot';
+        s.innerHTML = '';
+      } else {
+        s.className = 'slot filled' + (RED_SUITS.has(suitOf(c)) ? ' red' : '');
+        s.innerHTML = cardInner(c);
+      }
+    }
+  };
+  fill('hand', state.hand);
+  fill('board', state.board);
+
+  const n = state.board.length;
+  const label = n === 0 ? 'Preflop' : n === 3 ? 'Flop' : n === 4 ? 'Turn'
+              : n === 5 ? 'River' : 'Board (' + n + ')';
+  el('streetLabel').textContent = label;
+}
+
+function renderGridUsed() {
+  const cards = el('grid').querySelectorAll('.card');
+  cards.forEach(div => {
+    const c = +div.dataset.card;
+    div.classList.toggle('used', isUsed(c));
+  });
+}
+
+function render() {
+  renderSlots();
+  renderGridUsed();
+  el('oppCount').textContent = state.opponents;
+  runSimulation();
+}
+
+/* ---------- Result panel updates ---------- */
+function setEquityWaiting() {
+  el('winVal').textContent = '—';
+  el('tieVal').textContent = 'tie —';
+  el('verdictLabel').textContent = state.hand.length === 0
+    ? 'add your hole cards' : 'pick one more hole card';
+  el('verdictBar').style.background = 'var(--muted)';
+}
+
+function showEquity(wins, ties, losses, iter, numOpp) {
+  const winPct = wins / iter * 100;
+  const tiePct = ties / iter * 100;
+  el('winVal').textContent = winPct.toFixed(1);
+  el('tieVal').textContent = 'tie ' + tiePct.toFixed(1) + '%  ·  ' + iter.toLocaleString() + ' sims';
+
+  // Verdict traffic light vs. break-even equity = 100 / (opponents + 1).
+  const breakEven = 100 / (numOpp + 1);
+  const ratio = winPct / breakEven;
+  let color, label;
+  if (ratio >= 1.2) { color = 'var(--green)'; label = 'clearly ahead'; }
+  else if (ratio >= 0.95) { color = 'var(--yellow)'; label = 'marginal'; }
+  else { color = 'var(--red)'; label = 'behind'; }
+  el('verdictBar').style.background = color;
+  el('verdictLabel').textContent = label;
+  el('verdictLabel').style.color = color;
+}
+
+function updateInfo(hero, board) {
+  const known = hero.concat(board);
+  if (known.length >= 2) {
+    el('madeHand').textContent = describeScore(handScore(known));
+  } else {
+    el('madeHand').textContent = '—';
+  }
+
+  // Outs / draws only make sense on the flop (3) or turn (4).
+  const drawsBox = el('drawsBox');
+  if (hero.length === 2 && (board.length === 3 || board.length === 4)) {
+    const { draws, outs } = computeDraws(known);
+    if (draws.length) {
+      drawsBox.style.display = 'block';
+      drawsBox.innerHTML = '<span class="lbl">Draws · <span class="outs-num">'
+        + outs + ' outs</span></span><br>'
+        + draws.map(d => '<span class="chip">' + d + '</span>').join('');
+    } else {
+      drawsBox.style.display = 'none';
+    }
+  } else {
+    drawsBox.style.display = 'none';
+  }
+}
+
+/* =====================================================================
+   KEYBOARD INPUT  (e.g. "As Th 9d")
+   ===================================================================== */
+const RANK_CHARS = { '2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,
+                     't':10,'j':11,'q':12,'k':13,'a':14 };
+const SUIT_CHARS = { 's':0,'h':1,'d':2,'c':3 };
+
+function parseToken(tok) {
+  if (tok.length !== 2) return -1;
+  const r = RANK_CHARS[tok[0].toLowerCase()];
+  const s = SUIT_CHARS[tok[1].toLowerCase()];
+  if (r === undefined || s === undefined) return -1;
+  return makeCard(r, s);
+}
+
+function applyKbd(value) {
+  const tokens = value.trim().split(/\s+/).filter(Boolean);
+  const cards = [];
+  const seen = new Set();
+  for (const tok of tokens) {
+    const c = parseToken(tok);
+    if (c >= 0 && !seen.has(c)) { seen.add(c); cards.push(c); }
+  }
+  state.hand = cards.slice(0, 2);
+  state.board = cards.slice(2, 7);
+  render();
+}
+
+/* =====================================================================
+   WIRING
+   ===================================================================== */
+function init() {
+  buildGrid();
+  buildSlots();
+
+  el('oppPlus').addEventListener('click', () => {
+    if (state.opponents < 8) { state.opponents++; render(); }
+  });
+  el('oppMinus').addEventListener('click', () => {
+    if (state.opponents > 1) { state.opponents--; render(); }
+  });
+  el('reset').addEventListener('click', resetAll);
+  el('kbdInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') applyKbd(e.target.value);
+  });
+
+  render();
+}
+
+/* =====================================================================
+   SELF-TESTS — known hand rankings. Logged to the console; all must pass.
+   ===================================================================== */
+function selfTest() {
+  const C = (rank, suitChar) => makeCard(rank, SUIT_CHARS[suitChar]);
+  let pass = 0, fail = 0;
+  const assert = (name, cond) => {
+    if (cond) { pass++; console.log('%c✓ ' + name, 'color:#2ecc71'); }
+    else { fail++; console.error('✗ ' + name); }
+  };
+
+  // 1. Royal flush beats four of a kind.
+  const royal = handScore([C(14,'s'),C(13,'s'),C(12,'s'),C(11,'s'),C(10,'s'),C(2,'h'),C(2,'d')]);
+  const quadAces = handScore([C(14,'s'),C(14,'h'),C(14,'d'),C(14,'c'),C(13,'s'),C(13,'h'),C(2,'d')]);
+  assert('Royal flush > Quad aces', royal > quadAces);
+
+  // 2. Straight flush beats four of a kind (non-royal).
+  const sf = handScore([C(9,'h'),C(8,'h'),C(7,'h'),C(6,'h'),C(5,'h'),C(2,'s'),C(3,'d')]);
+  assert('Straight flush > Quad aces', sf > quadAces);
+
+  // 3. Wheel straight (A-2-3-4-5) is recognized and is 5-high.
+  const wheel = handScore([C(14,'s'),C(2,'h'),C(3,'d'),C(4,'c'),C(5,'s'),C(9,'h'),C(13,'d')]);
+  const wheelDesc = describeScore(wheel);
+  assert('Wheel = Straight, Five-high', wheelDesc === 'Straight, Five-high');
+
+  // 4. A 6-high straight beats the wheel.
+  const six = handScore([C(6,'s'),C(2,'h'),C(3,'d'),C(4,'c'),C(5,'s'),C(9,'h'),C(13,'d')]);
+  assert('Six-high straight > wheel', six > wheel);
+
+  // 5. Flush beats a straight.
+  const flush = handScore([C(14,'c'),C(10,'c'),C(7,'c'),C(4,'c'),C(2,'c'),C(9,'h'),C(8,'d')]);
+  const straight = handScore([C(9,'s'),C(8,'h'),C(7,'d'),C(6,'c'),C(5,'s'),C(2,'h'),C(2,'d')]);
+  assert('Flush > Straight', flush > straight);
+
+  // 6. Full house beats a flush.
+  const boat = handScore([C(13,'s'),C(13,'h'),C(13,'d'),C(7,'c'),C(7,'s'),C(2,'h'),C(3,'d')]);
+  assert('Full house > Flush', boat > flush);
+
+  // 7. Quads beat a full house.
+  const quad7 = handScore([C(7,'s'),C(7,'h'),C(7,'d'),C(7,'c'),C(13,'s'),C(13,'h'),C(2,'d')]);
+  assert('Quads > Full house', quad7 > boat);
+
+  // 8. Split pot: two hands play the same board and tie exactly.
+  const board = [C(14,'s'),C(13,'h'),C(12,'d'),C(11,'c'),C(10,'s')]; // broadway on board
+  const a = handScore(board.concat([C(2,'h'),C(3,'d')]));
+  const b = handScore(board.concat([C(4,'h'),C(5,'d')]));
+  assert('Split pot: identical board -> tie', a === b);
+
+  // 9. Higher kicker wins with the same pair.
+  const pairAk = handScore([C(14,'s'),C(14,'h'),C(13,'d'),C(7,'c'),C(2,'s')]);
+  const pairAq = handScore([C(14,'d'),C(14,'c'),C(12,'d'),C(7,'h'),C(2,'h')]);
+  assert('Pair of Aces, King kicker > Queen kicker', pairAk > pairAq);
+
+  // 10. Higher two pair beats lower two pair.
+  const tpHi = handScore([C(14,'s'),C(14,'h'),C(5,'d'),C(5,'c'),C(9,'s'),C(2,'h'),C(3,'d')]);
+  const tpLo = handScore([C(13,'s'),C(13,'h'),C(5,'d'),C(5,'c'),C(9,'s'),C(2,'h'),C(3,'d')]);
+  assert('Aces & Fives > Kings & Fives', tpHi > tpLo);
+
+  console.log('%cSelf-tests: ' + pass + ' passed, ' + fail + ' failed',
+              fail === 0 ? 'color:#2ecc71;font-weight:bold' : 'color:#ff5b6b;font-weight:bold');
+  return fail === 0;
+}
+
+/* ---------- Boot ---------- */
+selfTest();
+init();
+</script>
+</body>
+</html>
