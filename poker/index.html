@@ -152,6 +152,35 @@
     .card .st { font-size: 10px; }
     .slot { width: 34px; height: 48px; }
   }
+
+  /* ---------- Action Hint (optional, additive module) ---------- */
+  #action-hint {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  #action-hint .ah-title {
+    color: var(--muted); font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 10px;
+  }
+  #action-hint .ah-inputs { display: flex; gap: 10px; }
+  #action-hint .ah-field { flex: 1; }
+  #action-hint .ah-field label { display: block; color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  #action-hint .ah-field input {
+    width: 100%; background: var(--slot); color: var(--txt);
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; font-size: 15px;
+    font-variant-numeric: tabular-nums;
+  }
+  #action-hint .ah-field input::placeholder { color: var(--muted); }
+  #action-hint .ah-result { margin-top: 12px; display: none; }
+  #action-hint .ah-badge {
+    display: inline-block; font-weight: 800; font-size: 16px; letter-spacing: 0.5px;
+    padding: 4px 12px; border-radius: 8px; color: #111;
+  }
+  #action-hint .ah-calc { margin-top: 8px; font-size: 14px; color: var(--txt); font-variant-numeric: tabular-nums; }
+  #action-hint .ah-note { margin-top: 6px; font-size: 12px; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -168,6 +197,26 @@
     </div>
     <div class="made-hand"><span class="lbl">Best made hand</span><span id="madeHand">—</span></div>
     <div class="draws" id="drawsBox" style="display:none;"></div>
+  </div>
+
+  <!-- Optional, additive Action Hint module (below the existing output) -->
+  <div id="action-hint">
+    <div class="ah-title">Action Hint (optional)</div>
+    <div class="ah-inputs">
+      <div class="ah-field">
+        <label for="ahPot">Pot (chips in the middle, excl. your call)</label>
+        <input id="ahPot" type="number" inputmode="decimal" min="0" step="any" placeholder="—" />
+      </div>
+      <div class="ah-field">
+        <label for="ahCall">To Call (amount to pay)</label>
+        <input id="ahCall" type="number" inputmode="decimal" min="0" step="any" placeholder="—" />
+      </div>
+    </div>
+    <div class="ah-result" id="ahResult">
+      <span class="ah-badge" id="ahBadge"></span>
+      <div class="ah-calc" id="ahCalc"></div>
+      <div class="ah-note" id="ahNote" style="display:none;"></div>
+    </div>
   </div>
 
   <div class="slots-wrap">
@@ -746,6 +795,121 @@ function selfTest() {
 /* ---------- Boot ---------- */
 selfTest();
 init();
+</script>
+
+<script>
+"use strict";
+/* =====================================================================
+   ACTION HINT — optional, fully additive module.
+   It does NOT touch the equity engine, the card grid, or the existing
+   output. It only READS the equity already shown in #winVal / #tieVal
+   (via a MutationObserver) plus the Pot / To Call inputs, then renders a
+   pot-odds based suggestion. With both inputs empty it shows nothing and
+   stays unobtrusive. No work is added to the Monte Carlo hot path.
+   ===================================================================== */
+(function () {
+  // ---- Configurable thresholds (percent). Tweak here. ----
+  const RAISE_EQUITY     = 60;  // usableEquity above this (and ahead) -> RAISE
+  const VALUE_BET_EQUITY = 60;  // when To Call is 0/empty -> Value Bet vs Check
+
+  const potEl   = document.getElementById('ahPot');
+  const callEl  = document.getElementById('ahCall');
+  const resEl   = document.getElementById('ahResult');
+  const badgeEl = document.getElementById('ahBadge');
+  const calcEl  = document.getElementById('ahCalc');
+  const noteEl  = document.getElementById('ahNote');
+  const winEl   = document.getElementById('winVal');
+  const tieEl   = document.getElementById('tieVal');
+
+  const COLORS = {
+    fold:  '#ff5b6b',
+    call:  '#f5c542',
+    raise: '#2ecc71',
+    check: '#8b93a3',
+    value: '#2ecc71',
+  };
+
+  // Read the equity that the existing output already computed.
+  // winEl text is "84.9" or "—"; tieEl text is "tie 0.6%  ·  50,000 sims".
+  function readEquity() {
+    const win = parseFloat(winEl.textContent);
+    if (isNaN(win)) return null; // equity not ready yet (e.g. "—")
+    const m = /([\d.]+)/.exec((tieEl.textContent || '').replace(/^tie/, ''));
+    const tie = m ? parseFloat(m[1]) : 0;
+    return { win, tie: isNaN(tie) ? 0 : tie };
+  }
+
+  function hide() { resEl.style.display = 'none'; }
+
+  function show(badge, color, calcHtml, note) {
+    badgeEl.textContent = badge;
+    badgeEl.style.background = color;
+    calcEl.innerHTML = calcHtml;
+    if (note) { noteEl.textContent = note; noteEl.style.display = 'block'; }
+    else { noteEl.style.display = 'none'; }
+    resEl.style.display = 'block';
+  }
+
+  function update() {
+    const potRaw  = potEl.value.trim();
+    const callRaw = callEl.value.trim();
+
+    // Both empty -> stay unobtrusive, no hint at all.
+    if (potRaw === '' && callRaw === '') { hide(); return; }
+
+    // Need a valid pot to reason about pot odds; otherwise show nothing yet.
+    const pot = parseFloat(potRaw);
+    if (isNaN(pot) || pot < 0) { hide(); return; }
+
+    const eq = readEquity();
+    if (!eq) {
+      show('—', COLORS.check, 'Add your hole cards to get an equity-based hint.', null);
+      return;
+    }
+    // usableEquity = winPercent + tiePercent / 2
+    const usable = eq.win + eq.tie / 2;
+    const usableStr = usable.toFixed(1);
+
+    const toCall = callRaw === '' ? 0 : parseFloat(callRaw);
+
+    // Special case: nothing to call (To Call = 0 or empty) but a pot is set.
+    if (isNaN(toCall) || toCall <= 0) {
+      if (usable > VALUE_BET_EQUITY) {
+        show('Value Bet möglich', COLORS.value,
+          'To Call = 0 — du hast <b>' + usableStr + '%</b> Equity, also klar vorne.', null);
+      } else {
+        show('Check', COLORS.check,
+          'To Call = 0 — du kannst gratis checken. Du hast <b>' + usableStr + '%</b> Equity.', null);
+      }
+      return;
+    }
+
+    // Pot odds: required equity to make the call break even.
+    const required = toCall / (pot + toCall) * 100;
+    const calc = 'Du brauchst <b>' + required.toFixed(1) + '%</b> Equity zum Call, '
+               + 'du hast <b>' + usableStr + '%</b>.';
+
+    if (usable < required) {
+      show('Fold', COLORS.fold, calc, null);
+    } else if (usable > RAISE_EQUITY) {
+      show('Raise möglich', COLORS.raise, calc,
+        'Raise ist eine Heuristik (kein Fold-Equity / keine Reads berücksichtigt).');
+    } else {
+      show('Call', COLORS.call, calc, null);
+    }
+  }
+
+  // Recompute when the user edits the fields...
+  potEl.addEventListener('input', update);
+  callEl.addEventListener('input', update);
+
+  // ...and whenever the existing output updates the equity numbers.
+  const obs = new MutationObserver(update);
+  obs.observe(winEl, { childList: true, characterData: true, subtree: true });
+  obs.observe(tieEl, { childList: true, characterData: true, subtree: true });
+
+  update();
+})();
 </script>
 </body>
 </html>
