@@ -171,8 +171,8 @@
     color: var(--muted); font-size: 12px; text-transform: uppercase;
     letter-spacing: 0.5px; margin-bottom: 10px;
   }
-  #action-hint .ah-inputs { display: flex; gap: 10px; }
-  #action-hint .ah-field { flex: 1; }
+  #action-hint .ah-inputs { display: flex; flex-wrap: wrap; gap: 10px; }
+  #action-hint .ah-field { flex: 1 1 90px; min-width: 90px; }
   #action-hint .ah-field label { display: block; color: var(--muted); font-size: 11px; margin-bottom: 4px; }
   #action-hint .ah-field input {
     width: 100%; background: var(--slot); color: var(--txt);
@@ -216,6 +216,10 @@
       <div class="ah-field">
         <label for="ahCall">To Call (amount to pay)</label>
         <input id="ahCall" type="number" inputmode="decimal" min="0" step="any" placeholder="—" />
+      </div>
+      <div class="ah-field">
+        <label for="ahStack">Your Stack (chips)</label>
+        <input id="ahStack" type="number" inputmode="decimal" min="0" step="any" value="1000" />
       </div>
     </div>
     <div class="ah-result" id="ahResult">
@@ -815,12 +819,14 @@ init();
    stays unobtrusive. No work is added to the Monte Carlo hot path.
    ===================================================================== */
 (function () {
-  // ---- Configurable thresholds (percent). Tweak here. ----
-  const RAISE_EQUITY     = 60;  // usableEquity above this (and ahead) -> RAISE
-  const VALUE_BET_EQUITY = 60;  // when To Call is 0/empty -> Value Bet vs Check
+  // ---- Configurable thresholds. Tweak here. ----
+  const RAISE_EQUITY     = 60;    // usableEquity (%) above this (and ahead) -> RAISE
+  const VALUE_BET_EQUITY = 60;    // when To Call is 0/empty -> Value Bet vs Check
+  const DEFAULT_STACK    = 1000;  // chips per player; used when the Stack field is empty
 
   const potEl   = document.getElementById('ahPot');
   const callEl  = document.getElementById('ahCall');
+  const stackEl = document.getElementById('ahStack');
   const resEl   = document.getElementById('ahResult');
   const badgeEl = document.getElementById('ahBadge');
   const calcEl  = document.getElementById('ahCalc');
@@ -877,11 +883,17 @@ init();
     const usable = eq.win + eq.tie / 2;
     const usableStr = usable.toFixed(1);
 
+    // Stack: your remaining chips. Defaults to DEFAULT_STACK (1000) when empty.
+    // It caps how much you can call and whether a raise is even possible.
+    const stackRaw = stackEl.value.trim();
+    let stack = stackRaw === '' ? DEFAULT_STACK : parseFloat(stackRaw);
+    if (isNaN(stack) || stack < 0) stack = DEFAULT_STACK;
+
     const toCall = callRaw === '' ? 0 : parseFloat(callRaw);
 
     // Special case: nothing to call (To Call = 0 or empty) but a pot is set.
     if (isNaN(toCall) || toCall <= 0) {
-      if (usable > VALUE_BET_EQUITY) {
+      if (usable > VALUE_BET_EQUITY && stack > 0) {
         show('Value Bet möglich', COLORS.value,
           'To Call = 0 — du hast <b>' + usableStr + '%</b> Equity, also klar vorne.', null);
       } else {
@@ -891,24 +903,34 @@ init();
       return;
     }
 
-    // Pot odds: required equity to make the call break even.
-    const required = toCall / (pot + toCall) * 100;
-    const calc = 'Du brauchst <b>' + required.toFixed(1) + '%</b> Equity zum Call, '
-               + 'du hast <b>' + usableStr + '%</b>.';
+    // You can only ever risk your stack: a call is capped at it.
+    const effectiveCall = Math.min(toCall, stack);
+    const allIn = toCall >= stack;            // calling commits your whole stack
+    const canRaise = stack > toCall;          // chips left beyond the call to raise
+
+    // Pot odds, based on what you actually have to put in.
+    const required = effectiveCall / (pot + effectiveCall) * 100;
+    let calc = 'Du brauchst <b>' + required.toFixed(1) + '%</b> Equity zum Call, '
+             + 'du hast <b>' + usableStr + '%</b>.';
+    if (toCall > stack) {
+      calc += ' Du kannst nur <b>' + stack + '</b> covern → All-in.';
+    }
 
     if (usable < required) {
-      show('Fold', COLORS.fold, calc, null);
-    } else if (usable > RAISE_EQUITY) {
+      show('Fold', COLORS.fold, calc, allIn ? 'All-in-Call wäre dein gesamter Stack.' : null);
+    } else if (canRaise && usable > RAISE_EQUITY) {
       show('Raise möglich', COLORS.raise, calc,
         'Raise ist eine Heuristik (kein Fold-Equity / keine Reads berücksichtigt).');
     } else {
-      show('Call', COLORS.call, calc, null);
+      show(allIn ? 'Call (All-in)' : 'Call', COLORS.call, calc,
+        allIn ? 'Call committet deinen gesamten Stack.' : null);
     }
   }
 
   // Recompute when the user edits the fields...
   potEl.addEventListener('input', update);
   callEl.addEventListener('input', update);
+  stackEl.addEventListener('input', update);
 
   // ...and whenever the existing output updates the equity numbers.
   const obs = new MutationObserver(update);
