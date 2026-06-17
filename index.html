@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idle Roguelite Prototype</title>
+  <style>
+    /* Minimal styling, readability only */
+    body {
+      font-family: monospace;
+      max-width: 480px;
+      margin: 40px auto;
+      padding: 0 16px;
+      line-height: 1.6;
+    }
+    .stats { margin-bottom: 16px; }
+    .stats div { margin: 2px 0; }
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled { cursor: not-allowed; opacity: 0.5; }
+    #message { min-height: 1.6em; margin: 12px 0; font-weight: bold; }
+    hr { margin: 16px 0; }
+  </style>
+</head>
+<body>
+  <h1>Idle Roguelite Prototype</h1>
+
+  <div class="stats">
+    <div>Depth: <span id="depth">0</span></div>
+    <div>Pot: <span id="pot">0</span></div>
+    <div>Gold: <span id="gold">0</span></div>
+    <div>Yield Level: <span id="yieldLevel">0</span></div>
+    <div>Fail Chance: <span id="failChance">0</span>%</div>
+  </div>
+
+  <hr>
+
+  <div id="message"></div>
+
+  <!-- Storage screen (between runs) -->
+  <div id="storageScreen">
+    <button id="upgradeBtn">Improve Equipment (cost: <span id="upgradeCost">0</span> gold)</button>
+    <button id="newRunBtn">New Run</button>
+  </div>
+
+  <!-- Run screen (during a run) -->
+  <div id="runScreen" style="display:none;">
+    <button id="deeperBtn">Go Deeper</button>
+    <button id="bankBtn">Bank & Return</button>
+  </div>
+
+  <script>
+    // ---- Balancing constants (tune here) ----
+    const TARGET_DEPTH = 12;            // depth that counts as a won run
+    const YIELD_BONUS_PER_LEVEL = 0.25; // pot multiplier added per yield level
+    const FAIL_CHANCE_PER_DEPTH = 0.04; // fail chance added per depth step
+    const MAX_FAIL_CHANCE = 0.6;        // hard cap on fail chance
+    const UPGRADE_BASE_COST = 10;       // cost of first yield upgrade
+    const UPGRADE_COST_GROWTH = 1.5;    // cost multiplier per owned yield level
+
+    const STORAGE_KEY = "idleRoguelitePrototype";
+
+    // ---- Meta state (persisted) ----
+    let gold = 0;
+    let yieldLevel = 0;
+
+    // ---- Run state (not persisted) ----
+    let inRun = false;
+    let depth = 0;
+    let pot = 0;
+
+    // ---- Persistence ----
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ gold, yieldLevel }));
+    }
+
+    function load() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        gold = data.gold || 0;
+        yieldLevel = data.yieldLevel || 0;
+      } catch (e) {
+        // ignore corrupted save
+      }
+    }
+
+    // ---- Derived values ----
+    function currentFailChance() {
+      // No risk before going any deeper.
+      if (depth <= 0) return 0;
+      return Math.min(MAX_FAIL_CHANCE, depth * FAIL_CHANCE_PER_DEPTH);
+    }
+
+    function upgradeCost() {
+      return Math.floor(UPGRADE_BASE_COST * Math.pow(UPGRADE_COST_GROWTH, yieldLevel));
+    }
+
+    // ---- Rendering ----
+    function render() {
+      document.getElementById("depth").textContent = depth;
+      document.getElementById("pot").textContent = pot.toFixed(2);
+      document.getElementById("gold").textContent = gold.toFixed(2);
+      document.getElementById("yieldLevel").textContent = yieldLevel;
+      document.getElementById("failChance").textContent =
+        Math.round(currentFailChance() * 100);
+      document.getElementById("upgradeCost").textContent = upgradeCost();
+
+      document.getElementById("runScreen").style.display = inRun ? "block" : "none";
+      document.getElementById("storageScreen").style.display = inRun ? "none" : "block";
+
+      document.getElementById("upgradeBtn").disabled = gold < upgradeCost();
+    }
+
+    function setMessage(text) {
+      document.getElementById("message").textContent = text;
+    }
+
+    // ---- Run actions ----
+    function startRun() {
+      inRun = true;
+      depth = 0;
+      pot = 0;
+      setMessage("Run started.");
+      render();
+    }
+
+    function goDeeper() {
+      depth += 1;
+      pot += depth * (1 + YIELD_BONUS_PER_LEVEL * yieldLevel);
+
+      // Win condition: reaching the target depth auto-banks the pot.
+      if (depth >= TARGET_DEPTH) {
+        gold += pot;
+        save();
+        setMessage("Victory! Reached target depth " + TARGET_DEPTH +
+          " and banked " + pot.toFixed(2) + " gold.");
+        endRun();
+        return;
+      }
+
+      // Risk check after descending.
+      if (Math.random() < currentFailChance()) {
+        setMessage("Defeat! You fell at depth " + depth +
+          " and lost a pot of " + pot.toFixed(2) + ".");
+        endRun();
+        return;
+      }
+
+      setMessage("Descended to depth " + depth + ".");
+      render();
+    }
+
+    function bankAndReturn() {
+      gold += pot;
+      save();
+      setMessage("Banked " + pot.toFixed(2) + " gold safely.");
+      endRun();
+    }
+
+    function endRun() {
+      inRun = false;
+      depth = 0;
+      pot = 0;
+      render();
+    }
+
+    // ---- Storage actions ----
+    function buyUpgrade() {
+      const cost = upgradeCost();
+      if (gold < cost) return;
+      gold -= cost;
+      yieldLevel += 1;
+      save();
+      setMessage("Equipment improved to yield level " + yieldLevel + ".");
+      render();
+    }
+
+    // ---- Wire up ----
+    document.getElementById("deeperBtn").addEventListener("click", goDeeper);
+    document.getElementById("bankBtn").addEventListener("click", bankAndReturn);
+    document.getElementById("upgradeBtn").addEventListener("click", buyUpgrade);
+    document.getElementById("newRunBtn").addEventListener("click", startRun);
+
+    // ---- Init ----
+    load();
+    render();
+  </script>
+</body>
+</html>
